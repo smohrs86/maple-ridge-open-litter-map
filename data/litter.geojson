@@ -6,6 +6,439 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
+          -122.56402587891,
+          49.199871063232
+        ]
+      },
+      "properties": {
+        "id": 553851,
+        "datetime": "2026-09-17T19:28:37.000000Z",
+        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/09/17/JOsMZ79rB9QmT3KSfx1lc4zaw2XtTdGZfJc6UuD7.jpg",
+        "tags": [
+          {
+            "type": "standard",
+            "category": "other",
+            "item": "paper",
+            "quantity": 1
+          },
+          {
+            "type": "material",
+            "category": "material",
+            "item": "paper",
+            "quantity": 1,
+            "parent_category": "other",
+            "parent_item": "paper"
+          },
+          {
+            "type": "custom_tag",
+            "category": "custom_tag",
+            "item": "Piece",
+            "quantity": 1,
+            "parent_category": "other",
+            "parent_item": "paper"
+          },
+          {
+            "type": "standard",
+            "category": "sanitary",
+            "item": "tissue",
+            "quantity": 1
+          }
+        ],
+        "groups": [
+          "litter"
+        ],
+        "has_litter": true,
+        "has_pet_waste": false,
+        "has_substances": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.55806732178,
+          49.210166931152
+        ]
+      },
+      "properties": {
+        "id": 553850,
+        "datetime": "2026-09-18T19:47:13.000000Z",
+        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/09/18/ttOAmcQhaLMKRKv8CXwfA0coUhV6w2THvLyHIojs.jpg",
+        "tags": [
+          {
+            "type": "standard",
+            "category": "other",
+            "item": "plastic",
+            "quantity": 1
+          },
+          {
+            "type": "material",
+            "category": "material",
+            "item": "plastic",
+            "quantity": 1,
+            "parent_category": "other",
+            "parent_item": "plastic"
+          }
+        ],
+        "groups": [
+          "litter"
+        ],
+        "has_litter": true,
+        "has_pet_waste": false,
+        "has_substances": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.5583190918,
+          49.213268280029
+        ]
+      },
+      "properties": {
+        "id": 553849,
+        "datetime": "2026-09-18T19:55:12.000000Z",
+        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/09/18/SELlK71K7FTRruHmfjn6LuyiyXRqCZn22SJqbHg4.jpg",
+        "tags": [
+          {
+            "type": "standard",
+            "category": "alcohol",
+            "item": "packaging",
+            "quantity": 1
+          },
+          {
+            "type": "custom_tag",
+            "category": "custom_tag",
+            "item": "THC",
+            "quantity": 1,
+            "parent_category": "alcohol",
+            "parent_item": "packaging"
+          }
+        ],
+        "groups": [
+          "substances"
+        ],
+        "has_litter": false,
+        "has_pet_waste": false,
+        "has_substances": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.5583190918,
+          49.213268280029
+        ]
+      },
+      "properties": {
+        "id": 553848,
+        "datetime": "2026-09-18T19:55:16.000000Z",
+        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/09/18/YiqdtMzBuvxl5e2zbJMJGESx54R9c9dOuBi2SL4J.jpg",
+        "tags": [
+          {
+            "type": "standard",
+            "category": "alcohol",
+            "item": "packaging",
+            "quantity": 1
+          },
+          {
+            "type": "custom_tag",
+            "category": "custom_tag",
+            "item": "THC",
+            "quantity": 1,
+            "parent_category": "alcohol",
+            "parent_item": "packaging"
+          }
+        ],
+        "groups": [
+          "substances"
+        ],
+        "has_litter": false,
+        "has_pet_waste": false,
+        "has_substances": true
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.56075286865,
+          49.21314239502
+        ]
+      },
+      "properties": {
+        "id": 553847,
+        "datetime": "2026-09-18T19:57:41.000000Z",
+        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/09/18/N71mIaq5ryCgn7XQdB43ASnMLXG8bqpenBh0Z2GO.jpg",
+        "tags": [
+          {
+            "type": "standard",
+            "category": "softdrinks",
+            "item": "bottle",
+            "quantity": 1
+          },
+          {
+            "type": "material",
+            "category": "material",
+            "item": "plastic",
+            "quantity": 1,
+            "parent_category": "softdrinks",
+            "parent_item": "bottle"
+          }
+        ],
+        "groups": [
+          "litter"
+        ],
+        "has_litter": true,
+        "has_pet_waste": false,
+        "has_substances": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.56021881104,
+          49.213111877441
+        ]
+      },
+      "properties": {
+        "id": 553846,
+        "datetime": "2026-09-18T19:59:11.000000Z",
+        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/09/18/0hCrlagBy2DK6pjy7mw4BDjg6wZL6y2Kd3hn5hYY.jpg",
+        "tags": [
+          {
+            "type": "standard",
+            "category": "food",
+            "item": "cutlery",
+            "quantity": 1
+          },
+          {
+            "type": "material",
+            "category": "material",
+            "item": "plastic",
+            "quantity": 1,
+            "parent_category": "food",
+            "parent_item": "cutlery"
+          },
+          {
+            "type": "custom_tag",
+            "category": "custom_tag",
+            "item": "Piece",
+            "quantity": 1,
+            "parent_category": "food",
+            "parent_item": "cutlery"
+          }
+        ],
+        "groups": [
+          "litter"
+        ],
+        "has_litter": true,
+        "has_pet_waste": false,
+        "has_substances": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.55979156494,
+          49.213073730469
+        ]
+      },
+      "properties": {
+        "id": 553845,
+        "datetime": "2026-09-18T20:00:22.000000Z",
+        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/09/18/Uf8JGAq6r8xG7N4zdetbKbPz5hpytLZaEd7CdWS3.jpg",
+        "tags": [
+          {
+            "type": "standard",
+            "category": "softdrinks",
+            "item": "cup",
+            "quantity": 1
+          },
+          {
+            "type": "brand",
+            "category": "brand",
+            "item": "mcdonalds",
+            "quantity": 1,
+            "parent_category": "softdrinks",
+            "parent_item": "cup"
+          },
+          {
+            "type": "standard",
+            "category": "softdrinks",
+            "item": "lid",
+            "quantity": 1
+          },
+          {
+            "type": "standard",
+            "category": "softdrinks",
+            "item": "straw",
+            "quantity": 1
+          }
+        ],
+        "groups": [
+          "litter"
+        ],
+        "has_litter": true,
+        "has_pet_waste": false,
+        "has_substances": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.5598526001,
+          49.213012695312
+        ]
+      },
+      "properties": {
+        "id": 553844,
+        "datetime": "2026-09-18T20:01:02.000000Z",
+        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/09/18/O2DGZjuzxsaMOo9on7K5HTSldrBoQhclsyXsK8L2.jpg",
+        "tags": [
+          {
+            "type": "standard",
+            "category": "other",
+            "item": "plastic",
+            "quantity": 1
+          }
+        ],
+        "groups": [
+          "litter"
+        ],
+        "has_litter": true,
+        "has_pet_waste": false,
+        "has_substances": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.5598526001,
+          49.213012695312
+        ]
+      },
+      "properties": {
+        "id": 553843,
+        "datetime": "2026-09-18T20:01:05.000000Z",
+        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/09/18/Y7aSFS4TilRYG6SnEYkkRnA3KvP2Wj5gEtURYr0l.jpg",
+        "tags": [
+          {
+            "type": "standard",
+            "category": "other",
+            "item": "other",
+            "quantity": 1
+          }
+        ],
+        "groups": [
+          "litter"
+        ],
+        "has_litter": true,
+        "has_pet_waste": false,
+        "has_substances": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.55950927734,
+          49.213035583496
+        ]
+      },
+      "properties": {
+        "id": 553842,
+        "datetime": "2026-09-18T20:01:44.000000Z",
+        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/09/18/eYlrD20tNQD9dNsGRFPKVVUMSA1Ke2jgiSJnP3YN.jpg",
+        "tags": [
+          {
+            "type": "standard",
+            "category": "food",
+            "item": "wrapper",
+            "quantity": 1
+          },
+          {
+            "type": "material",
+            "category": "material",
+            "item": "foil",
+            "quantity": 1,
+            "parent_category": "food",
+            "parent_item": "wrapper"
+          },
+          {
+            "type": "material",
+            "category": "material",
+            "item": "plastic",
+            "quantity": 1,
+            "parent_category": "food",
+            "parent_item": "wrapper"
+          }
+        ],
+        "groups": [
+          "litter"
+        ],
+        "has_litter": true,
+        "has_pet_waste": false,
+        "has_substances": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.55969238281,
+          49.210048675537
+        ]
+      },
+      "properties": {
+        "id": 553841,
+        "datetime": "2026-09-18T20:09:19.000000Z",
+        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/09/18/i3suRhm67npreEYmtDJoGhJo2lO5FmoX2zXk9J12.jpg",
+        "tags": [
+          {
+            "type": "standard",
+            "category": "other",
+            "item": "paper",
+            "quantity": 1
+          },
+          {
+            "type": "material",
+            "category": "material",
+            "item": "paper",
+            "quantity": 1,
+            "parent_category": "other",
+            "parent_item": "paper"
+          }
+        ],
+        "groups": [
+          "litter"
+        ],
+        "has_litter": true,
+        "has_pet_waste": false,
+        "has_substances": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
           -122.56109619141,
           49.209987640381
         ]
@@ -534,8 +967,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -1471,8 +1904,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -1873,8 +2306,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -2852,8 +3285,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -3148,8 +3581,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -5020,8 +5453,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -5456,8 +5889,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -5535,8 +5968,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -8384,8 +8817,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -8760,8 +9193,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "pet_waste"
+          "pet_waste",
+          "substances"
         ],
         "has_litter": false,
         "has_pet_waste": true,
@@ -8802,8 +9235,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -8875,8 +9308,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -9983,8 +10416,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -10048,8 +10481,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -10208,8 +10641,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -10566,8 +10999,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -10647,8 +11080,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -10982,8 +11415,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -11084,8 +11517,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -11165,8 +11598,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -13284,8 +13717,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -13334,8 +13767,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -13376,8 +13809,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -14223,8 +14656,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -14366,8 +14799,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -15031,8 +15464,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -15228,8 +15661,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -15330,8 +15763,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -15453,8 +15886,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -16161,8 +16594,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -16706,8 +17139,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -17728,8 +18161,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -18057,8 +18490,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -20144,8 +20577,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -20291,8 +20724,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -20668,8 +21101,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -21033,8 +21466,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "pet_waste"
+          "pet_waste",
+          "substances"
         ],
         "has_litter": false,
         "has_pet_waste": true,
@@ -21327,8 +21760,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -21860,8 +22293,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -22627,8 +23060,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -23386,8 +23819,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -23422,8 +23855,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -23588,8 +24021,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -23682,8 +24115,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -25776,8 +26209,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -26738,8 +27171,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -27049,8 +27482,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -27550,8 +27983,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -27631,8 +28064,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -27797,8 +28230,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -27884,8 +28317,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -28781,8 +29214,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -29046,8 +29479,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -29220,8 +29653,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -29516,8 +29949,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -29581,8 +30014,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -29933,8 +30366,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -29983,8 +30416,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -30159,8 +30592,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -30405,8 +30838,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -30507,8 +30940,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -30543,8 +30976,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -30746,8 +31179,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -30877,8 +31310,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -30921,8 +31354,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -30971,8 +31404,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -31073,8 +31506,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -31109,8 +31542,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -31153,8 +31586,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -31276,8 +31709,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -31369,8 +31802,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -31579,8 +32012,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -31615,8 +32048,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -31813,8 +32246,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -31944,8 +32377,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -32599,8 +33032,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -32780,8 +33213,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -32816,8 +33249,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -32930,8 +33363,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -33095,8 +33528,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -33252,8 +33685,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -33304,8 +33737,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -33354,8 +33787,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -33390,8 +33823,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -33615,8 +34048,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -33725,8 +34158,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -33790,8 +34223,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -33964,8 +34397,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -34109,8 +34542,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -34231,8 +34664,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -34415,8 +34848,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -34488,8 +34921,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -34639,8 +35072,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -34857,8 +35290,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -34994,8 +35427,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -35044,8 +35477,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -35340,8 +35773,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -35404,8 +35837,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -35454,8 +35887,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -35504,8 +35937,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -35540,8 +35973,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -35776,8 +36209,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -35846,8 +36279,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -35962,8 +36395,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -36072,8 +36505,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -36200,8 +36633,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -36323,8 +36756,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -36460,8 +36893,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -36504,8 +36937,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -36577,8 +37010,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -36627,8 +37060,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -36671,8 +37104,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -36736,8 +37169,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -37042,8 +37475,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -37078,8 +37511,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -37260,8 +37693,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -37304,8 +37737,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -37868,8 +38301,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -38603,8 +39036,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -38713,8 +39146,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -38866,8 +39299,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -38910,8 +39343,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -39091,8 +39524,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -39251,8 +39684,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -39324,8 +39757,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -39595,8 +40028,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -39931,8 +40364,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -40417,8 +40850,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -40461,8 +40894,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -40636,8 +41069,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -40918,8 +41351,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -40983,8 +41416,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -41165,8 +41598,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -41405,8 +41838,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -41455,8 +41888,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -41693,8 +42126,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -41989,8 +42422,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -42041,8 +42474,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -42136,8 +42569,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -42252,8 +42685,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -42529,8 +42962,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -42622,8 +43055,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -42782,8 +43215,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -43656,8 +44089,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -43714,8 +44147,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -43861,8 +44294,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -43917,8 +44350,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -44062,8 +44495,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -44098,8 +44531,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -44945,8 +45378,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -45063,8 +45496,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -45247,8 +45680,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -45843,8 +46276,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -46027,8 +46460,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -47772,8 +48205,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -48700,8 +49133,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -49741,8 +50174,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -49972,8 +50405,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -50436,8 +50869,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -51544,8 +51977,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -52038,8 +52471,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -53072,8 +53505,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -53108,8 +53541,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -53189,8 +53622,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -54419,8 +54852,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -54976,8 +55409,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -55309,8 +55742,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -55833,8 +56266,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -56114,414 +56547,6 @@
             "category": "other",
             "item": "plastic",
             "quantity": 1
-          }
-        ],
-        "groups": [
-          "litter"
-        ],
-        "has_litter": true,
-        "has_pet_waste": false,
-        "has_substances": false
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -122.56243133545,
-          49.213195800781
-        ]
-      },
-      "properties": {
-        "id": 546778,
-        "datetime": "2026-07-03T22:35:41.000000Z",
-        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/07/03/YXvBQLLMwYj49MhHK10SmlH3T2TfJqIEYbl0EexU.jpg",
-        "tags": [
-          {
-            "type": "standard",
-            "category": "other",
-            "item": "paper",
-            "quantity": 1
-          }
-        ],
-        "groups": [
-          "litter"
-        ],
-        "has_litter": true,
-        "has_pet_waste": false,
-        "has_substances": false
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -122.56243133545,
-          49.213195800781
-        ]
-      },
-      "properties": {
-        "id": 546777,
-        "datetime": "2026-07-03T22:35:50.000000Z",
-        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/07/03/mhUrkb94kDGHuTOShvKs7kBZvriTFqZvCevoByl7.jpg",
-        "tags": [
-          {
-            "type": "standard",
-            "category": "smoking",
-            "item": "butts",
-            "quantity": 1
-          }
-        ],
-        "groups": [
-          "substances"
-        ],
-        "has_litter": false,
-        "has_pet_waste": false,
-        "has_substances": true
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -122.56243133545,
-          49.213195800781
-        ]
-      },
-      "properties": {
-        "id": 546776,
-        "datetime": "2026-07-03T22:36:00.000000Z",
-        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/07/03/Hf4LdrsGARAzmU5ziXyhdDkhF4yvNkUHk2uK9qSz.jpg",
-        "tags": [
-          {
-            "type": "standard",
-            "category": "alcohol",
-            "item": "packaging",
-            "quantity": 1
-          },
-          {
-            "type": "custom_tag",
-            "category": "custom_tag",
-            "item": "THC",
-            "quantity": 1,
-            "parent_category": "alcohol",
-            "parent_item": "packaging"
-          }
-        ],
-        "groups": [
-          "substances"
-        ],
-        "has_litter": false,
-        "has_pet_waste": false,
-        "has_substances": true
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -122.56243133545,
-          49.213195800781
-        ]
-      },
-      "properties": {
-        "id": 546775,
-        "datetime": "2026-07-03T22:36:22.000000Z",
-        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/07/03/8iX2QaOFLz1PqzNnHmIPZzr9l54R5DaAtCRvE4Jh.jpg",
-        "tags": [
-          {
-            "type": "standard",
-            "category": "other",
-            "item": "plastic",
-            "quantity": 2
-          }
-        ],
-        "groups": [
-          "litter"
-        ],
-        "has_litter": true,
-        "has_pet_waste": false,
-        "has_substances": false
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -122.5604095459,
-          49.213115692139
-        ]
-      },
-      "properties": {
-        "id": 546774,
-        "datetime": "2026-07-03T22:37:34.000000Z",
-        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/07/03/HdbEPxqyitZHUXP0rhdw8d5oCDqU988fI4bNyOoj.jpg",
-        "tags": [
-          {
-            "type": "standard",
-            "category": "other",
-            "item": "plastic",
-            "quantity": 1
-          },
-          {
-            "type": "standard",
-            "category": "pets",
-            "item": "dogshit_in_bag",
-            "quantity": 1
-          }
-        ],
-        "groups": [
-          "litter",
-          "pet_waste"
-        ],
-        "has_litter": true,
-        "has_pet_waste": true,
-        "has_substances": false
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -122.56041717529,
-          49.213199615479
-        ]
-      },
-      "properties": {
-        "id": 546773,
-        "datetime": "2026-07-03T22:38:06.000000Z",
-        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/07/03/kS0J4USRUqkdyRmfEzara8F7NfTZiZfIJxMi4EoR.jpg",
-        "tags": [
-          {
-            "type": "standard",
-            "category": "food",
-            "item": "can",
-            "quantity": 1
-          },
-          {
-            "type": "material",
-            "category": "material",
-            "item": "metal",
-            "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "can"
-          },
-          {
-            "type": "standard",
-            "category": "other",
-            "item": "plastic",
-            "quantity": 2
-          },
-          {
-            "type": "standard",
-            "category": "softdrinks",
-            "item": "bottle",
-            "quantity": 1
-          },
-          {
-            "type": "material",
-            "category": "material",
-            "item": "plastic",
-            "quantity": 1,
-            "parent_category": "softdrinks",
-            "parent_item": "bottle"
-          }
-        ],
-        "groups": [
-          "litter"
-        ],
-        "has_litter": true,
-        "has_pet_waste": false,
-        "has_substances": false
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -122.55876159668,
-          49.213649749756
-        ]
-      },
-      "properties": {
-        "id": 546772,
-        "datetime": "2026-07-03T22:41:31.000000Z",
-        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/07/03/AiidGpj1eGYwUhMNoM97HHxFzNen82zIA0cMaOok.jpg",
-        "tags": [
-          {
-            "type": "standard",
-            "category": "softdrinks",
-            "item": "cup",
-            "quantity": 1
-          },
-          {
-            "type": "standard",
-            "category": "softdrinks",
-            "item": "straw",
-            "quantity": 1
-          }
-        ],
-        "groups": [
-          "litter"
-        ],
-        "has_litter": true,
-        "has_pet_waste": false,
-        "has_substances": false
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -122.55876159668,
-          49.213649749756
-        ]
-      },
-      "properties": {
-        "id": 546771,
-        "datetime": "2026-07-03T22:41:47.000000Z",
-        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/07/03/7UdCfgXHJmwKWUqncN748KdrgoQXJ83N9Du7ZLCx.jpg",
-        "tags": [
-          {
-            "type": "standard",
-            "category": "dumping",
-            "item": "dumping",
-            "quantity": 1
-          },
-          {
-            "type": "material",
-            "category": "material",
-            "item": "plastic",
-            "quantity": 1,
-            "parent_category": "dumping",
-            "parent_item": "dumping"
-          },
-          {
-            "type": "custom_tag",
-            "category": "custom_tag",
-            "item": "Garden",
-            "quantity": 1,
-            "parent_category": "dumping",
-            "parent_item": "dumping"
-          }
-        ],
-        "groups": [
-          "litter"
-        ],
-        "has_litter": true,
-        "has_pet_waste": false,
-        "has_substances": false
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -122.55822753906,
-          49.213066101074
-        ]
-      },
-      "properties": {
-        "id": 546770,
-        "datetime": "2026-07-03T22:41:56.000000Z",
-        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/07/03/BcCfnjEHTSLk4UftlsNEpYW32hfNONcGfhANbEBk.jpg",
-        "tags": [
-          {
-            "type": "standard",
-            "category": "smoking",
-            "item": "box",
-            "quantity": 1
-          }
-        ],
-        "groups": [
-          "substances"
-        ],
-        "has_litter": false,
-        "has_pet_waste": false,
-        "has_substances": true
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -122.55813598633,
-          49.213077545166
-        ]
-      },
-      "properties": {
-        "id": 546769,
-        "datetime": "2026-07-03T22:42:09.000000Z",
-        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/07/03/U5PJFMXRMCKw6DrJRQ7MlcqZcKsQe1bM9Dj6LkPX.jpg",
-        "tags": [
-          {
-            "type": "standard",
-            "category": "food",
-            "item": "packaging",
-            "quantity": 3
-          },
-          {
-            "type": "material",
-            "category": "material",
-            "item": "plastic",
-            "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "packaging"
-          },
-          {
-            "type": "brand",
-            "category": "brand",
-            "item": "mr-freeze",
-            "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "packaging"
-          }
-        ],
-        "groups": [
-          "litter"
-        ],
-        "has_litter": true,
-        "has_pet_waste": false,
-        "has_substances": false
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -122.55810546875,
-          49.212898254395
-        ]
-      },
-      "properties": {
-        "id": 546768,
-        "datetime": "2026-07-03T22:42:55.000000Z",
-        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/07/03/koMiZO6Wef30LQ0RWu8LLj9oXQisAxyOB2MHmKq2.jpg",
-        "tags": [
-          {
-            "type": "standard",
-            "category": "other",
-            "item": "plastic",
-            "quantity": 3
-          },
-          {
-            "type": "material",
-            "category": "material",
-            "item": "plastic",
-            "quantity": 1,
-            "parent_category": "other",
-            "parent_item": "plastic"
           }
         ],
         "groups": [
