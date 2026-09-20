@@ -1,3 +1,38 @@
+##Project Status — September 19, 2026
+
+Current phase: Phase A — Crosswalk verification and data observability. No new GIS features until the crosswalk is reviewed and approved.
+
+Completed today
+Classification audit script (scripts/audit_classification.py) with tests (tests/test_audit_classification.py). It is read-only, reads data/litter.geojson, and reports tag counts, unknown or unclassified tags, custom tags, and flag inconsistencies. It is not yet wired into the sync workflow.
+Crosswalk review copy built from the 68-tag OLM → Maple Ridge crosswalk. Rows 1–15 of 68 are reviewed, with new include on map and reason columns.
+Code review of sync_data.py and sample records (master branch).
+Decisions made
+Layers: the old 3 groups (litter / pet_waste / substances) and 4 local streams are dropped for this phase. Each OLM source tag becomes its own map layer with a checkbox.
+Priority: dog waste. pets/dogshit and pets/dogshit_in_bag are separate layers.
+Future grouped views: two, one by Maple Ridge waste stream and one by Vancouver audit category. The Vancouver view uses Vancouver's category names only; its totals are not comparable with Vancouver's published audit counts.
+Detail tags: material, brand, and custom tags describe their parent item and are never counted on their own.
+Exclusions: civic/* and dumping/other are left off the map, each with a documented reason.
+Field tagging rules
+One tag per object; never double-tag.
+Dumping: anything that can't be carried away and needs a city pickup, even a single item.
+Minimal extras: add material only where it changes the stream (food/bag, food/container), plus the THC custom tag. Everything else is optional.
+Rare exceptions are fixed afterward through a corrections list by photo ID, not with extra tagging in the field.
+Known issues (not yet fixed)
+The groups list is built in random order on each run, causing unnecessary commits. Fix: use sorted().
+The pipeline drops OLM's picked-up / not-picked-up status, which is needed for the dog-waste analysis.
+The dumping size (small / medium / large) appears to be dropped as well. This needs checking against a raw API response.
+alcohol/other and alcohol/packaging were used inconsistently for THC items. Plan: retag them in OLM as smoking/vape or smoking/packaging with the THC tag.
+Bylaw citations and fine amounts in the crosswalk are not yet verified against official sources.
+The hardening branch is not yet in the project files, so color_group has not been reviewed.
+Next steps
+Finish the crosswalk review (rows 16–68).
+Inspect a raw API response to find the picked-up status and dumping size fields.
+Run the audit on the full dataset and compare crosswalk keys against the data in both directions.
+Convert the approved sheet to data/maple_ridge_crosswalk.json.
+Rebuild the pipeline and map with one layer per source tag, dog waste first.
+Write the field tagging protocol document.
+
+-------------------------------------------
 # Maple Ridge OpenLitterMap GIS Pipeline - Update September 18, 2026
 
 This repository hosts an automated, zero-cost geospatial ETL pipeline and interactive web visualization for personal OpenLitterMap (OLM) data contributions in Maple Ridge, British Columbia.
