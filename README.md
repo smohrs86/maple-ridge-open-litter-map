@@ -1,4 +1,4 @@
-##Project Status — September 19, 2026
+## Project Status — September 19, 2026
 
 Current phase: Phase A — Crosswalk verification and data observability. No new GIS features until the crosswalk is reviewed and approved.
 
