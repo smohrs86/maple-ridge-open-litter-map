@@ -9193,8 +9193,8 @@
           }
         ],
         "groups": [
-          "pet_waste",
-          "substances"
+          "substances",
+          "pet_waste"
         ],
         "has_litter": false,
         "has_pet_waste": true,
@@ -21466,8 +21466,8 @@
           }
         ],
         "groups": [
-          "pet_waste",
-          "substances"
+          "substances",
+          "pet_waste"
         ],
         "has_litter": false,
         "has_pet_waste": true,
