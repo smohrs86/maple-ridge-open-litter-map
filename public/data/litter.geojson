@@ -5517,8 +5517,8 @@
           }
         ],
         "groups": [
-          "pet_waste",
-          "litter"
+          "litter",
+          "pet_waste"
         ],
         "has_litter": true,
         "has_pet_waste": true,
@@ -5715,8 +5715,8 @@
           }
         ],
         "groups": [
-          "pet_waste",
-          "litter"
+          "litter",
+          "pet_waste"
         ],
         "has_litter": true,
         "has_pet_waste": true,
