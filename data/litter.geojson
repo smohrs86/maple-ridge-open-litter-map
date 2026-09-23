@@ -6,6 +6,93 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
+          -122.55995178223,
+          49.205867767334
+        ]
+      },
+      "properties": {
+        "id": 554516,
+        "datetime": "2026-09-22T20:40:59.000000Z",
+        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/09/22/PF1D5X9dhUUUPcY4ipwFwrnuxByDUFKmhW3pdVp2.jpg",
+        "tags": [
+          {
+            "type": "standard",
+            "category": "pets",
+            "item": "dogshit",
+            "quantity": 1
+          }
+        ],
+        "groups": [
+          "pet_waste"
+        ],
+        "has_litter": false,
+        "has_pet_waste": true,
+        "has_substances": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.55918884277,
+          49.205680847168
+        ]
+      },
+      "properties": {
+        "id": 554515,
+        "datetime": "2026-09-22T20:40:00.000000Z",
+        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/09/22/8pcnMz0OZWkALCNN17FEhLmLgzhwqj32qPmkRwj8.jpg",
+        "tags": [
+          {
+            "type": "standard",
+            "category": "pets",
+            "item": "dogshit",
+            "quantity": 1
+          }
+        ],
+        "groups": [
+          "pet_waste"
+        ],
+        "has_litter": false,
+        "has_pet_waste": true,
+        "has_substances": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.5615234375,
+          49.207607269287
+        ]
+      },
+      "properties": {
+        "id": 554514,
+        "datetime": "2026-09-22T20:35:45.000000Z",
+        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/09/22/fV0atJMY2e8xRahm7EBBd54H4yvFxlJPe6nzUHQn.jpg",
+        "tags": [
+          {
+            "type": "standard",
+            "category": "pets",
+            "item": "dogshit",
+            "quantity": 1
+          }
+        ],
+        "groups": [
+          "pet_waste"
+        ],
+        "has_litter": false,
+        "has_pet_waste": true,
+        "has_substances": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
           -122.55829620361,
           49.205932617188
         ]
@@ -2424,8 +2511,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -2856,8 +2943,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -3836,8 +3923,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -3925,8 +4012,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -4575,8 +4662,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -4846,8 +4933,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -4896,8 +4983,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -4969,8 +5056,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -5500,8 +5587,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -5536,8 +5623,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -5893,8 +5980,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -6312,8 +6399,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -6621,8 +6708,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -6850,8 +6937,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -6900,8 +6987,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -7390,8 +7477,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -7685,8 +7772,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -7729,8 +7816,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -8095,8 +8182,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -8291,8 +8378,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -8414,8 +8501,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -8849,8 +8936,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -9088,8 +9175,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -9211,8 +9298,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -9321,8 +9408,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -9996,8 +10083,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -10214,8 +10301,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -11526,8 +11613,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -12463,8 +12550,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -12865,8 +12952,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -13844,8 +13931,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -14140,8 +14227,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -16012,8 +16099,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -16448,8 +16535,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -16527,8 +16614,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -19376,8 +19463,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -19794,8 +19881,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -19867,8 +19954,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -20975,8 +21062,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -21040,8 +21127,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -21200,8 +21287,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -21558,8 +21645,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -21639,8 +21726,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -21974,8 +22061,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -22076,8 +22163,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -22157,8 +22244,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -24276,8 +24363,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -24326,8 +24413,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -24368,8 +24455,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -25215,8 +25302,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -25358,8 +25445,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -26023,8 +26110,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -26220,8 +26307,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -26322,8 +26409,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -26445,8 +26532,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -27153,8 +27240,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -27698,8 +27785,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -28720,8 +28807,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -29049,8 +29136,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -31136,8 +31223,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -31283,8 +31370,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -31660,8 +31747,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -32319,8 +32406,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -32852,8 +32939,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -33619,8 +33706,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -34378,8 +34465,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -34414,8 +34501,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -34580,8 +34667,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -34674,8 +34761,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -36768,8 +36855,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -37730,8 +37817,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -38041,8 +38128,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -38542,8 +38629,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -38623,8 +38710,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -38789,8 +38876,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -38876,8 +38963,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -39773,8 +39860,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -40038,8 +40125,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -40212,8 +40299,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -40508,8 +40595,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -40573,8 +40660,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -40925,8 +41012,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -40975,8 +41062,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -41151,8 +41238,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -41397,8 +41484,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -41499,8 +41586,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -41535,8 +41622,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -41738,8 +41825,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -41869,8 +41956,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -41913,8 +42000,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -41963,8 +42050,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -42065,8 +42152,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -42101,8 +42188,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -42145,8 +42232,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -42268,8 +42355,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -42361,8 +42448,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -42571,8 +42658,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -42607,8 +42694,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -42805,8 +42892,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -42936,8 +43023,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -43591,8 +43678,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -43772,8 +43859,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -43808,8 +43895,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -43922,8 +44009,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -44087,8 +44174,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -44244,8 +44331,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -44296,8 +44383,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -44346,8 +44433,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -44382,8 +44469,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -44607,8 +44694,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -44717,8 +44804,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -44782,8 +44869,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -44956,8 +45043,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -45101,8 +45188,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -45223,8 +45310,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -45407,8 +45494,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -45480,8 +45567,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -45631,8 +45718,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -45849,8 +45936,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -45986,8 +46073,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -46036,8 +46123,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -46332,8 +46419,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -46396,8 +46483,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -46446,8 +46533,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -46496,8 +46583,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -46532,8 +46619,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -46768,8 +46855,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -46838,8 +46925,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -46954,8 +47041,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -47064,8 +47151,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -47192,8 +47279,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -47315,8 +47402,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -47452,8 +47539,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -47496,8 +47583,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -47569,8 +47656,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -47619,8 +47706,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -47663,8 +47750,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -47728,8 +47815,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -48034,8 +48121,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -48070,8 +48157,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -48252,8 +48339,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -48296,8 +48383,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -48860,8 +48947,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -49595,8 +49682,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -49705,8 +49792,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -49858,8 +49945,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -49902,8 +49989,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -50083,8 +50170,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -50243,8 +50330,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -50316,8 +50403,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -50587,8 +50674,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -50923,8 +51010,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -51409,8 +51496,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -51453,8 +51540,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -51628,8 +51715,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -51910,8 +51997,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -51975,8 +52062,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -52157,8 +52244,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -52397,8 +52484,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -52447,8 +52534,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -52685,8 +52772,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -52981,8 +53068,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -53033,8 +53120,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -53128,8 +53215,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -53244,8 +53331,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -53521,8 +53608,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -53614,8 +53701,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -53774,8 +53861,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -54648,8 +54735,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -54706,8 +54793,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -54853,8 +54940,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -54909,8 +54996,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -55054,8 +55141,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -55090,8 +55177,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -55937,8 +56024,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -56055,8 +56142,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -56239,8 +56326,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "litter"
+          "litter",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": false,
@@ -56588,93 +56675,6 @@
         "has_litter": false,
         "has_pet_waste": false,
         "has_substances": true
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -122.55690002441,
-          49.211574554443
-        ]
-      },
-      "properties": {
-        "id": 547101,
-        "datetime": "2026-07-07T01:59:27.000000Z",
-        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/07/07/3RhJW772icRqY3xRdmIC5IXdj9m1GLrHcSTvTOCO.jpg",
-        "tags": [
-          {
-            "type": "standard",
-            "category": "sanitary",
-            "item": "wipes",
-            "quantity": 1
-          }
-        ],
-        "groups": [
-          "litter"
-        ],
-        "has_litter": true,
-        "has_pet_waste": false,
-        "has_substances": false
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -122.55690002441,
-          49.211650848389
-        ]
-      },
-      "properties": {
-        "id": 547100,
-        "datetime": "2026-07-07T01:59:55.000000Z",
-        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/07/07/ooPpnOm5cGZxflZlCm79P8lPlZOMv2fHzKB4ItuJ.jpg",
-        "tags": [
-          {
-            "type": "standard",
-            "category": "food",
-            "item": "gum",
-            "quantity": 1
-          }
-        ],
-        "groups": [
-          "litter"
-        ],
-        "has_litter": true,
-        "has_pet_waste": false,
-        "has_substances": false
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -122.55695343018,
-          49.21195602417
-        ]
-      },
-      "properties": {
-        "id": 547099,
-        "datetime": "2026-07-07T02:00:35.000000Z",
-        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/07/07/gAgkNS7oUDw6p7GxodP3z9aFzw7iosAYybCdlfjG.jpg",
-        "tags": [
-          {
-            "type": "standard",
-            "category": "softdrinks",
-            "item": "straw_wrapper",
-            "quantity": 1
-          }
-        ],
-        "groups": [
-          "litter"
-        ],
-        "has_litter": true,
-        "has_pet_waste": false,
-        "has_substances": false
       }
     }
   ]
