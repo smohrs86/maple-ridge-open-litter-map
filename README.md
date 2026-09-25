@@ -4,7 +4,7 @@
 
 Litter is photographed and tagged in the field using [OpenLitterMap](https://openlittermap.com) (OLM). This repository pulls those records from the OLM API, reshapes them for local use, and publishes them as an interactive web map. The goal is evidence that local residents, environmental stewardship groups, and City staff can actually use: where litter concentrates, what it is, and how that changes over time.
 
-*Last updated: September 24, 2026*
+*Last updated: September 25, 2026*
 
 ---
 
@@ -188,6 +188,7 @@ Key design decisions, so the reasoning isn't lost.
 | 2026-09 | Three-level layer tree: Group → Subgroup → Layer | Some topics (like straws or drinks) need a middle level; others don't |
 | 2026-09 | Map counts are items, not photos | One photo can hold many items; photo counts go in the audit |
 | 2026-09 | Stream columns from the first schema are treated as proof of concept | They'll be rebuilt properly in the municipal stream review |
+| 2026-09-24 | An incomplete or empty fetch fails the sync instead of publishing partial data | A 200-page cap had silently cut the map to 1,600 photos; a failed run leaves the last good data live |
 
 ---
 
@@ -213,8 +214,8 @@ The map could then offer a "view as" switch between these lenses. This stage inc
 
 ### Hardening (ongoing)
 
-- **Protect the published data from partial runs.** Currently, if the API fails partway through, the pipeline keeps the photos fetched so far and can publish an incomplete dataset. It should instead keep the previous file.
-- Add retries with increasing wait times for page requests, not just login.
+- ✅ **Protect the published data from partial runs.** Done 2026-09-24: if the API fails partway through, the run stops before writing any files and the map keeps the previous data. The photo limit was also raised from 1,600 to 16,000.
+- Add retries with increasing wait times for page requests, not just login (next).
 - Write the GeoJSON atomically, so an interrupted run can't leave a half-written file.
 - Add automated tests for tag parsing and crosswalk matching.
 - Validate coordinates and the GeoJSON structure before publishing.

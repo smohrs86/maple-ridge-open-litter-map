@@ -17,13 +17,11 @@ OLM v3 API → `scripts/sync_data.py` on GitHub Actions (`.github/workflows/sync
 - Stage 2 (the crosswalk engine and layer tree map) is specified in README.md. The README's matching rules, tagging protocol, and decision log are the spec. Follow them, and flag any conflict.
 
 ## Current task
-Fix the 1,600-photo cap in `scripts/sync_data.py`.
-- **Problem:** `max_safety_pages = 200` and OLM returns 8 photos per page, so the fetch stops at 1,600 photos and publishes them. The oldest photos drop off the map as new ones are added. The data had 2,168 points on 2026-09-18; every sync since 2026-09-19 has had exactly 1,600. A sync on 2026-09-19 also published a partial fetch of 1,472.
-- **Fix (planned, tested against a mock API in a Claude.ai chat):**
-  - `fetch_all_photos` returns `(photos, complete)`. `complete` is True only when an empty page is reached. An HTTP error, a network error, or hitting the cap returns False.
-  - Raise `max_safety_pages` to 2000 (up to 16,000 photos).
-  - In `fetch_and_build_geojson`, if the fetch is not complete or returned 0 photos, print an error and `sys.exit(1)` before writing any files. The workflow then stops before its commit step, so the live map keeps its last good data.
-- **Next after this:** retries with increasing wait times for page requests.
+Add retries with increasing wait times for page requests in `fetch_all_photos` (`scripts/sync_data.py`).
+- **Why:** since the cap fix, one failed page request fails the whole sync. The live map stays safe, but that 12-hour run is wasted.
+- **Plan:** up to 3 tries per page, waiting 2s, 4s, then 8s. Retry on network errors, HTTP 429, and HTTP 5xx. Don't retry other HTTP errors (401, 404), since retrying won't help. If every try fails, still return `complete=False` so the safety guard stops the run. Test against a mock API: a page that fails twice then works, and a page that always fails.
+
+**Done: the 1,600-photo cap fix** (commit `96943f2`, 2026-09-24). `fetch_all_photos` returns `(photos, complete)`, and `complete` is True only when an empty page is reached. `max_safety_pages` is 2000 (up to 16,000 photos). `fetch_and_build_geojson` exits with code 1 before writing any files if the fetch is incomplete or empty, so the workflow skips its commit and the live map keeps its last good data. The next workflow run brought the map from 1,600 to 2,491 points.
 
 ## How we work
 - Always `git pull` before starting. The GitHub Actions bot commits new data every 12 hours.
