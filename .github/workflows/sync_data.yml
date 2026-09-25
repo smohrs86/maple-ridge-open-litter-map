@@ -45,5 +45,7 @@ jobs:
             echo "[INFO] No changes detected in GeoJSON datasets. Skipping commit."
           else
             git commit -m "chore(data): auto-update canonical litter.geojson datasets [skip ci]"
+            # main may have moved while the sync ran (e.g. a doc push); merge those commits in first
+            git pull --rebase origin main
             git push
           fi
