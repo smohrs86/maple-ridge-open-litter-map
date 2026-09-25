@@ -160,7 +160,8 @@ def fetch_all_photos(token):
     
     all_photos = []
     current_page = 1
-    max_safety_pages = 200  # Hard circuit breaker against infinite loops
+    max_safety_pages = 2000  # Hard circuit breaker against infinite loops (8 photos/page = 16,000 photos)
+    complete = False  # True only when an empty page confirms we reached the end
 
     while current_page <= max_safety_pages:
         params = {"page": current_page}
@@ -185,6 +186,7 @@ def fetch_all_photos(token):
             # Page-Until-Empty Termination Check
             if not photos_page:
                 print(f"[INFO] Page {current_page} returned 0 records. Reached end of dataset.")
+                complete = True
                 break
 
             all_photos.extend(photos_page)
@@ -200,7 +202,7 @@ def fetch_all_photos(token):
     if current_page > max_safety_pages:
         print(f"[WARN] Circuit breaker triggered at max safety limit ({max_safety_pages} pages).")
 
-    return all_photos
+    return all_photos, complete
 
 
 def fetch_and_build_geojson():
@@ -212,9 +214,15 @@ def fetch_and_build_geojson():
         sys.exit(1)
 
     token = get_auth_token(email, password)
-    raw_photos = fetch_all_photos(token)
-    
+    raw_photos, complete = fetch_all_photos(token)
+
     print(f"\n[DIAGNOSTIC] Total raw photo records fetched from API: {len(raw_photos)}")
+
+    # Never overwrite the live data with a partial or empty fetch. Exiting non-zero
+    # stops the workflow before its commit step, so the map keeps its last good data.
+    if not complete or not raw_photos:
+        print("[CRITICAL ERROR] Fetch was incomplete or returned 0 photos. No files were written.")
+        sys.exit(1)
 
     features = []
     for photo in raw_photos:
