@@ -152,6 +152,35 @@ def get_auth_token(email, password, retries=2, delay=3):
     sys.exit(1)
 
 
+def get_page_with_retries(headers, params, retries=3, base_delay=2):
+    """GET one page of photos. Returns the response, or None if it could not be fetched.
+
+    Retries on network errors, HTTP 429 (rate limited) and HTTP 5xx (server trouble),
+    waiting base_delay * 2^n seconds between tries (2s, 4s, 8s). Other HTTP errors
+    (401, 404, ...) will not fix themselves, so they are not retried.
+    """
+    page = params["page"]
+    for attempt in range(retries + 1):
+        try:
+            response = requests.get(PHOTOS_URL, headers=headers, params=params, timeout=30)
+            if response.status_code == 200:
+                return response
+            if response.status_code != 429 and response.status_code < 500:
+                print(f"[ERROR] HTTP {response.status_code} received on page {page}. Not retrying.")
+                return None
+            print(f"[WARN] HTTP {response.status_code} on page {page} (attempt {attempt + 1} of {retries + 1}).")
+        except requests.RequestException as exc:
+            print(f"[WARN] Network exception on page {page} (attempt {attempt + 1} of {retries + 1}): {exc}")
+
+        if attempt < retries:
+            wait = base_delay * (2 ** attempt)
+            print(f"[INFO] Waiting {wait}s before retrying page {page}...")
+            time.sleep(wait)
+
+    print(f"[ERROR] Page {page} failed after {retries + 1} attempts.")
+    return None
+
+
 def fetch_all_photos(token):
     headers = {
         "Authorization": f"Bearer {token}",
@@ -168,11 +197,11 @@ def fetch_all_photos(token):
         print(f"[INFO] Fetching page {current_page} from {PHOTOS_URL}...")
         
         try:
-            response = requests.get(PHOTOS_URL, headers=headers, params=params, timeout=30)
-            if response.status_code != 200:
-                print(f"[ERROR] HTTP {response.status_code} received on page {current_page}. Terminating fetch.")
+            response = get_page_with_retries(headers, params)
+            if response is None:
+                print(f"[ERROR] Giving up on page {current_page}. Terminating fetch.")
                 break
-                
+
             data = response.json()
             
             # Extract photo records list regardless of response wrapper
