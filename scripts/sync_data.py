@@ -116,7 +116,7 @@ def build_photo_properties(photo):
         for entry in summary.get("tags", []):
             formatted_tags.extend(resolve_summary_format(entry, keys))
 
-    groups = list({classify_tag_group(tag) for tag in formatted_tags}) or ["litter"]
+    groups = sorted({classify_tag_group(tag) for tag in formatted_tags}) or ["litter"]
 
     return {
         "id": photo.get("id"),
