@@ -69535,8 +69535,8 @@
         ],
         "groups": [
           "litter",
-          "substances",
-          "pet_waste"
+          "pet_waste",
+          "substances"
         ],
         "has_litter": true,
         "has_pet_waste": true,
