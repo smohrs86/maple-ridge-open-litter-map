@@ -6,6 +6,122 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
+          -122.56042480469,
+          49.206443786621
+        ]
+      },
+      "properties": {
+        "id": 554589,
+        "datetime": "2026-09-23T21:50:38.000000Z",
+        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/09/23/Sm6UdUJgd6NqhRxyx7SkGefWUtHcqKvWThqNyew5.jpg",
+        "tags": [
+          {
+            "type": "standard",
+            "category": "pets",
+            "item": "dogshit_in_bag",
+            "quantity": 1
+          }
+        ],
+        "groups": [
+          "pet_waste"
+        ],
+        "has_litter": false,
+        "has_pet_waste": true,
+        "has_substances": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.56128692627,
+          49.206737518311
+        ]
+      },
+      "properties": {
+        "id": 554588,
+        "datetime": "2026-09-23T21:53:56.000000Z",
+        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/09/23/G71YjpkJWWUJqNh8wIFtZLSAFCUEaRMHEqGbsxDj.jpg",
+        "tags": [
+          {
+            "type": "standard",
+            "category": "pets",
+            "item": "dogshit",
+            "quantity": 1
+          }
+        ],
+        "groups": [
+          "pet_waste"
+        ],
+        "has_litter": false,
+        "has_pet_waste": true,
+        "has_substances": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.56128692627,
+          49.207656860352
+        ]
+      },
+      "properties": {
+        "id": 554587,
+        "datetime": "2026-09-23T21:55:24.000000Z",
+        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/09/23/dilmzAJwx21pC6holSStas7kCTrFBXLbR2d2gHYL.jpg",
+        "tags": [
+          {
+            "type": "standard",
+            "category": "pets",
+            "item": "dogshit",
+            "quantity": 1
+          }
+        ],
+        "groups": [
+          "pet_waste"
+        ],
+        "has_litter": false,
+        "has_pet_waste": true,
+        "has_substances": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.55945587158,
+          49.205947875977
+        ]
+      },
+      "properties": {
+        "id": 554586,
+        "datetime": "2026-09-24T17:00:36.000000Z",
+        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/09/24/Mvv8IxyhGQMbjkev1EGJVhiNErp4K7hNk0sF4i2b.jpg",
+        "tags": [
+          {
+            "type": "standard",
+            "category": "pets",
+            "item": "dogshit",
+            "quantity": 1
+          }
+        ],
+        "groups": [
+          "pet_waste"
+        ],
+        "has_litter": false,
+        "has_pet_waste": true,
+        "has_substances": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
           -122.55995178223,
           49.205867767334
         ]
@@ -16163,8 +16279,8 @@
           }
         ],
         "groups": [
-          "litter",
-          "pet_waste"
+          "pet_waste",
+          "litter"
         ],
         "has_litter": true,
         "has_pet_waste": true,
@@ -16361,8 +16477,8 @@
           }
         ],
         "groups": [
-          "litter",
-          "pet_waste"
+          "pet_waste",
+          "litter"
         ],
         "has_litter": true,
         "has_pet_waste": true,
@@ -56521,146 +56637,6 @@
         "id": 547106,
         "datetime": "2026-07-07T01:57:14.000000Z",
         "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/07/07/tIrRrp4Z31n9bCnJPvJseqJp9T1OcozzmRX68zKt.jpg",
-        "tags": [
-          {
-            "type": "standard",
-            "category": "smoking",
-            "item": "butts",
-            "quantity": 1
-          }
-        ],
-        "groups": [
-          "substances"
-        ],
-        "has_litter": false,
-        "has_pet_waste": false,
-        "has_substances": true
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -122.55690002441,
-          49.210311889648
-        ]
-      },
-      "properties": {
-        "id": 547105,
-        "datetime": "2026-07-07T01:57:26.000000Z",
-        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/07/07/WBScK9NzXrUrOYVyDHmOTjFoyRQnfsCWKazD7fcA.jpg",
-        "tags": [
-          {
-            "type": "standard",
-            "category": "smoking",
-            "item": "butts",
-            "quantity": 1
-          }
-        ],
-        "groups": [
-          "substances"
-        ],
-        "has_litter": false,
-        "has_pet_waste": false,
-        "has_substances": true
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -122.55702972412,
-          49.210655212402
-        ]
-      },
-      "properties": {
-        "id": 547104,
-        "datetime": "2026-07-07T01:57:49.000000Z",
-        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/07/07/Lp5jHdQbjyEr128rtgwUdmBjdPcPb4PvKsT3V8DJ.jpg",
-        "tags": [
-          {
-            "type": "standard",
-            "category": "food",
-            "item": "wrapper",
-            "quantity": 1
-          },
-          {
-            "type": "material",
-            "category": "material",
-            "item": "foil",
-            "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "wrapper"
-          },
-          {
-            "type": "material",
-            "category": "material",
-            "item": "plastic",
-            "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "wrapper"
-          }
-        ],
-        "groups": [
-          "litter"
-        ],
-        "has_litter": true,
-        "has_pet_waste": false,
-        "has_substances": false
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -122.55702972412,
-          49.210655212402
-        ]
-      },
-      "properties": {
-        "id": 547103,
-        "datetime": "2026-07-07T01:58:49.000000Z",
-        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/07/07/LW9bv7m8Vi4zSjMu1IYNZdnrAN03c5h29RkVbpvo.jpg",
-        "tags": [
-          {
-            "type": "standard",
-            "category": "other",
-            "item": "other",
-            "quantity": 1
-          },
-          {
-            "type": "material",
-            "category": "material",
-            "item": "wood",
-            "quantity": 1,
-            "parent_category": "other",
-            "parent_item": "other"
-          }
-        ],
-        "groups": [
-          "litter"
-        ],
-        "has_litter": true,
-        "has_pet_waste": false,
-        "has_substances": false
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -122.55702972412,
-          49.210655212402
-        ]
-      },
-      "properties": {
-        "id": 547102,
-        "datetime": "2026-07-07T01:58:54.000000Z",
-        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/07/07/4ds6AJrblQz5qZVIXyHVlYOYnb67APtbExFqYpBF.jpg",
         "tags": [
           {
             "type": "standard",
