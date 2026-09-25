@@ -17,9 +17,13 @@ OLM v3 API → `scripts/sync_data.py` on GitHub Actions (`.github/workflows/sync
 - Stage 2 (the crosswalk engine and layer tree map) is specified in README.md. The README's matching rules, tagging protocol, and decision log are the spec. Follow them, and flag any conflict.
 
 ## Current task
-Add retries with increasing wait times for page requests in `fetch_all_photos` (`scripts/sync_data.py`).
-- **Why:** since the cap fix, one failed page request fails the whole sync. The live map stays safe, but that 12-hour run is wasted.
-- **Plan:** up to 3 tries per page, waiting 2s, 4s, then 8s. Retry on network errors, HTTP 429, and HTTP 5xx. Don't retry other HTTP errors (401, 404), since retrying won't help. If every try fails, still return `complete=False` so the safety guard stops the run. Test against a mock API: a page that fails twice then works, and a page that always fails.
+None chosen yet. Ask me which to do next. Candidates, from the README's Hardening list and Stage 2:
+- Write the GeoJSON atomically, so an interrupted run can't leave a half-written file.
+- Add automated tests for tag parsing and (later) crosswalk matching.
+- Validate coordinates and the GeoJSON structure before publishing.
+- Stage 2: finish the crosswalk, then build the crosswalk engine in `scripts/sync_data.py`.
+
+**Done: page-request retries** (commit `367f445`, 2026-09-24). `get_page_with_retries` in `scripts/sync_data.py` makes up to 4 attempts per page (the first try plus 3 retries), waiting 2s, 4s, then 8s. It retries on network errors, HTTP 429, and HTTP 5xx, and does not retry other HTTP errors (401, 404). If every attempt fails, `fetch_all_photos` returns `complete=False` and the safety guard stops the run. Tested against a mock API; a real workflow run still needs to be checked.
 
 **Done: the 1,600-photo cap fix** (commit `96943f2`, 2026-09-24). `fetch_all_photos` returns `(photos, complete)`, and `complete` is True only when an empty page is reached. `max_safety_pages` is 2000 (up to 16,000 photos). `fetch_and_build_geojson` exits with code 1 before writing any files if the fetch is incomplete or empty, so the workflow skips its commit and the live map keeps its last good data. The next workflow run brought the map from 1,600 to 2,491 points.
 
