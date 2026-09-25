@@ -2721,8 +2721,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "pet_waste"
+          "pet_waste",
+          "substances"
         ],
         "has_litter": false,
         "has_pet_waste": true,
@@ -19955,8 +19955,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "pet_waste"
+          "pet_waste",
+          "substances"
         ],
         "has_litter": false,
         "has_pet_waste": true,
@@ -32228,8 +32228,8 @@
           }
         ],
         "groups": [
-          "substances",
-          "pet_waste"
+          "pet_waste",
+          "substances"
         ],
         "has_litter": false,
         "has_pet_waste": true,
