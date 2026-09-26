@@ -6,6 +6,93 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
+          -122.56134856492,
+          49.210171834556
+        ]
+      },
+      "properties": {
+        "id": 554597,
+        "datetime": "2026-09-26T00:02:24.000000Z",
+        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/09/26/BhDOanSys25iNDTned9kGNaddia5mQwyNYMAM6E6.jpg",
+        "tags": [
+          {
+            "type": "standard",
+            "category": "dumping",
+            "item": "dumping",
+            "quantity": 1
+          }
+        ],
+        "groups": [
+          "litter"
+        ],
+        "has_litter": true,
+        "has_pet_waste": false,
+        "has_substances": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.56138217636,
+          49.210082525389
+        ]
+      },
+      "properties": {
+        "id": 554596,
+        "datetime": "2026-09-26T00:01:48.000000Z",
+        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/09/26/Qb53jQ01iKeGynvQZajRT79gll0xqoIgPG83UFs9.jpg",
+        "tags": [
+          {
+            "type": "standard",
+            "category": "dumping",
+            "item": "dumping",
+            "quantity": 1
+          }
+        ],
+        "groups": [
+          "litter"
+        ],
+        "has_litter": true,
+        "has_pet_waste": false,
+        "has_substances": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.56122589111,
+          49.210216522217
+        ]
+      },
+      "properties": {
+        "id": 554595,
+        "datetime": "2026-09-25T23:52:59.000000Z",
+        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/09/25/34cLCojDAshlk4eeHi0gn0KgDiUoMNWahQQCjz5x.jpg",
+        "tags": [
+          {
+            "type": "standard",
+            "category": "dumping",
+            "item": "dumping",
+            "quantity": 1
+          }
+        ],
+        "groups": [
+          "litter"
+        ],
+        "has_litter": true,
+        "has_pet_waste": false,
+        "has_substances": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
           -122.56042480469,
           49.206443786621
         ]
