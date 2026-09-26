@@ -47,6 +47,7 @@ Not part of the proof of concept: GIS features, municipal streams, a license, an
 Newest first, one line per change. Claude updates this whenever it updates the README.
 
 - **2026-09-26:** README now lists exactly which fields the pipeline publishes per point.
+- **2026-09-26:** Draft method for batch-fixing OLM tags through the API, with a review spreadsheet and a read-only raw export script: [docs/olm-batch-review-method.md](docs/olm-batch-review-method.md). Nothing has been written to OLM yet.
 - **2026-09-25:** Working method recorded: work directly on `main`, test locally, no branches or staging site. Audit and reporting are the top priority for the engine build.
 - **2026-09-25:** Crosswalk finished and re-exported after review; municipal stream columns removed. Pipeline now logs in again on a rejected token, keeps groups in a stable order, rebases before pushing, and keeps OLM's object type. Tagging protocol, decision log, and hardening list moved to `docs/`. Proof-of-concept criteria added.
 - **2026-09-24:** Fixed the photo cap that had cut the map short; an incomplete fetch now fails the sync instead of publishing partial data. Page requests retry with increasing waits.
@@ -236,7 +237,7 @@ Ongoing reliability work is listed in [docs/hardening.md](docs/hardening.md).
 ├── data/litter.geojson               Published dataset
 ├── public/data/litter.geojson        Copy of the dataset for hosting
 ├── index.html                        The web map
-├── docs/                             Tagging protocol, decision log, hardening list
+├── docs/                             Tagging protocol, decision log, hardening list, batch review method
 └── config/crosswalk.csv              The crosswalk, exported from the spreadsheet
 ```
 
