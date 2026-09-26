@@ -238,7 +238,7 @@ Once the layer tree works and the legacy data is conformed, add features that ma
 
 ### Stage 4 — Municipal waste streams (later)
 
-Communicate the data in municipal terms, built one stream at a time on top of the finished MROLM layer tree. The two systems already used as guides for the crosswalk are the City of Maple Ridge's waste classifications (COMR) and the City of Vancouver litter audit categories (COV). The map could then offer a "view as" switch between these lenses. The draft in `ReadMe/Local Schema Rationale.md` was an early proof of concept and will be revised in this stage.
+Communicate the data in municipal terms, built one stream at a time on top of the finished MROLM layer tree. The two systems already used as guides for the crosswalk are the City of Maple Ridge's waste classifications (COMR) and the City of Vancouver litter audit categories (COV). The map could then offer a "view as" switch between these lenses.
 
 ### Hardening (ongoing)
 
@@ -265,7 +265,6 @@ Communicate the data in municipal terms, built one stream at a time on top of th
 ├── data/litter.geojson               Published dataset
 ├── public/data/litter.geojson        Copy of the dataset for hosting
 ├── index.html                        The web map
-├── ReadMe/Local Schema Rationale.md  Early schema draft (proof of concept)
 └── config/crosswalk.csv              The crosswalk, exported from the spreadsheet
 ```
 
