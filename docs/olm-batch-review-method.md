@@ -2,7 +2,7 @@
 
 A reusable method for reviewing and correcting the tags on photos you have already uploaded and had verified in OpenLitterMap (OLM), in bulk, without using the website or app. Written so that a person, or another AI given this file, can follow it without any other context.
 
-**Status: draft, 2026-09-26.** The raw export script exists and has been run (read-only). Nothing has been written to OLM yet. Every claim is marked:
+**Status: draft, 2026-09-26.** The raw export script and the review workbook builder exist and have been run (both offline or read-only). Nothing has been written to OLM yet. Every claim is marked:
 - **[source]** read from OLM's public code (`OpenLitterMap/openlittermap-web`, `master` branch, read 2026-09-26). Production could differ.
 - **[tested]** confirmed against a real account. Read-only export results are marked **[tested: export]**. Update this file after each test.
 
@@ -26,7 +26,7 @@ Legacy tags in OLM can be inconsistent (an object tagged with the wrong key, a c
 ## The method
 
 1. **Export (read-only).** `scripts/export_raw_olm.py` reads every photo and OLM's tag list into `review/raw/` (untracked, owner-only). This is the backup. It also prints counts only (verified values, `picked_up` values) that are safe to share. Credentials come from the `OLM_EMAIL` / `OLM_PASSWORD` environment variables, or else a local, untracked, owner-only credentials file (email on line 1, password on line 2).
-2. **Fill the review spreadsheet.** One row per tagged object (the `Objects` sheet), plus one row per photo (`Photo_Batch`). *Script not written yet.*
+2. **Build the review workbook.** `scripts/build_review_workbook.py` reads the newest raw export and `config/crosswalk.csv` (no login, no network) and writes a new dated workbook in `review/`: one row per tagged object (`Objects`), one row per photo (`Photo_Batch`), dropdown values (`Lists`) and a `Guide`. Each object gets a status (OK, REVIEW, RECLASS, UNCLASS, ORPHAN TAG, UNMAPPED) from the matching rules in `scripts/crosswalk.py`, which follow the README's matching rules and have unit tests (`python3 -m unittest discover -s tests`). It never overwrites an existing workbook. After a fresh export, rebuild with `--carry-from <previous workbook>` to keep your edits; they are matched by OLM's tag ID, and any edit whose tag no longer exists is reported, not dropped silently. **[tested: export]** The first build reproduced the maintainer's earlier snapshot exactly for total objects, OK, orphan tags, UNMAPPED and UNCLASS. REVIEW and RECLASS differed by 22, which is the count of `alcohol/packaging` objects; by the README's rules they are REVIEW because their crosswalk row is included and carries a fix note.
 3. **Review one group at a time.** Filter by current OLM key (and custom tag) to isolate a group, look at the photos, and type the fix in the `Change_to_…` cells.
 4. **Dry run.** A script builds each affected photo's full replacement tag list, shows before and after, and sends nothing. *Not written yet.*
 5. **One-photo test.** Send one replace on a low-stakes photo, read it back, and check that the tags match and that the photo is still shown publicly. Because the list's `verified` read 0 for every photo in the first export, compare `verified` before and after, and also confirm visibility another way (for example the public map). If anything is lost or hidden, stop and restore from the backup. Record the result here and mark the claims above **[tested]**.
