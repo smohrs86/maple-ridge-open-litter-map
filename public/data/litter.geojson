@@ -6,93 +6,6 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -122.56134856492,
-          49.210171834556
-        ]
-      },
-      "properties": {
-        "id": 554597,
-        "datetime": "2026-09-26T00:02:24.000000Z",
-        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/09/26/BhDOanSys25iNDTned9kGNaddia5mQwyNYMAM6E6.jpg",
-        "tags": [
-          {
-            "type": "standard",
-            "category": "dumping",
-            "item": "dumping",
-            "quantity": 1
-          }
-        ],
-        "groups": [
-          "litter"
-        ],
-        "has_litter": true,
-        "has_pet_waste": false,
-        "has_substances": false
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -122.56138217636,
-          49.210082525389
-        ]
-      },
-      "properties": {
-        "id": 554596,
-        "datetime": "2026-09-26T00:01:48.000000Z",
-        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/09/26/Qb53jQ01iKeGynvQZajRT79gll0xqoIgPG83UFs9.jpg",
-        "tags": [
-          {
-            "type": "standard",
-            "category": "dumping",
-            "item": "dumping",
-            "quantity": 1
-          }
-        ],
-        "groups": [
-          "litter"
-        ],
-        "has_litter": true,
-        "has_pet_waste": false,
-        "has_substances": false
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -122.56122589111,
-          49.210216522217
-        ]
-      },
-      "properties": {
-        "id": 554595,
-        "datetime": "2026-09-25T23:52:59.000000Z",
-        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/09/25/34cLCojDAshlk4eeHi0gn0KgDiUoMNWahQQCjz5x.jpg",
-        "tags": [
-          {
-            "type": "standard",
-            "category": "dumping",
-            "item": "dumping",
-            "quantity": 1
-          }
-        ],
-        "groups": [
-          "litter"
-        ],
-        "has_litter": true,
-        "has_pet_waste": false,
-        "has_substances": false
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
           -122.56042480469,
           49.206443786621
         ]
@@ -1687,7 +1600,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "smoothie"
           },
           {
             "type": "material",
@@ -3017,7 +2931,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "soda"
           },
           {
             "type": "material",
@@ -3840,7 +3755,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "unknown"
           },
           {
             "type": "material",
@@ -4458,7 +4374,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "tea"
           },
           {
             "type": "brand",
@@ -5968,7 +5885,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "smoothie"
           },
           {
             "type": "material",
@@ -11030,7 +10948,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "bottle",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "water"
           },
           {
             "type": "material",
@@ -11112,7 +11031,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "soda"
           },
           {
             "type": "brand",
@@ -13226,7 +13146,8 @@
             "type": "standard",
             "category": "alcohol",
             "item": "can",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "unknown"
           }
         ],
         "groups": [
@@ -13482,7 +13403,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "can",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "soda"
           },
           {
             "type": "brand",
@@ -13519,7 +13441,8 @@
             "type": "standard",
             "category": "smoking",
             "item": "vape",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "disposable"
           },
           {
             "type": "custom_tag",
@@ -13744,7 +13667,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "soda"
           }
         ],
         "groups": [
@@ -14362,7 +14286,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "bottle",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "juice"
           }
         ],
         "groups": [
@@ -15831,7 +15756,8 @@
             "type": "standard",
             "category": "smoking",
             "item": "vape",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "disposable"
           },
           {
             "type": "custom_tag",
@@ -15963,7 +15889,8 @@
             "type": "standard",
             "category": "dumping",
             "item": "dumping",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "small"
           },
           {
             "type": "material",
@@ -16346,7 +16273,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "can",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "soda"
           },
           {
             "type": "material",
@@ -16478,7 +16406,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "bottle",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "water"
           }
         ],
         "groups": [
@@ -17335,7 +17264,8 @@
             "type": "standard",
             "category": "electronics",
             "item": "battery",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "alkaline"
           }
         ],
         "groups": [
@@ -19931,7 +19861,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "soda"
           },
           {
             "type": "standard",
@@ -20460,7 +20391,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "soda"
           }
         ],
         "groups": [
@@ -21714,7 +21646,8 @@
             "type": "standard",
             "category": "alcohol",
             "item": "can",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "spirits"
           }
         ],
         "groups": [
@@ -21809,7 +21742,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "bottle",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "water"
           }
         ],
         "groups": [
@@ -22847,7 +22781,8 @@
             "type": "standard",
             "category": "alcohol",
             "item": "can",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "spirits"
           }
         ],
         "groups": [
@@ -23414,7 +23349,8 @@
             "type": "standard",
             "category": "dumping",
             "item": "dumping",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "small"
           },
           {
             "type": "material",
@@ -23773,7 +23709,8 @@
             "type": "standard",
             "category": "electronics",
             "item": "battery",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "alkaline"
           },
           {
             "type": "brand",
@@ -24125,7 +24062,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "bottle",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "water"
           },
           {
             "type": "custom_tag",
@@ -24713,7 +24651,8 @@
             "type": "standard",
             "category": "smoking",
             "item": "box",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "cigarette"
           }
         ],
         "groups": [
@@ -25162,7 +25101,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "soda"
           },
           {
             "type": "brand",
@@ -25385,7 +25325,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "soda"
           },
           {
             "type": "brand",
@@ -25952,7 +25893,8 @@
             "type": "standard",
             "category": "alcohol",
             "item": "can",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "spirits"
           },
           {
             "type": "material",
@@ -28531,7 +28473,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "smoothie"
           },
           {
             "type": "standard",
@@ -28805,7 +28748,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "smoothie"
           }
         ],
         "groups": [
@@ -29715,7 +29659,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "smoothie"
           }
         ],
         "groups": [
@@ -31140,7 +31085,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "soda"
           },
           {
             "type": "standard",
@@ -31686,7 +31632,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "can",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "soda"
           }
         ],
         "groups": [
@@ -32400,7 +32347,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "bottle",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "water"
           }
         ],
         "groups": [
@@ -32653,7 +32601,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "smoothie"
           }
         ],
         "groups": [
@@ -32731,7 +32680,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "smoothie"
           }
         ],
         "groups": [
@@ -32848,7 +32798,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "smoothie"
           },
           {
             "type": "standard",
@@ -33138,7 +33089,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "bottle",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "energy"
           }
         ],
         "groups": [
@@ -35229,7 +35181,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "can",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "soda"
           },
           {
             "type": "material",
@@ -38004,7 +37957,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "soda"
           },
           {
             "type": "standard",
@@ -38765,7 +38719,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "unknown"
           },
           {
             "type": "material",
@@ -41880,7 +41835,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "smoothie"
           },
           {
             "type": "material",
@@ -46648,7 +46604,8 @@
             "type": "standard",
             "category": "alcohol",
             "item": "can",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "cider"
           },
           {
             "type": "material",
@@ -49838,7 +49795,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "bottle",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "energy"
           }
         ],
         "groups": [
@@ -50559,7 +50517,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "bottle",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "energy"
           }
         ],
         "groups": [
@@ -50909,7 +50868,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "soda"
           },
           {
             "type": "material",
@@ -52568,7 +52528,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "smoothie"
           },
           {
             "type": "material",
@@ -52792,7 +52753,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "soda"
           },
           {
             "type": "standard",
@@ -55022,7 +54984,8 @@
             "type": "standard",
             "category": "alcohol",
             "item": "can",
-            "quantity": 2
+            "quantity": 2,
+            "object_type": "spirits"
           },
           {
             "type": "material",
@@ -56525,7 +56488,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 2
+            "quantity": 2,
+            "object_type": "soda"
           }
         ],
         "groups": [
@@ -57299,7 +57263,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "soda"
           },
           {
             "type": "standard",
@@ -58622,7 +58587,8 @@
             "type": "standard",
             "category": "alcohol",
             "item": "can",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "cider"
           }
         ],
         "groups": [
@@ -59233,7 +59199,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "bottle",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "soda"
           },
           {
             "type": "material",
@@ -59650,7 +59617,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "bottle",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "sports"
           }
         ],
         "groups": [
@@ -61627,7 +61595,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "smoothie"
           },
           {
             "type": "standard",
@@ -61706,7 +61675,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "bottle",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "sports"
           },
           {
             "type": "material",
@@ -61744,7 +61714,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "carton",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "juice"
           }
         ],
         "groups": [
@@ -61867,7 +61838,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "can",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "sparkling_water"
           },
           {
             "type": "material",
@@ -62924,7 +62896,8 @@
             "type": "standard",
             "category": "dumping",
             "item": "dumping",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "small"
           },
           {
             "type": "custom_tag",
@@ -63729,7 +63702,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "can",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "soda"
           }
         ],
         "groups": [
@@ -63758,7 +63732,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "can",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "energy"
           }
         ],
         "groups": [
@@ -65426,7 +65401,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "smoothie"
           },
           {
             "type": "material",
@@ -66254,7 +66230,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "soda"
           }
         ],
         "groups": [
@@ -66951,7 +66928,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "can",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "soda"
           },
           {
             "type": "custom_tag",
@@ -67604,7 +67582,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "bottle",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "water"
           },
           {
             "type": "material",
@@ -67676,7 +67655,8 @@
             "type": "standard",
             "category": "dumping",
             "item": "dumping",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "small"
           },
           {
             "type": "material",
@@ -67721,7 +67701,8 @@
             "type": "standard",
             "category": "smoking",
             "item": "box",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "cigarette"
           }
         ],
         "groups": [
@@ -68246,7 +68227,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "soda"
           },
           {
             "type": "material",
@@ -68790,7 +68772,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "bottle",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "milk"
           },
           {
             "type": "material",
@@ -70352,7 +70335,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "soda"
           },
           {
             "type": "brand",
@@ -70403,7 +70387,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "soda"
           },
           {
             "type": "material",
@@ -71341,7 +71326,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "soda"
           }
         ],
         "groups": [
@@ -72111,7 +72097,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 2
+            "quantity": 2,
+            "object_type": "smoothie"
           },
           {
             "type": "material",
@@ -72162,7 +72149,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "bottle",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "water"
           },
           {
             "type": "material",
@@ -73200,7 +73188,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "bottle",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "unknown"
           },
           {
             "type": "material",
@@ -73433,7 +73422,8 @@
             "type": "standard",
             "category": "dumping",
             "item": "dumping",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "small"
           },
           {
             "type": "material",
@@ -74674,7 +74664,8 @@
             "type": "standard",
             "category": "smoking",
             "item": "box",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "cigarette"
           },
           {
             "type": "material",
@@ -77334,7 +77325,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "soda"
           },
           {
             "type": "material",
@@ -77379,7 +77371,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "smoothie"
           },
           {
             "type": "material",
@@ -77522,7 +77515,8 @@
             "type": "standard",
             "category": "alcohol",
             "item": "can",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "spirits"
           },
           {
             "type": "material",
@@ -78136,7 +78130,8 @@
             "type": "standard",
             "category": "smoking",
             "item": "box",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "cigarette"
           },
           {
             "type": "material",
@@ -79038,7 +79033,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "bottle",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "sports"
           },
           {
             "type": "material",
@@ -80791,7 +80787,8 @@
             "type": "standard",
             "category": "dumping",
             "item": "dumping",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "small"
           },
           {
             "type": "material",
@@ -81102,7 +81099,8 @@
             "type": "standard",
             "category": "alcohol",
             "item": "can",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "beer"
           },
           {
             "type": "material",
@@ -83007,7 +83005,8 @@
             "type": "standard",
             "category": "alcohol",
             "item": "can",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "beer"
           },
           {
             "type": "material",
@@ -84283,7 +84282,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "smoothie"
           },
           {
             "type": "material",
@@ -84484,7 +84484,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "smoothie"
           },
           {
             "type": "material",
@@ -84558,7 +84559,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "tea"
           },
           {
             "type": "material",
@@ -85166,7 +85168,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "bottle",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "sports"
           },
           {
             "type": "material",
@@ -85211,7 +85214,8 @@
             "type": "standard",
             "category": "softdrinks",
             "item": "bottle",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "sports"
           },
           {
             "type": "brand",
@@ -85879,7 +85883,8 @@
             "type": "standard",
             "category": "dumping",
             "item": "dumping",
-            "quantity": 4
+            "quantity": 4,
+            "object_type": "medium"
           },
           {
             "type": "custom_tag",
@@ -86778,7 +86783,8 @@
             "type": "standard",
             "category": "dumping",
             "item": "dumping",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "medium"
           },
           {
             "type": "material",
@@ -87164,7 +87170,8 @@
             "type": "standard",
             "category": "alcohol",
             "item": "bottle",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "spirits"
           },
           {
             "type": "material",
