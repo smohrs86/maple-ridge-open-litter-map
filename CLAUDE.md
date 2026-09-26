@@ -17,6 +17,8 @@ OLM v3 API → `scripts/sync_data.py` on GitHub Actions (`.github/workflows/sync
 - Stage 2 (the crosswalk engine and layer tree map) is specified in README.md. The README's matching rules, tagging protocol, and decision log are the spec. Follow them, and flag any conflict.
 
 ## Current task
+Priority order: (a) the engine and layer tree map, then (b) the legacy review and reclass, then (c) GIS features on the map, then (d) municipal streams (COMR and COV). Until (d), don't bring municipal policy, bylaws, or the COV street audit into the work.
+
 Stage 2, in three steps. Do them in order, and don't start step 3 until I say so.
 1. **Crosswalk: done.** Exported to `config/crosswalk.csv` (85 rows: 74 on the map, 11 excluded; 7 groups; re-exported 2026-09-25 after a public-exposure review, with the municipal stream columns and "In my sample" removed, and `alcohol/packaging` now included as Liquor Packaging).
 2. **Crosswalk review: the structure is done, and my legacy tag review is in progress.**
@@ -48,4 +50,3 @@ Other candidates for later, from the README's Hardening list: write the GeoJSON 
 - Never put credentials in any file. For a local test run, I set `OLM_EMAIL` / `OLM_PASSWORD` as environment variables in my own terminal.
 - After a local test run, don't commit the regenerated `data/` or `public/data/` files. Restore them with `git restore data/ public/data/` and let the workflow publish the data.
 - No servers, no paid APIs, no build step: plain Python, HTML, and JS.
-- Verify bylaw and policy citations before they go in anything shared with the City.

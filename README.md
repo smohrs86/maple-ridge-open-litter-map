@@ -2,7 +2,7 @@
 
 **An open citizen-science project that turns litter observations from Maple Ridge, British Columbia into a free, automatically updated public map and a locally meaningful dataset.**
 
-Litter is photographed and tagged in the field using [OpenLitterMap](https://openlittermap.com) (OLM). This repository pulls those records from the OLM API, reshapes them for local use, and publishes them as an interactive web map. The goal is evidence that local residents, environmental stewardship groups, and City staff can actually use: where litter concentrates, what it is, and how that changes over time.
+Litter is photographed and tagged in the field using [OpenLitterMap](https://openlittermap.com) (OLM). This repository pulls those records from the OLM API, reshapes them for local use, and publishes them as an interactive web map. The goal is good open data for citizen science: a consistent, well-documented record of where litter is, what it is, and how that changes over time. The local categories (the crosswalk) were built using the City of Vancouver litter audit and Maple Ridge municipal classifications as guides.
 
 *Last updated: September 25, 2026*
 
@@ -17,7 +17,8 @@ Litter is photographed and tagged in the field using [OpenLitterMap](https://ope
 | Crosswalk logic and layer tree design | ✅ Designed | Exported to `config/crosswalk.csv`: 85 rows, 74 on the map, 7 groups. Structure reviewed and clean |
 | Crosswalk engine (code that applies the crosswalk) | ⬜ Planned | Will read the crosswalk as a CSV file |
 | Layer tree map interface | ⬜ Planned | Expandable Group → Subgroup → Layer checkboxes |
-| Municipal waste stream review | ⬜ Planned | Maple Ridge and Vancouver categories, built one at a time on top of the finished layer tree |
+| GIS features on the map | ⬜ Planned | After the layer tree and the legacy review (Stage 3) |
+| Municipal waste streams | ⬜ Later | Communicating the data in municipal terms, built last (Stage 4) |
 | Cleanup of older tags in OLM | 🟡 In progress | The maintainer is reclassing legacy tags in OLM by hand (roadmap step 4) |
 
 ---
@@ -26,7 +27,7 @@ Litter is photographed and tagged in the field using [OpenLitterMap](https://ope
 
 OpenLitterMap uses one global tagging system for litter everywhere in the world. That's what makes it powerful, but a global category like `other/plastic` or `dumping/dumping` doesn't answer local questions:
 
-- Is illegal dumping in Maple Ridge mostly small household items or large loads?
+- Is dumping in Maple Ridge mostly small household items or large loads?
 - Are single-use regulations (like the move to paper straws) showing up in what's actually found on the ground?
 - Where are hazards like broken glass, vapes, and loose dog waste concentrated near trails and waterways?
 
@@ -168,7 +169,7 @@ These are the tagging conventions used when collecting data for this project. Th
 
 | Situation | How it's tagged |
 |---|---|
-| Household illegal dumping | `dumping/dumping` with a size, measured by the item's longest dimension. **Small:** can be carried away by hand, under 30 cm (e.g. a ladle). **Medium:** can't be carried away but smaller than a fridge or couch, 30–90 cm (e.g. a printer). **Large:** bigger than a full garbage bag, over 90 cm (e.g. an ironing board). Always choose a size; unsized photos land in UNCLASS. |
+| Household dumping | `dumping/dumping` with a size, measured by the item's longest dimension. **Small:** can be carried away by hand, under 30 cm (e.g. a ladle). **Medium:** can't be carried away but smaller than a fridge or couch, 30–90 cm (e.g. a printer). **Large:** bigger than a full garbage bag, over 90 cm (e.g. an ironing board). Always choose a size; unsized photos land in UNCLASS. |
 | Commercial dumping | `dumping/other` |
 | Cigarette butts | `smoking/butts`. OLM allows a maximum of 10 per photo, so large clusters are split across photos taken at the same spot. |
 | Cannabis products | `smoking/packaging` or `smoking/vape` with the custom tag `THC`. Alcohol keys are no longer used for cannabis. |
@@ -195,7 +196,7 @@ Key design decisions, so the reasoning isn't lost.
 |---|---|---|
 | 2026-09 | Classification rules live in a spreadsheet (the crosswalk), not in code | The maintainer can change categories without programming |
 | 2026-09 | Most specific crosswalk row wins; unlisted modifiers flatten to the plain row | Keeps the sheet small while allowing detail where it matters |
-| 2026-09 | Household dumping sizes (small, medium, large) are separate layers | Size changes the response needed, from volunteer pickup to a City truck |
+| 2026-09 | Household dumping sizes (small, medium, large) are separate layers | Small items and large loads are different problems, so they need separate counts |
 | 2026-09 | A permanent `UNCLASS` row catches dumping photos without a size | Nothing is silently lost; it works whatever code OLM uses for "not sure" |
 | 2026-09 | Column `include on map` is the only on/off switch; "local key = OLM key" is a consistency check | Two competing rules would contradict each other |
 | 2026-09 | Audit counts for "not used" and "unmapped" | Data problems become visible numbers instead of silent gaps |
@@ -210,6 +211,7 @@ Key design decisions, so the reasoning isn't lost.
 | 2026-09-25 | The workflow runs `git pull --rebase` before pushing its data commit | A push to `main` during a sync made the bot's push fail and lost that run's data |
 | 2026-09-25 | Each photo's `groups` list is sorted | A set gave a random order every run, causing large pointless data commits |
 | 2026-09-25 | OLM's object type is kept as `object_type` on standard tags, and the crosswalk's "with Secondary Modifier" column matches against it. "Skip / not sure" saves no type and falls to the blank row | Dumping sizes and drink types were being dropped |
+| 2026-09-25 | Build order: crosswalk engine and layer tree map, then legacy review and reclass, then GIS map features, then municipal streams | The review is the biggest human effort and the streams depend on a finished tree and conformed data |
 | 2026-09-25 | Legacy tag review is done per tagged object, and retired, excluded, and orphan tags are reclassed in OLM | Counts are items, not photos, and fixes happen at the source |
 
 ---
@@ -218,21 +220,25 @@ Key design decisions, so the reasoning isn't lost.
 
 ### Stage 2 — Local classification (current)
 
+Priority order: the code that applies the crosswalk and displays the points (steps 2 and 3), then the legacy review and reclass (step 4, which is the largest amount of human effort), then Stage 3, then Stage 4.
+
 1. ✅ **Finish the crosswalk.** Done 2026-09-25: exported to `config/crosswalk.csv`, with structural checks clean and no unmapped tags in the current data.
 2. **Build the crosswalk engine.** Update `scripts/sync_data.py` to read the CSV, apply the matching rules, and write an audit report alongside the GeoJSON.
 3. **Build the layer tree map.** Replace the three fixed checkboxes with the expandable tree, including counts and photo popups.
 4. **Clean up older tags in OLM (in progress).** The maintainer is reclassing tagged objects directly in OLM. A snapshot on 2026-09-25 counted 3,156 tagged objects (4,576 items) on 2,491 photos: 1,646 already matched, 1,438 on keys the crosswalk flags for tag review ("OLM data needs fixes"), 63 on retired or excluded keys, and 9 orphan custom tags, meaning custom tags attached to no object. The aim is for the audit counts to reach zero.
 5. ✅ **Confirm OLM's modifier codes.** Done 2026-09-25: the API sends an object's type as `type` (`new_tags` format) or `type_id` (summary format), and the pipeline keeps it as `object_type`. `small` and `medium` are confirmed in real data; `large` has not appeared yet.
 
-### Stage 3 — Municipal waste streams
+### Stage 3 — GIS features on the map
 
-Map each local layer to three category systems, side by side:
+Once the layer tree works and the legacy data is conformed, add features that make the spatial data easier to read:
 
-- **MROLM**: this project's own local names
-- **COMR**: City of Maple Ridge waste streams
-- **COV**: City of Vancouver litter audit categories, for comparison with an established regional study
+- Heatmaps and clustering for dense collection routes
+- A date slider to show how litter changes over time
+- Richer popups with photo previews and brand information
 
-The map could then offer a "view as" switch between these lenses. This stage includes verifying every bylaw and program reference before it's shared with the City. The draft in `ReadMe/Local Schema Rationale.md` was an early proof of concept and will be revised in this stage.
+### Stage 4 — Municipal waste streams (later)
+
+Communicate the data in municipal terms, built one stream at a time on top of the finished MROLM layer tree. The two systems already used as guides for the crosswalk are the City of Maple Ridge's waste classifications (COMR) and the City of Vancouver litter audit categories (COV). The map could then offer a "view as" switch between these lenses. The draft in `ReadMe/Local Schema Rationale.md` was an early proof of concept and will be revised in this stage.
 
 ### Hardening (ongoing)
 
@@ -247,12 +253,6 @@ The map could then offer a "view as" switch between these lenses. This stage inc
 - Improve map accessibility: keyboard support, screen reader labels, and a text summary of the data.
 - Show clear messages if the basemap or data fails to load.
 - Simplify the two copies of the GeoJSON into one.
-
-### Later ideas
-
-- Heatmaps and clustering for dense collection routes
-- A date slider to show how litter changes over time
-- Richer popups with photo previews and brand information
 
 ---
 
