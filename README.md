@@ -14,10 +14,10 @@ Litter is photographed and tagged in the field using [OpenLitterMap](https://ope
 |---|---|---|
 | Data pipeline (OLM API → GeoJSON) | ✅ Built | Runs automatically every 12 hours |
 | Public web map | ✅ Built | Three basic filters: Litter, Pet Waste, Nicotine/THC/Alcohol |
-| Crosswalk logic and layer tree design | ✅ Designed | Exported to `config/crosswalk.csv`: 85 rows, 73 on the map, 7 groups. Structure reviewed and clean |
+| Crosswalk logic and layer tree design | ✅ Designed | Exported to `config/crosswalk.csv`: 85 rows, 74 on the map, 7 groups. Structure reviewed and clean |
 | Crosswalk engine (code that applies the crosswalk) | ⬜ Planned | Will read the crosswalk as a CSV file |
 | Layer tree map interface | ⬜ Planned | Expandable Group → Subgroup → Layer checkboxes |
-| Municipal waste stream review | ⬜ Planned | Maple Ridge and Vancouver categories, after the crosswalk is complete |
+| Municipal waste stream review | ⬜ Planned | Maple Ridge and Vancouver categories, built one at a time on top of the finished layer tree |
 | Cleanup of older tags in OLM | 🟡 In progress | The maintainer is reclassing legacy tags in OLM by hand (roadmap step 4) |
 
 ---
@@ -88,9 +88,8 @@ The code reads columns **by their header name, not their position**, so columns 
 | MROLM Subgroup | Code | Optional middle level, e.g. `Hot` |
 | MROLM local key | Code | The layer name: the checkbox that holds the data |
 | include on map | Code | `yes` shows the row on the map; `no` sends it to the "not used" count |
-| Layer label (Maple Ridge name), Maple Ridge stream, Flags, Vancouver audit category | Parked | Early proof-of-concept values, to be redesigned in the municipal stream review |
 | low occurance group | Retired | Replaced by the layer tree (see decision log) |
-| In my sample, Your notes, reason, OLM data needs fixes | People | Documentation and to-do notes; ignored by the code |
+| Notes, reason, OLM data needs fixes | People | Documentation and to-do notes; ignored by the code |
 
 ### Matching rules
 
@@ -134,11 +133,11 @@ A photo with several kinds of litter appears in every layer that applies to it. 
 
 ### Current tree (from `config/crosswalk.csv`, 2026-09-25)
 
-Seven groups and 73 layers. Some layers sit directly under a group, with no subgroup.
+Seven groups and 74 layers. Some layers sit directly under a group, with no subgroup.
 
 ```
 Household
-├── Liquor          Liquor Bottle, Liquor Bottle Cap, Liquor Broken Glass, Liquor Can, Liquor Debris
+├── Liquor          Liquor Bottle, Liquor Bottle Cap, Liquor Broken Glass, Liquor Can, Liquor Debris, Liquor Packaging
 └── (no subgroup)   Batteries, Plastic (#4) or Paper Food Bag, Corrugated Cardboard Box, Household Food Can,
                     Food Container - Plastic, Paper, Foam, Food Container Lid, Organic Debris, Plastic Straws,
                     Household Tinfoil, Medical Bandages, Latex / Nitrile Glove, Party Litter,
@@ -182,7 +181,7 @@ These are the tagging conventions used when collecting data for this project. Th
 | Vehicle parts | `vehicles/car_part`, without a material tag, since materials can't be verified in the field. |
 | Out of scope | Civic fixtures and signage (reported to the City instead) and posters, which often name people and could imply wrongdoing unfairly. |
 
-**Retired OLM keys** (not used for new photos; older photos are being reclassified): `alcohol/packaging`, `civic/bags_litter`, `civic/other`, `coffee/straw`, `industrial/pipe`, `other/bags_litter`, `other/poster`, `smoking/box`.
+**Retired OLM keys** (not used for new photos; older photos are being reclassified): `civic/bags_litter`, `civic/other`, `coffee/straw`, `industrial/pipe`, `other/bags_litter`, `other/poster`, `smoking/box`.
 
 **Fixes happen at the source.** When older photos were tagged inconsistently, they are corrected in OpenLitterMap itself rather than patched in this repository's code. That way, anyone downloading the data from OLM gets the corrected version too.
 
@@ -204,7 +203,7 @@ Key design decisions, so the reasoning isn't lost.
 | 2026-09 | The "low occurrence" group is retired; rare items join their logical parent | Richer data: a bottle cap belongs with drinks, not in a miscellaneous pile |
 | 2026-09 | Three-level layer tree: Group → Subgroup → Layer | Some topics (like straws or drinks) need a middle level; others don't |
 | 2026-09 | Map counts are items, not photos | One photo can hold many items; photo counts go in the audit |
-| 2026-09 | Stream columns from the first schema are treated as proof of concept | They'll be rebuilt properly in the municipal stream review |
+| 2026-09-25 | The municipal stream columns (Maple Ridge name, Maple Ridge stream, Vancouver audit category) and "In my sample" were removed from the crosswalk, and `alcohol/packaging` was made an included layer, Liquor Packaging | The crosswalk was reviewed before public release. Stream columns were redundant and confusing at this stage and will be rebuilt one at a time in Stage 3. "In my sample" came from a check made when a paging error had cut the data pull short, and the full data set makes it unnecessary |
 | 2026-09-24 | An incomplete or empty fetch fails the sync instead of publishing partial data | A 200-page cap had silently cut the map to 1,600 photos; a failed run leaves the last good data live |
 | 2026-09-24 | Page requests retry with increasing waits (2s, 4s, 8s) on network errors, 429, and 5xx | Brief hiccups shouldn't waste a 12-hour run |
 | 2026-09-25 | If OLM rejects the login token (HTTP 401) mid-run, log in again and retry the page, up to 3 times per run | A token was rejected at page 173 of 313 and the run had to stop; a fresh login recovers it |

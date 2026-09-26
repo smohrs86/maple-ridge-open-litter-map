@@ -18,9 +18,9 @@ OLM v3 API → `scripts/sync_data.py` on GitHub Actions (`.github/workflows/sync
 
 ## Current task
 Stage 2, in three steps. Do them in order, and don't start step 3 until I say so.
-1. **Crosswalk: done.** Exported to `config/crosswalk.csv` (85 rows: 73 on the map, 12 excluded; 7 groups).
+1. **Crosswalk: done.** Exported to `config/crosswalk.csv` (85 rows: 74 on the map, 11 excluded; 7 groups; re-exported 2026-09-25 after a public-exposure review, with the municipal stream columns and "In my sample" removed, and `alcohol/packaging` now included as Liquor Packaging).
 2. **Crosswalk review: the structure is done, and my legacy tag review is in progress.**
-   - Claude's structural review (2026-09-25) found the sheet clean: every included row has a group and a local key, there are no duplicates, and the "local key = OLM key means include = no" convention holds in all 12 cases. Against the real data there are 0 unmapped tags.
+   - Claude's structural review (2026-09-25) found the sheet clean: every included row has a group and a local key, there are no duplicates, and the "local key = OLM key means include = no" convention held in all 12 cases at the time (11 after the re-export). Against the real data there are 0 unmapped tags.
    - I am now reviewing and reclassing legacy tags in OLM by hand, using a personal reference workbook (`review/legacy_tag_review.xlsx`, local and untracked, one row per tagged object). It is for my own use only. The system and Claude don't read it, and the generator script wasn't saved to the repo.
    - Snapshot on 2026-09-25: 3,156 objects (4,576 items) on 2,491 photos. 1,646 OK, 1,438 REVIEW (keys with a note in "OLM data needs fixes"), 63 RECLASS (retired or excluded keys), 9 orphan custom tags. UNMAPPED and UNCLASS are 0.
    - An orphan tag is a custom tag attached to no object (receipt, flyer, sticker, and so on). I will attach or remove them in OLM.
