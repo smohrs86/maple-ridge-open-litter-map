@@ -40,6 +40,9 @@ def resolve_new_tags_format(tag_entry):
             "item": obj.get("key", "unclassified"),
             "quantity": tag_entry.get("quantity", 1),
         })
+        type_key = (tag_entry.get("type") or {}).get("key")
+        if type_key:
+            formatted[-1]["object_type"] = type_key
 
     for extra in tag_entry.get("extra_tags") or []:
         tag_info = extra.get("tag") or {}
@@ -67,6 +70,9 @@ def resolve_summary_format(tag_entry, keys):
             "item": object_name or "unclassified",
             "quantity": tag_entry.get("quantity", 1),
         })
+        type_key = keys.get("types", {}).get(str(tag_entry.get("type_id")))
+        if type_key:
+            formatted[-1]["object_type"] = type_key
 
     for mat_id in tag_entry.get("materials") or []:
         formatted.append({
