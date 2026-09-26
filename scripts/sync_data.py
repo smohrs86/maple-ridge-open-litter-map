@@ -152,12 +152,17 @@ def get_auth_token(email, password, retries=2, delay=3):
     sys.exit(1)
 
 
+class TokenRejected(Exception):
+    """OLM answered HTTP 401: the login token is no longer accepted."""
+
+
 def get_page_with_retries(headers, params, retries=3, base_delay=2):
     """GET one page of photos. Returns the response, or None if it could not be fetched.
 
     Retries on network errors, HTTP 429 (rate limited) and HTTP 5xx (server trouble),
-    waiting base_delay * 2^n seconds between tries (2s, 4s, 8s). Other HTTP errors
-    (401, 404, ...) will not fix themselves, so they are not retried.
+    waiting base_delay * 2^n seconds between tries (2s, 4s, 8s). HTTP 401 raises
+    TokenRejected so the caller can log in again. Other HTTP errors (404, ...) will
+    not fix themselves, so they are not retried.
     """
     page = params["page"]
     for attempt in range(retries + 1):
@@ -165,6 +170,8 @@ def get_page_with_retries(headers, params, retries=3, base_delay=2):
             response = requests.get(PHOTOS_URL, headers=headers, params=params, timeout=30)
             if response.status_code == 200:
                 return response
+            if response.status_code == 401:
+                raise TokenRejected(f"HTTP 401 on page {page}")
             if response.status_code != 429 and response.status_code < 500:
                 print(f"[ERROR] HTTP {response.status_code} received on page {page}. Not retrying.")
                 return None
@@ -181,23 +188,33 @@ def get_page_with_retries(headers, params, retries=3, base_delay=2):
     return None
 
 
-def fetch_all_photos(token):
+def fetch_all_photos(token, get_new_token=None, max_relogins=3):
     headers = {
         "Authorization": f"Bearer {token}",
         "Accept": "application/json"
     }
-    
+
     all_photos = []
     current_page = 1
     max_safety_pages = 2000  # Hard circuit breaker against infinite loops (8 photos/page = 16,000 photos)
     complete = False  # True only when an empty page confirms we reached the end
+    relogins_left = max_relogins  # How many times a rejected (401) token may be replaced in one run
 
     while current_page <= max_safety_pages:
         params = {"page": current_page}
         print(f"[INFO] Fetching page {current_page} from {PHOTOS_URL}...")
-        
+
         try:
-            response = get_page_with_retries(headers, params)
+            try:
+                response = get_page_with_retries(headers, params)
+            except TokenRejected:
+                if get_new_token is None or relogins_left == 0:
+                    print(f"[ERROR] OLM rejected the login token on page {current_page} and no re-logins are left.")
+                    break
+                relogins_left -= 1
+                print(f"[WARN] OLM rejected the login token on page {current_page}. Logging in again ({relogins_left} re-logins left after this)...")
+                headers["Authorization"] = f"Bearer {get_new_token()}"
+                continue  # retry the same page with the new token
             if response is None:
                 print(f"[ERROR] Giving up on page {current_page}. Terminating fetch.")
                 break
@@ -243,7 +260,7 @@ def fetch_and_build_geojson():
         sys.exit(1)
 
     token = get_auth_token(email, password)
-    raw_photos, complete = fetch_all_photos(token)
+    raw_photos, complete = fetch_all_photos(token, get_new_token=lambda: get_auth_token(email, password))
 
     print(f"\n[DIAGNOSTIC] Total raw photo records fetched from API: {len(raw_photos)}")
 
