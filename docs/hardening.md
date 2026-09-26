@@ -7,7 +7,8 @@
 - ✅ **Workflow push race.** Done 2026-09-25: the workflow rebases onto `main` before pushing its data commit.
 - Write the GeoJSON atomically, so an interrupted run can't leave a half-written file.
 - Add automated tests for tag parsing and crosswalk matching.
-- Validate coordinates and the GeoJSON structure before publishing.
+- Validate coordinates and the GeoJSON structure before publishing, and report anything dropped in the audit.
+- Record which crosswalk version (for example its file hash) produced each audit report, so any number on the map can be traced back.
 - Improve map accessibility: keyboard support, screen reader labels, and a text summary of the data.
 - Show clear messages if the basemap or data fails to load.
 - Simplify the two copies of the GeoJSON into one.

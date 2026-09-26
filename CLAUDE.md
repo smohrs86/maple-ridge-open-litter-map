@@ -47,6 +47,7 @@ Other candidates for later, from the README's Hardening list: write the GeoJSON 
 - To test a pipeline change, use Actions, then Run workflow, on `main`. "Re-run all jobs" reuses the old commit, so it doesn't test new code.
 - `origin` uses SSH, so pushes need no password. If it ever asks for one, `.claude/setup-git-push.sh` (local, untracked) sets up the key.
 - Make one change at a time. Show me the diff and explain it before committing. Ask before any `git push`.
+- Work directly on `main`: no feature branches, staging site, or preview deploys (free GitHub Pages is always public anyway). Test locally, show the diff, ask before pushing, push to `main`, then use Run workflow so the data catches up with any `index.html` change. Make data-shape changes additive so the live map never breaks between the push and the next sync. Audit and reporting matter more than avoiding a brief display error.
 - Category changes belong in the crosswalk spreadsheet, not the code. Tagging mistakes get fixed in OLM itself, not patched in code.
 - Never put credentials in any file. For a local test run, I set `OLM_EMAIL` / `OLM_PASSWORD` as environment variables in my own terminal.
 - After a local test run, don't commit the regenerated `data/` or `public/data/` files. Restore them with `git restore data/ public/data/` and let the workflow publish the data.
