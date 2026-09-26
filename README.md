@@ -14,11 +14,11 @@ Litter is photographed and tagged in the field using [OpenLitterMap](https://ope
 |---|---|---|
 | Data pipeline (OLM API → GeoJSON) | ✅ Built | Runs automatically every 12 hours |
 | Public web map | ✅ Built | Three basic filters: Litter, Pet Waste, Nicotine/THC/Alcohol |
-| Crosswalk logic and layer tree design | 🟡 In design | Rules are frozen; group assignments are being completed |
+| Crosswalk logic and layer tree design | ✅ Designed | Exported to `config/crosswalk.csv`: 85 rows, 73 on the map, 7 groups. Structure reviewed and clean |
 | Crosswalk engine (code that applies the crosswalk) | ⬜ Planned | Will read the crosswalk as a CSV file |
 | Layer tree map interface | ⬜ Planned | Expandable Group → Subgroup → Layer checkboxes |
 | Municipal waste stream review | ⬜ Planned | Maple Ridge and Vancouver categories, after the crosswalk is complete |
-| Cleanup of older tags in OLM | 🟡 Ongoing | Tracked in the crosswalk's "OLM data needs fixes" column |
+| Cleanup of older tags in OLM | 🟡 In progress | The maintainer is reclassing legacy tags in OLM by hand (roadmap step 4) |
 
 ---
 
@@ -62,7 +62,7 @@ Each point on the map is one OLM photo. Its properties are:
 | `id` | The OLM photo ID |
 | `datetime` | When the photo was taken |
 | `filename` | Link to the photo on OLM's storage |
-| `tags` | Every tag on the photo, with `type` (standard, material, brand, custom_tag), `category`, `item`, and `quantity`. Material, brand, and custom tags also record `parent_category` and `parent_item`. |
+| `tags` | Every tag on the photo, with `type` (standard, material, brand, custom_tag), `category`, `item`, and `quantity`. Standard tags may also carry `object_type`, the type OLM saved for the object (for example a dumping size or a drink type); it is absent when none was chosen. Material, brand, and custom tags also record `parent_category` and `parent_item`. |
 | `groups` | The broad groups this photo falls into |
 | `has_litter`, `has_pet_waste`, `has_substances` | Simple true/false flags used by the current map filters |
 
@@ -132,16 +132,33 @@ The map will show an expandable tree of checkboxes, up to three levels deep: **G
 
 A photo with several kinds of litter appears in every layer that applies to it. That's intended.
 
-### Current tree (work in progress)
+### Current tree (from `config/crosswalk.csv`, 2026-09-25)
+
+Seven groups and 73 layers. Some layers sit directly under a group, with no subgroup.
 
 ```
-Drinks
-├── Liquor        Bottle Cap, Broken Glass, Can, Debris
-├── Hot           Cup, Lid, Coffee Pod, Cup Sleeve
-└── Cold          Bottle, Bottle Cap, Broken Glass, Can, Carton, Cup, Lid, Drink Box Pouch
-Straw             Household & Food Plastic Straws, Paper Drink Straws, Drink Straw Wrapper
-Household Dumping UNCLASS, Sml, Med, Lrg
-(remaining rows are standalone until grouped)
+Household
+├── Liquor          Liquor Bottle, Liquor Bottle Cap, Liquor Broken Glass, Liquor Can, Liquor Debris
+└── (no subgroup)   Batteries, Plastic (#4) or Paper Food Bag, Corrugated Cardboard Box, Household Food Can,
+                    Food Container - Plastic, Paper, Foam, Food Container Lid, Organic Debris, Plastic Straws,
+                    Household Tinfoil, Medical Bandages, Latex / Nitrile Glove, Party Litter,
+                    Abandoned Textile Apparel, Household misc, Household Plastic Bag, Pet Supplies,
+                    Dental Waste, Cotton Swabs, Personal Hygiene Product, Hygiene Paper, Wet Wipes
+Convenient Food Drink
+├── Drink           Poly-lined Hot Beverage Cup, Hot Beverage Cup Lid, Single-Serve Coffee Pod,
+│                   Corrugated Cardboard Cup Sleeve, Plastic or Glass Drink Bottle, Drink Bottle Cap,
+│                   Drink Broken Glass, Aluminum Drink Cans, Drink Carton, Cold Beverage Cup, Drink Box Pouch,
+│                   Cold Beverage Lid, Household or Take-out Drink Packaging, Pull-tabs, Paper Drink Straws,
+│                   Drink Straw Wrapper
+├── Snack           Metalized Chip Bags, Chewed Gum, Foil / Plastic Film Snack Wrapper
+└── Take-out        Cutlery, Napkins, Food Packaging, Condiment Packets
+Dumping             UNCLASS, Sml, Med, Lrg, Commercial Dumping
+Industrial          Industrial Debris, Flagging Tape
+Piece               Styrofoam Piece, Styrofoam Whole, Household or Unknown Metal Piece, Wood Debris,
+                    Broken Glass Piece, Paper Piece, Plastic Piece, Motor Vehicle Part Piece, Motor Vehicle Spill
+Fecal               Pet Waste Unbagged, Pet Waste Bagged
+Smoking             Cigarette Butts, Butane Lighter, Nicotine Packaging, Cannabis Packaging, Nicotine Vape,
+                    Cannabis Vape
 ```
 
 ---
@@ -189,7 +206,12 @@ Key design decisions, so the reasoning isn't lost.
 | 2026-09 | Map counts are items, not photos | One photo can hold many items; photo counts go in the audit |
 | 2026-09 | Stream columns from the first schema are treated as proof of concept | They'll be rebuilt properly in the municipal stream review |
 | 2026-09-24 | An incomplete or empty fetch fails the sync instead of publishing partial data | A 200-page cap had silently cut the map to 1,600 photos; a failed run leaves the last good data live |
-| 2026-09-24 | Page requests retry with increasing waits (2s, 4s, 8s) on network errors, 429, and 5xx only | Brief hiccups shouldn't waste a 12-hour run, but errors like 401 or 404 won't fix themselves |
+| 2026-09-24 | Page requests retry with increasing waits (2s, 4s, 8s) on network errors, 429, and 5xx | Brief hiccups shouldn't waste a 12-hour run |
+| 2026-09-25 | If OLM rejects the login token (HTTP 401) mid-run, log in again and retry the page, up to 3 times per run | A token was rejected at page 173 of 313 and the run had to stop; a fresh login recovers it |
+| 2026-09-25 | The workflow runs `git pull --rebase` before pushing its data commit | A push to `main` during a sync made the bot's push fail and lost that run's data |
+| 2026-09-25 | Each photo's `groups` list is sorted | A set gave a random order every run, causing large pointless data commits |
+| 2026-09-25 | OLM's object type is kept as `object_type` on standard tags, and the crosswalk's "with Secondary Modifier" column matches against it. "Skip / not sure" saves no type and falls to the blank row | Dumping sizes and drink types were being dropped |
+| 2026-09-25 | Legacy tag review is done per tagged object, and retired, excluded, and orphan tags are reclassed in OLM | Counts are items, not photos, and fixes happen at the source |
 
 ---
 
@@ -197,11 +219,11 @@ Key design decisions, so the reasoning isn't lost.
 
 ### Stage 2 — Local classification (current)
 
-1. **Finish the crosswalk.** Assign Groups and Subgroups to all included rows, fill blank local keys, and export to `config/crosswalk.csv`.
+1. ✅ **Finish the crosswalk.** Done 2026-09-25: exported to `config/crosswalk.csv`, with structural checks clean and no unmapped tags in the current data.
 2. **Build the crosswalk engine.** Update `scripts/sync_data.py` to read the CSV, apply the matching rules, and write an audit report alongside the GeoJSON.
 3. **Build the layer tree map.** Replace the three fixed checkboxes with the expandable tree, including counts and photo popups.
-4. **Clean up older tags in OLM.** Work through the "OLM data needs fixes" column until the audit counts reach zero.
-5. **Confirm OLM's modifier codes** (low priority). The app shows labels like "medium" and "skip/not sure"; the exact values the API sends should be confirmed from OLM's open-source code or a raw API response.
+4. **Clean up older tags in OLM (in progress).** The maintainer is reclassing tagged objects directly in OLM. A snapshot on 2026-09-25 counted 3,156 tagged objects (4,576 items) on 2,491 photos: 1,646 already matched, 1,438 on keys the crosswalk flags for tag review ("OLM data needs fixes"), 63 on retired or excluded keys, and 9 orphan custom tags, meaning custom tags attached to no object. The aim is for the audit counts to reach zero.
+5. ✅ **Confirm OLM's modifier codes.** Done 2026-09-25: the API sends an object's type as `type` (`new_tags` format) or `type_id` (summary format), and the pipeline keeps it as `object_type`. `small` and `medium` are confirmed in real data; `large` has not appeared yet.
 
 ### Stage 3 — Municipal waste streams
 
@@ -217,6 +239,9 @@ The map could then offer a "view as" switch between these lenses. This stage inc
 
 - ✅ **Protect the published data from partial runs.** Done 2026-09-24: if the API fails partway through, the run stops before writing any files and the map keeps the previous data. The photo limit was also raised from 1,600 to 16,000.
 - ✅ **Retries for page requests.** Done 2026-09-24: each page gets up to 3 retries, waiting 2, 4, then 8 seconds, for network errors, HTTP 429, and HTTP 5xx. If a page still fails, the run stops and the map keeps the previous data.
+- ✅ **Log in again on HTTP 401.** Done 2026-09-25, after a token was rejected part-way through a run.
+- ✅ **Stable output.** Done 2026-09-25: each photo's `groups` are sorted, so unchanged data no longer produces large commits.
+- ✅ **Workflow push race.** Done 2026-09-25: the workflow rebases onto `main` before pushing its data commit.
 - Write the GeoJSON atomically, so an interrupted run can't leave a half-written file.
 - Add automated tests for tag parsing and crosswalk matching.
 - Validate coordinates and the GeoJSON structure before publishing.
@@ -242,7 +267,7 @@ The map could then offer a "view as" switch between these lenses. This stage inc
 ├── public/data/litter.geojson        Copy of the dataset for hosting
 ├── index.html                        The web map
 ├── ReadMe/Local Schema Rationale.md  Early schema draft (proof of concept)
-└── config/crosswalk.csv              Planned: the crosswalk exported from the spreadsheet
+└── config/crosswalk.csv              The crosswalk, exported from the spreadsheet
 ```
 
 ---
