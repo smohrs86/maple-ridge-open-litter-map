@@ -1,6 +1,6 @@
 # CLAUDE.md: MROLM Maple Ridge OpenLitterMap
 
-Instructions for Claude Code. Project overview, crosswalk spec, tagging protocol, and decision log: @README.md
+Instructions for Claude Code. Project overview, crosswalk spec, and progress log: @README.md. Tagging protocol: `docs/tagging-protocol.md`. Decision log: `docs/decision-log.md`. Hardening list: `docs/hardening.md`.
 
 ## Project
 MROLM is a $0/month, fully automated citizen-science GIS project. It pulls my personal OpenLitterMap (OLM) litter records from Maple Ridge, BC, reshapes them for local use, and publishes an interactive web map on GitHub Pages.
@@ -14,15 +14,15 @@ Repo: https://github.com/smohrs86/maple-ridge-open-litter-map · Live map: https
 OLM v3 API → `scripts/sync_data.py` on GitHub Actions (`.github/workflows/sync_data.yml`, every 12h) → `data/litter.geojson` + copy in `public/data/` → `index.html` (MapLibre + CARTO Positron)
 - Login uses the `OLM_EMAIL` / `OLM_PASSWORD` repo secrets. The script reads pages until an empty page comes back. The workflow commits only when the data changed.
 - Each point is one photo: `id`, `datetime`, `filename` (photo URL), `tags[]` (a standard tag can carry `object_type`, e.g. a dumping size), `groups[]`, and the flags `has_litter`, `has_pet_waste`, `has_substances`.
-- Stage 2 (the crosswalk engine and layer tree map) is specified in README.md. The README's matching rules, tagging protocol, and decision log are the spec. Follow them, and flag any conflict.
+- Stage 2 (the crosswalk engine and layer tree map) is specified in README.md. The README's matching rules, `docs/tagging-protocol.md`, and `docs/decision-log.md` are the spec. Follow them, and flag any conflict.
 
 ## Current task
 Priority order: (a) the engine and layer tree map, then (b) the legacy review and reclass, then (c) GIS features on the map, then (d) municipal streams (COMR and COV). Until (d), don't bring municipal policy, bylaws, or the COV street audit into the work.
 
 Stage 2, in three steps. Do them in order, and don't start step 3 until I say so.
-1. **Crosswalk: done.** Exported to `config/crosswalk.csv` (85 rows: 74 on the map, 11 excluded; 7 groups; re-exported 2026-09-25 after a public-exposure review, with the municipal stream columns and "In my sample" removed, and `alcohol/packaging` now included as Liquor Packaging).
+1. **Crosswalk: done.** Exported to `config/crosswalk.csv` (re-exported 2026-09-25 after a public-exposure review, with the municipal stream columns and "In my sample" removed, and `alcohol/packaging` now included as Liquor Packaging).
 2. **Crosswalk review: the structure is done, and my legacy tag review is in progress.**
-   - Claude's structural review (2026-09-25) found the sheet clean: every included row has a group and a local key, there are no duplicates, and the "local key = OLM key means include = no" convention held in all 12 cases at the time (11 after the re-export). Against the real data there are 0 unmapped tags.
+   - Claude's structural review (2026-09-25) found the sheet clean: every included row has a group and a local key, there are no duplicates, and the "local key = OLM key means include = no" convention held in every case. Against the real data there are 0 unmapped tags.
    - I am now reviewing and reclassing legacy tags in OLM by hand, using a personal reference workbook (`review/legacy_tag_review.xlsx`, local and untracked, one row per tagged object). It is for my own use only. The system and Claude don't read it, and the generator script wasn't saved to the repo.
    - Snapshot on 2026-09-25: 3,156 objects (4,576 items) on 2,491 photos. 1,646 OK, 1,438 REVIEW (keys with a note in "OLM data needs fixes"), 63 RECLASS (retired or excluded keys), 9 orphan custom tags. UNMAPPED and UNCLASS are 0.
    - An orphan tag is a custom tag attached to no object (receipt, flyer, sticker, and so on). I will attach or remove them in OLM.
@@ -42,6 +42,7 @@ Other candidates for later, from the README's Hardening list: write the GeoJSON 
 
 ## How we work
 - Always `git pull` before starting. The GitHub Actions bot commits new data every 12 hours.
+- Keep the README compact. Don't hard-code counts that come from the crosswalk or data (rows, layers, groups); say "see `config/crosswalk.csv`" instead. When the crosswalk or code changes, update the README's Current tree and add one dated line to its Progress log. Add design decisions to `docs/decision-log.md`.
 - Check the actual code before answering. Point out anywhere the README and code disagree.
 - To test a pipeline change, use Actions, then Run workflow, on `main`. "Re-run all jobs" reuses the old commit, so it doesn't test new code.
 - `origin` uses SSH, so pushes need no password. If it ever asks for one, `.claude/setup-git-push.sh` (local, untracked) sets up the key.
