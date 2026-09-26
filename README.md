@@ -25,11 +25,28 @@ Litter is photographed and tagged in the field using [OpenLitterMap](https://ope
 
 ---
 
+## Proof of concept: definition of done
+
+The proof of concept is done when all of these are true:
+
+1. **The engine applies the crosswalk.** Every run reads `config/crosswalk.csv` and puts each tag into exactly one layer, following the matching rules below. Unmapped = 0.
+2. **The audit report is published on every run**, with the counts in the audit table below. Tie-breaks are reviewed and either fixed in the crosswalk or accepted.
+3. **The layer tree works on the live map:** Group → Subgroup → Layer checkboxes that cascade, item counts that roll up, empty layers hidden, and full layer names in popups.
+4. **Counts are spot-checked.** For about five layers, the map count matches a manual count of the same tags in OLM.
+5. **Legacy data is conformed enough to trust.** Not used = 0 and UNCLASS = 0. Orphan tags are tracked in the audit with their photo IDs and fixed in OLM, or accepted as a known gap. The REVIEW backlog is tracked by Claude, which rebuilds the review workbook after the maintainer's OLM edits, and its remaining count is recorded in the progress log at each check.
+6. **The pipeline stays safe.** An incomplete fetch leaves the last good data live, and the tree map data is produced by the workflow without manual fixes.
+7. **A basic test exists** for crosswalk matching: a specific row beats the plain row, blank falls back, capitals and spacing are ignored, and the first match wins.
+8. **A newcomer can understand it in five minutes.** The README opens with what the map shows, and the live link works.
+
+Not part of the proof of concept: GIS features, municipal streams, a license, and a contributor guide.
+
+---
+
 ## Progress log
 
 Newest first, one line per change. Claude updates this whenever it updates the README.
 
-- **2026-09-25:** Crosswalk finished and re-exported after review; municipal stream columns removed. Pipeline now logs in again on a rejected token, keeps groups in a stable order, rebases before pushing, and keeps OLM's object type. Tagging protocol, decision log, and hardening list moved to `docs/`.
+- **2026-09-25:** Crosswalk finished and re-exported after review; municipal stream columns removed. Pipeline now logs in again on a rejected token, keeps groups in a stable order, rebases before pushing, and keeps OLM's object type. Tagging protocol, decision log, and hardening list moved to `docs/`. Proof-of-concept criteria added.
 - **2026-09-24:** Fixed the photo cap that had cut the map short; an incomplete fetch now fails the sync instead of publishing partial data. Page requests retry with increasing waits.
 - **2026-09-17:** Stage 1 complete: automated 12-hour pipeline, GeoJSON output, and a basic filter map on GitHub Pages.
 
@@ -126,7 +143,8 @@ Every run will produce a small audit report so data problems are visible instead
 | **Unmapped** | Tags matching no row at all: a gap in the crosswalk | 0 |
 | **UNCLASS** | Household dumping photos with no size chosen | 0, once older photos are given a size |
 | **Standalone layers** | Layers with no group | Informational: check nothing was missed |
-| **Tie-breaks** | Tags that matched more than one row | Informational |
+| **Orphan tags** | Custom tags attached to no object (usually typos or leftovers). Listed by photo ID, kept off the map layers, and fixed in OLM | 0 |
+| **Tie-breaks** | Tagged objects that matched more than one equally specific row, for example one object with both a matching material and a matching custom tag | Informational |
 
 A convention in the sheet supports this: when a row's local key is identical to its OLM key, the key is retired. The code checks that every such row also says `include on map = no` and flags any row where the two disagree.
 
