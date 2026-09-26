@@ -25,7 +25,7 @@ Legacy tags in OLM can be inconsistent (an object tagged with the wrong key, a c
 
 ## The method
 
-1. **Export (read-only).** `scripts/export_raw_olm.py` reads every photo and OLM's tag list into `review/raw/` (untracked, owner-only). This is the backup. It also prints counts only (verified values, `picked_up` values) that are safe to share. Credentials come from the `OLM_EMAIL` / `OLM_PASSWORD` environment variables, or else a local untracked owner-only file `.stu/OLM.txt` (email on line 1, password on line 2).
+1. **Export (read-only).** `scripts/export_raw_olm.py` reads every photo and OLM's tag list into `review/raw/` (untracked, owner-only). This is the backup. It also prints counts only (verified values, `picked_up` values) that are safe to share. Credentials come from the `OLM_EMAIL` / `OLM_PASSWORD` environment variables, or else a local, untracked, owner-only credentials file (email on line 1, password on line 2).
 2. **Fill the review spreadsheet.** One row per tagged object (the `Objects` sheet), plus one row per photo (`Photo_Batch`). *Script not written yet.*
 3. **Review one group at a time.** Filter by current OLM key (and custom tag) to isolate a group, look at the photos, and type the fix in the `Change_to_…` cells.
 4. **Dry run.** A script builds each affected photo's full replacement tag list, shows before and after, and sends nothing. *Not written yet.*
