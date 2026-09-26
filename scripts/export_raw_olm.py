@@ -5,9 +5,11 @@ review/batch-change script will use, so it keeps everything OLM sends (tag IDs,
 verified, picked_up, coordinates, addresses). Never commit it.
 
 Run from the repo root. Credentials come from OLM_EMAIL / OLM_PASSWORD if set,
-otherwise from the local, untracked file .stu/OLM.txt (email line 1, password line 2):
-    python3 scripts/export_raw_olm.py
+otherwise from a local credentials file you name on the command line (email on
+line 1, password on line 2; the file must be owner-only and never committed):
+    python3 scripts/export_raw_olm.py --credentials-file PATH
 """
+import argparse
 import json
 import os
 import sys
@@ -23,7 +25,6 @@ TAGS_URL = "https://openlittermap.com/api/tags/all"
 OUT_DIR = os.path.join("review", "raw")
 PER_PAGE = 100  # OLM caps this at 100; far fewer requests than the default of 8
 MAX_PAGES = 400  # circuit breaker (40,000 photos)
-CREDENTIALS_FILE = os.path.join(".stu", "OLM.txt")
 
 
 def fetch_all_raw_photos(token, get_new_token, max_relogins=3):
@@ -97,34 +98,40 @@ def summarise(photos):
     }
 
 
-def load_credentials():
-    """OLM_EMAIL / OLM_PASSWORD if set, else the local file .stu/OLM.txt.
+def load_credentials(credentials_file=None):
+    """OLM_EMAIL / OLM_PASSWORD if set, else the file named by --credentials-file.
 
-    The file holds the email on line 1 and the password on line 2. It lives in an
-    untracked, owner-only folder and must never be committed.
+    The file holds the email on line 1 and the password on line 2. It must be
+    untracked and owner-only, and must never be committed.
     """
     email = os.environ.get("OLM_EMAIL", "").strip()
     password = os.environ.get("OLM_PASSWORD", "").strip()
     if email and password:
         return email, password
 
-    if os.path.exists(CREDENTIALS_FILE):
-        if os.stat(CREDENTIALS_FILE).st_mode & 0o077:
-            print(f"[CRITICAL ERROR] {CREDENTIALS_FILE} is readable by other users. Run: chmod 600 {CREDENTIALS_FILE}")
+    if credentials_file:
+        if not os.path.exists(credentials_file):
+            print(f"[CRITICAL ERROR] Credentials file not found: {credentials_file}")
             sys.exit(1)
-        with open(CREDENTIALS_FILE, encoding="utf-8") as f:
+        if os.stat(credentials_file).st_mode & 0o077:
+            print(f"[CRITICAL ERROR] {credentials_file} is readable by other users. Run: chmod 600 {credentials_file}")
+            sys.exit(1)
+        with open(credentials_file, encoding="utf-8") as f:
             lines = [line.strip() for line in f.read().splitlines() if line.strip()]
         if len(lines) >= 2:
             return lines[0], lines[1]
-        print(f"[CRITICAL ERROR] {CREDENTIALS_FILE} needs the email on line 1 and the password on line 2.")
+        print(f"[CRITICAL ERROR] {credentials_file} needs the email on line 1 and the password on line 2.")
         sys.exit(1)
 
-    print(f"[CRITICAL ERROR] Set OLM_EMAIL and OLM_PASSWORD, or create {CREDENTIALS_FILE}.")
+    print("[CRITICAL ERROR] Set OLM_EMAIL and OLM_PASSWORD, or pass --credentials-file PATH.")
     sys.exit(1)
 
 
 def main():
-    email, password = load_credentials()
+    parser = argparse.ArgumentParser(description="Read-only export of raw OLM photo records.")
+    parser.add_argument("--credentials-file", help="owner-only file: email on line 1, password on line 2")
+    args = parser.parse_args()
+    email, password = load_credentials(args.credentials_file)
 
     token = get_auth_token(email, password)
     photos, complete = fetch_all_raw_photos(token, lambda: get_auth_token(email, password))
