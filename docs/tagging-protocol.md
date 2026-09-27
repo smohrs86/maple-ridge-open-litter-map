@@ -16,6 +16,8 @@ These are the tagging conventions used when collecting data for this project. Th
 | Party litter | `other/balloon`, with a shared custom tag on every associated item using the pattern `PAR` + date + letter, e.g. `PAR20260922A`. |
 | Wood pieces | `other/other` with material `Wood`, for wood debris that can't be identified as industrial. Wood that is clearly a commercial or industrial piece goes under `industrial/other`. |
 | Broken glass pieces | `other/other` with the custom tag `broken glass`, for a single piece of broken glass. |
+| E-waste pieces | `other/other` with the custom tag `E-waste`, for a piece of household electronic waste. Spell it with the hyphen: capitals and spaces don't matter, but `ewaste` won't match. |
+| Foil pieces | `food/tinfoil`, for any foil piece, whether from household foil, wrappers, or bags. |
 | Vehicle parts | `vehicles/car_part`, without a material tag, since materials can't be verified in the field. |
 | Out of scope | Civic fixtures and signage (reported to the City instead) and posters, which often name people and could imply wrongdoing unfairly. |
 
