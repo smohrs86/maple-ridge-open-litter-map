@@ -5,6 +5,16 @@ on:
     # Runs automatically every 12 hours
     - cron: '0 */12 * * *'
   workflow_dispatch: # Allows manual pipeline execution from GitHub UI
+  push:
+    # A new crosswalk export reaches the map right away instead of at the next scheduled run
+    branches: [main]
+    paths:
+      - 'config/crosswalk.csv'
+
+# One sync at a time: a run started while another is going waits for it instead of racing its push
+concurrency:
+  group: sync-data
+  cancel-in-progress: false
 
 jobs:
   sync-geojson:
@@ -38,13 +48,13 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # Stage both canonical GeoJSON paths
-          git add data/litter.geojson public/data/litter.geojson 2>/dev/null || true
+          # Stage both canonical GeoJSON paths and the audit report
+          git add data/litter.geojson public/data/litter.geojson data/audit.md 2>/dev/null || true
 
           if git diff --staged --quiet; then
-            echo "[INFO] No changes detected in GeoJSON datasets. Skipping commit."
+            echo "[INFO] No changes detected in GeoJSON datasets or audit report. Skipping commit."
           else
-            git commit -m "chore(data): auto-update canonical litter.geojson datasets [skip ci]"
+            git commit -m "chore(data): auto-update canonical litter.geojson datasets and audit report [skip ci]"
             # main may have moved while the sync ran (e.g. a doc push); merge those commits in first
             git pull --rebase origin main
             git push
