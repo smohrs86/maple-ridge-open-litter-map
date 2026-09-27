@@ -1,13 +1,25 @@
+import argparse
+import csv
 import os
 import sys
 import time
 import json
 import requests
 
+import crosswalk as cw
+
 LOGIN_URL = "https://openlittermap.com/api/auth/token"
 PHOTOS_URL = "https://openlittermap.com/api/v3/user/photos"
 
 assert "v3" in PHOTOS_URL, "PHOTOS_URL must use the v3 endpoint — v1 was removed by OpenLitterMap"
+
+CROSSWALK_PATH = "config/crosswalk.csv"
+# Columns the engine reads (by header name, so the sheet's column order doesn't matter).
+CROSSWALK_COLUMNS = ("OLM key",) + cw.NARROWING_COLUMNS + (
+    "MROLM Group", "MROLM Subgroup", "MROLM local key", "include on map", "OLM data needs fixes")
+# Statuses shown on the map. REVIEW is shown normally (decision log, 2026-09-26);
+# RECLASS, UNMAPPED and ORPHAN TAG stay off the map and are counted in the audit.
+MAP_STATUSES = ("OK", "REVIEW", "UNCLASS")
 
 
 def classify_tag_group(tag):  
@@ -109,7 +121,91 @@ def resolve_summary_format(tag_entry, keys):
     return formatted
 
 
-def build_photo_properties(photo):
+def load_crosswalk(path=CROSSWALK_PATH):
+    """Read the crosswalk, or stop the run before anything is written if it can't be used."""
+    try:
+        rows = cw.load_crosswalk(path)
+    except (OSError, UnicodeDecodeError, csv.Error) as exc:
+        print(f"[CRITICAL ERROR] Could not read {path}: {exc}. No files were written.")
+        sys.exit(1)
+    if not rows:
+        print(f"[CRITICAL ERROR] {path} has no rows. No files were written.")
+        sys.exit(1)
+    missing = [col for col in CROSSWALK_COLUMNS if col not in rows[0]]
+    if missing:
+        print(f"[CRITICAL ERROR] {path} is missing column(s) {missing}. Was a header renamed? No files were written.")
+        sys.exit(1)
+    print(f"[INFO] Loaded {len(rows)} crosswalk rows from {path}.")
+    return rows
+
+
+def picked_up_state(value):
+    """True, False, or None when OLM didn't say."""
+    return bool(value) if value in (True, False) else None
+
+
+def extract_objects(photo):
+    """One entry per tagged object, with everything the crosswalk can match on.
+
+    olm_key is "" for an orphan custom tag (a custom tag attached to no object).
+    """
+    objects = []
+    new_tags = photo.get("new_tags")
+
+    if new_tags:
+        for entry in new_tags:
+            category = (entry.get("category") or {}).get("key")
+            obj = (entry.get("object") or {}).get("key")
+            extras = entry.get("extra_tags") or []
+            objects.append({
+                "olm_key": f"{category}/{obj}" if category and obj else "",
+                "secondary": (entry.get("type") or {}).get("key") or "",
+                "materials": [(e.get("tag") or {}).get("key", "") for e in extras if e.get("type") == "material"],
+                "customs": [(e.get("tag") or {}).get("key", "") for e in extras if e.get("type") == "custom_tag"],
+                "quantity": entry.get("quantity", 1),
+                "picked_up": picked_up_state(entry.get("picked_up")),
+            })
+    else:
+        summary = photo.get("summary") or {}
+        keys = summary.get("keys", {})
+        for entry in summary.get("tags", []):
+            category = keys.get("categories", {}).get(str(entry.get("category_id")))
+            obj = keys.get("objects", {}).get(str(entry.get("object_id")))
+            objects.append({
+                "olm_key": f"{category}/{obj}" if category and obj else "",
+                "secondary": keys.get("types", {}).get(str(entry.get("type_id"))) or "",
+                "materials": [keys.get("materials", {}).get(str(i), "") for i in entry.get("materials") or []],
+                "customs": [keys.get("custom_tags", {}).get(str(i), "") for i in entry.get("custom_tags") or []],
+                "quantity": entry.get("quantity", 1),
+                "picked_up": picked_up_state(entry.get("picked_up")),
+            })
+    return objects
+
+
+def classify_object(raw, crosswalk_rows):
+    """Apply the crosswalk to one object (README "Matching rules") and describe it for the map and audit."""
+    result = {"status": "", "on_map": False, "group": "", "subgroup": "", "layer": "", "full_name": "",
+              "olm_key": raw["olm_key"], "quantity": raw["quantity"], "picked_up": raw["picked_up"]}
+
+    if not raw["olm_key"]:
+        result["status"] = "ORPHAN TAG"
+        result["custom_tags"] = raw["customs"]
+    else:
+        row, tied = cw.match_tag(crosswalk_rows, raw["olm_key"], raw["secondary"], raw["materials"], raw["customs"])
+        if row is None:
+            result["status"] = "UNMAPPED"
+        else:
+            group, subgroup, layer = (row[c].strip() for c in ("MROLM Group", "MROLM Subgroup", "MROLM local key"))
+            result.update(status=cw.classify(row), group=group, subgroup=subgroup, layer=layer,
+                          full_name=" – ".join(part for part in (group, subgroup, layer) if part))
+            if tied:
+                result["tie_rows"] = [r["_sheet_row"] for r in tied]
+
+    result["on_map"] = result["status"] in MAP_STATUSES
+    return result
+
+
+def build_photo_properties(photo, crosswalk_rows):
     formatted_tags = []
     new_tags = photo.get("new_tags")
 
@@ -129,6 +225,7 @@ def build_photo_properties(photo):
         "datetime": photo.get("datetime"),
         "filename": photo.get("filename"),
         "tags": formatted_tags,
+        "objects": [classify_object(o, crosswalk_rows) for o in extract_objects(photo)],
         "groups": groups,
         "has_litter": "litter" in groups,
         "has_pet_waste": "pet_waste" in groups,
@@ -257,16 +354,26 @@ def fetch_all_photos(token, get_new_token=None, max_relogins=3):
     return all_photos, complete
 
 
-def fetch_and_build_geojson():
-    email = os.environ.get("OLM_EMAIL", "").strip()
-    password = os.environ.get("OLM_PASSWORD", "").strip()
+def fetch_and_build_geojson(from_raw=None):
+    # Read the crosswalk first: if it can't be used, stop before logging in or writing anything.
+    crosswalk_rows = load_crosswalk()
 
-    if not email or not password:
-        print("[CRITICAL ERROR] Missing OLM_EMAIL or OLM_PASSWORD environment variables.")
-        sys.exit(1)
+    if from_raw:
+        # Local testing only: build from a saved export (scripts/export_raw_olm.py), no login.
+        with open(from_raw, encoding="utf-8") as f:
+            raw_photos = json.load(f)
+        complete = True
+        print(f"[INFO] Offline mode: read {len(raw_photos)} photos from {from_raw}.")
+    else:
+        email = os.environ.get("OLM_EMAIL", "").strip()
+        password = os.environ.get("OLM_PASSWORD", "").strip()
 
-    token = get_auth_token(email, password)
-    raw_photos, complete = fetch_all_photos(token, get_new_token=lambda: get_auth_token(email, password))
+        if not email or not password:
+            print("[CRITICAL ERROR] Missing OLM_EMAIL or OLM_PASSWORD environment variables.")
+            sys.exit(1)
+
+        token = get_auth_token(email, password)
+        raw_photos, complete = fetch_all_photos(token, get_new_token=lambda: get_auth_token(email, password))
 
     print(f"\n[DIAGNOSTIC] Total raw photo records fetched from API: {len(raw_photos)}")
 
@@ -282,7 +389,7 @@ def fetch_and_build_geojson():
         if not coords or coords[0] is None or coords[1] is None:
             continue
 
-        properties = build_photo_properties(photo)
+        properties = build_photo_properties(photo, crosswalk_rows)
         features.append({
             "type": "Feature",
             "geometry": {
@@ -298,6 +405,11 @@ def fetch_and_build_geojson():
     }
 
     print(f"[DIAGNOSTIC] Total valid georeferenced features compiled: {len(features)}")
+    statuses = {}
+    for feature in features:
+        for obj in feature["properties"]["objects"]:
+            statuses[obj["status"]] = statuses.get(obj["status"], 0) + 1
+    print(f"[DIAGNOSTIC] Tagged objects by crosswalk status: {dict(sorted(statuses.items()))}")
 
     target_paths = ["data/litter.geojson", "public/data/litter.geojson"]
     
@@ -309,4 +421,7 @@ def fetch_and_build_geojson():
 
 
 if __name__ == "__main__":
-    fetch_and_build_geojson()
+    parser = argparse.ArgumentParser(description="Fetch OLM photos, apply the crosswalk, and write the GeoJSON.")
+    parser.add_argument("--from-raw", metavar="PHOTOS_JSON",
+                        help="local testing: build from a saved raw export (review/raw/photos_*.json) instead of OLM")
+    fetch_and_build_geojson(parser.parse_args().from_raw)
