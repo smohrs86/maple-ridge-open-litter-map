@@ -48,6 +48,7 @@ Not part of the proof of concept: GIS features, municipal streams, a license, an
 
 Newest first, one line per change. Claude updates this whenever it updates the README.
 
+- **2026-09-27:** Licenses added: MIT for the code, ODbL 1.0 for the data (as OpenLitterMap requires), with "© OpenLitterMap & Contributors" now credited on the map.
 - **2026-09-27:** README opening rewritten so search engines and link scrapers see what the map is first: the live link and an "independent project" line. Proof of concept declared achieved; legacy cleanup (criterion 5) and the newcomer read-through (8) continue as refinements.
 - **2026-09-27:** Map gets a favicon, a link-preview image (title card beside the real litter points), and a page description, so shared links show a proper preview card.
 - **2026-09-26:** Map gets a Dots | Heatmap switch (heat weighted by items, fading into the dots at street level), a "Left in place only" filter for both views, and an MROLM title block.
@@ -271,7 +272,9 @@ Ongoing reliability work is listed in [docs/hardening.md](docs/hardening.md).
 ├── index.html                        The web map
 ├── assets/                           Favicon and link-preview image
 ├── docs/                             Tagging protocol, decision log, hardening list, batch review method
-└── config/crosswalk.csv              The crosswalk, exported from the spreadsheet
+├── config/crosswalk.csv              The crosswalk, exported from the spreadsheet
+├── data/LICENSE.md                   Data license (ODbL 1.0, from OpenLitterMap)
+└── LICENSE                           Code license (MIT)
 ```
 
 ---
@@ -322,7 +325,7 @@ The project is designed to cost nothing to run.
 
 **What's deliberately left out.** Posters and signage that name individuals or businesses are not recorded, because a litter map could unfairly imply wrongdoing.
 
-**Licensing.** This is a proof of concept, so a license has not been chosen yet. Until one is added, default copyright applies to the code. A common approach for projects like this is an open-source license (such as MIT) for the code, with the data following OpenLitterMap's open data terms. Check OLM's current terms before reusing the data.
+**Licensing.** The code is under the [MIT License](LICENSE). The litter data (`data/` and `public/data/`) is derived from OpenLitterMap, so it follows OpenLitterMap's data license, the [Open Database License (ODbL) 1.0](https://opendatacommons.org/licenses/odbl/1-0/): anyone may reuse it with the credit "© OpenLitterMap & Contributors", and adapted versions that are shared publicly must stay under the ODbL. See [data/LICENSE.md](data/LICENSE.md). The map shows the same credit in its attribution corner.
 
 ---
 

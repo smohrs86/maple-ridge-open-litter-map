@@ -156,6 +156,8 @@
     // one per group in tree order. Never cycled: groups past the list share a neutral grey.
     const GROUP_COLOURS = ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4', '#008300', '#4a3aa7', '#e34948'];
     const EXTRA_GROUP_COLOUR = '#8a8984';
+    // Credit required by OpenLitterMap's data license (ODbL); shown in the map's attribution corner
+    const OLM_ATTRIBUTION = '© <a href="https://openlittermap.com">OpenLitterMap</a> &amp; Contributors (<a href="https://opendatacommons.org/licenses/odbl/">ODbL</a>)';
     const DOT_SPACING_PX = 7;   // distance between the dots of one photo
     // Heatmap: one warm hue, light to dark (sequential), fading into the dots at street level
     const HEAT_COLOURS = ['#fdd49e', '#fdbb84', '#fc8d59', '#e34a33', '#b30000'];
@@ -421,7 +423,7 @@
 
     // Old data (before the crosswalk engine's first sync): plain dots, so the map never breaks.
     function showWithoutLayers(data) {
-      map.addSource('litter-data', { type: 'geojson', data });
+      map.addSource('litter-data', { type: 'geojson', data, attribution: OLM_ATTRIBUTION });
       map.addLayer({
         id: 'litter-points', type: 'circle', source: 'litter-data',
         paint: { 'circle-radius': 6, 'circle-color': '#6b7280', 'circle-stroke-width': 1.5, 'circle-stroke-color': '#ffffff' }
@@ -453,7 +455,7 @@
         }
 
         const { layers, photos, dots } = buildDots(data);
-        map.addSource('litter-dots', { type: 'geojson', data: { type: 'FeatureCollection', features: dots } });
+        map.addSource('litter-dots', { type: 'geojson', data: { type: 'FeatureCollection', features: dots }, attribution: OLM_ATTRIBUTION });
 
         // Heatmap, under the dots and hidden until the Heatmap view is chosen. Weighted by items,
         // so a photo of 10 butts counts 10. It fades out at street level, where the dots fade in.
