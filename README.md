@@ -8,6 +8,8 @@ Litter is photographed and tagged in the field using [OpenLitterMap](https://ope
 
 > **Status: proof of concept achieved (2026-09-27).** The map is live and updates automatically. Refinements are ongoing: older tags in OpenLitterMap are still being cleaned up, so some categories will shift as that's finished.
 
+**Contact:** questions, interest in contributing, or data inquiries: mrolm.unsaved516@simplelogin.com
+
 ---
 
 ## Project status at a glance
@@ -48,6 +50,7 @@ Not part of the proof of concept: GIS features, municipal streams, a license, an
 
 Newest first, one line per change. Claude updates this whenever it updates the README.
 
+- **2026-09-27:** Contact email added for questions, contributors, and data inquiries.
 - **2026-09-27:** Map panel gets a one-line plain-text summary linking to this repository, and the page names its official address (canonical link) for search engines.
 - **2026-09-27:** Licenses added: MIT for the code, ODbL 1.0 for the data (as OpenLitterMap requires), with "© OpenLitterMap & Contributors" now credited on the map.
 - **2026-09-27:** README opening rewritten so search engines and link scrapers see what the map is first: the live link and an "independent project" line. Proof of concept declared achieved; legacy cleanup (criterion 5) and the newcomer read-through (8) continue as refinements.
