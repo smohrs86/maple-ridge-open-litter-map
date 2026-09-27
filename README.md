@@ -4,7 +4,7 @@
 
 Litter is photographed and tagged in the field using [OpenLitterMap](https://openlittermap.com) (OLM). This repository pulls those records from the OLM API, reshapes them for local use, and publishes them as an interactive web map. The goal is good open data for citizen science: a consistent, well-documented record of where litter is, what it is, and how that changes over time. The local categories (the crosswalk) were built using the City of Vancouver litter audit and Maple Ridge municipal classifications as guides.
 
-*Last updated: September 25, 2026*
+*Last updated: September 26, 2026*
 
 > **Status: working proof of concept.** Not ready for public use yet. A license and contributor guide will be added once the proof of concept works.
 
@@ -15,10 +15,10 @@ Litter is photographed and tagged in the field using [OpenLitterMap](https://ope
 | Area | Status | Notes |
 |---|---|---|
 | Data pipeline (OLM API → GeoJSON) | ✅ Built | Runs automatically every 12 hours |
-| Public web map | ✅ Built | Three basic filters: Litter, Pet Waste, Nicotine/THC/Alcohol |
+| Public web map | ✅ Built | MapLibre map on GitHub Pages |
 | Crosswalk logic and layer tree design | ✅ Designed | Exported to `config/crosswalk.csv`. Structure reviewed and clean |
-| Crosswalk engine (code that applies the crosswalk) | ⬜ Planned | Will read the crosswalk as a CSV file |
-| Layer tree map interface | ⬜ Planned | Expandable Group → Subgroup → Layer checkboxes |
+| Crosswalk engine (code that applies the crosswalk) | ✅ Built | Reads `config/crosswalk.csv` on every sync and writes an audit report, `data/audit.md` |
+| Layer tree map interface | ✅ Built | Group → Subgroup → Layer checkboxes, picked-up rings, date filter, popups |
 | GIS features on the map | ⬜ Planned | After the layer tree and the legacy review (Stage 3) |
 | Municipal waste streams | ⬜ Later | Communicating the data in municipal terms, built last (Stage 4) |
 | Cleanup of older tags in OLM | 🟡 In progress | The maintainer is reclassing legacy tags in OLM by hand (roadmap step 4) |
@@ -46,6 +46,7 @@ Not part of the proof of concept: GIS features, municipal streams, a license, an
 
 Newest first, one line per change. Claude updates this whenever it updates the README.
 
+- **2026-09-26:** Stage 2 engine and map built and tested locally: the sync applies the crosswalk to every tagged object, writes `data/audit.md`, and runs when the crosswalk changes. The map has the Group → Subgroup → Layer tree, group colour families, hollow rings for items left in place, a local-time date filter, and photo popups.
 - **2026-09-26:** Legacy review check after a fresh export (2,680 photos, 3,355 tagged objects): REVIEW 1,574 (114 of them from newly uploaded photos on keys that carry a fix note), RECLASS 41, orphan tags 9, UNMAPPED 0, UNCLASS 0.
 - **2026-09-26:** Crosswalk updated: tinfoil moves to Piece as Foil Piece, Organic Debris becomes "Organic Debris, Misc.", and a new E-waste Piece layer (`other/other` with custom tag `E-waste`) is added under Household. Notes were tidied for publication. Git now stores the crosswalk with plain line endings so re-exports only show real edits.
 - **2026-09-26:** README now lists exactly which fields the pipeline publishes per point.
@@ -79,15 +80,16 @@ flowchart LR
     C --> D[scripts/sync_data.py]
     D --> E[litter.geojson]
     E --> F[Web map<br/>index.html]
-    X[Crosswalk<br/>planned] -.-> D
+    X[config/crosswalk.csv] --> D
+    D --> G[audit.md]
 ```
 
 1. **Collect.** Litter is photographed, geotagged, and tagged in the OpenLitterMap app.
 2. **Fetch.** A scheduled GitHub Actions workflow (`.github/workflows/sync_data.yml`) runs `scripts/sync_data.py`. The script logs in to the OLM API and requests photos page by page until an empty page comes back.
 3. **Reshape.** Each photo's tags are flattened into a simple list. Material, brand, and custom tags stay linked to the item they describe.
-4. **Classify.** Each photo currently gets one or more broad groups: `litter`, `pet_waste`, or `substances`. The crosswalk will replace this with much richer local classification.
-5. **Publish.** The result is saved as `data/litter.geojson` (plus a copy in `public/data/`). The workflow commits it only if something changed.
-6. **Display.** `index.html` loads the GeoJSON into a MapLibre map with filter checkboxes.
+4. **Classify.** The script reads `config/crosswalk.csv` and gives every tagged object its Group, Subgroup, and Layer, following the matching rules below. If the crosswalk is missing or a column it needs was renamed, the run stops before writing anything.
+5. **Publish.** The result is saved as `data/litter.geojson` (plus a copy in `public/data/`), with the audit report in `data/audit.md`. The workflow commits them only if something changed. It also runs as soon as a new `config/crosswalk.csv` is pushed.
+6. **Display.** `index.html` loads the GeoJSON into a MapLibre map with the layer tree, a date filter, and photo popups.
 
 ### What each map point contains
 
@@ -99,8 +101,10 @@ Each point on the map is one OLM photo. Its properties are:
 | `datetime` | When the photo was taken |
 | `filename` | Link to the photo on OLM's storage |
 | `tags` | Every tag on the photo, with `type` (standard, material, brand, custom_tag), `category`, `item`, and `quantity`. Standard tags may also carry `object_type`, the type OLM saved for the object (for example a dumping size or a drink type); it is absent when none was chosen. Material, brand, and custom tags also record `parent_category` and `parent_item`. |
-| `groups` | The broad groups this photo falls into |
-| `has_litter`, `has_pet_waste`, `has_substances` | Simple true/false flags used by the current map filters |
+| `objects` | One entry per tagged object, as classified by the crosswalk: `status` (OK, REVIEW, RECLASS, UNCLASS, ORPHAN TAG, or UNMAPPED), `on_map`, `group`, `subgroup`, `layer`, `full_name`, `olm_key`, `quantity`, and `picked_up` (true, false, or null when OLM didn't say). Orphan tags also list their `custom_tags`, and tie-breaks list the tied sheet rows in `tie_rows`. |
+| `groups`, `has_litter`, `has_pet_waste`, `has_substances` | The Stage 1 broad groups and flags. No longer used by the map; kept so older copies of the map keep working |
+
+The file also carries `mrolm_layers`, the full layer tree in display order.
 
 ---
 
@@ -110,7 +114,7 @@ Related docs: [field tagging protocol](docs/tagging-protocol.md) (how items are 
 
 The crosswalk is the heart of Stage 2. It's a lookup table that says: *when a photo has this OpenLitterMap tag, treat it as this local object, and show it in this place on the map.*
 
-It is maintained as a Google Sheet by the project maintainer. It is exported to `config/crosswalk.csv` in this repository. The pipeline will read that file on every run, so **changing the map's categories means editing the spreadsheet, not the code.**
+It is maintained as a Google Sheet by the project maintainer. It is exported to `config/crosswalk.csv` in this repository. The pipeline reads that file on every run, so **changing the map's categories means editing the spreadsheet, not the code.** After an edit, the whole sheet is exported and pushed, and the map updates within minutes.
 
 ### Columns
 
@@ -141,7 +145,7 @@ For each tag on a photo, the engine finds exactly one crosswalk row:
 
 ### Audit counts
 
-Every run will produce a small audit report so data problems are visible instead of silent:
+Every run writes a small audit report, [`data/audit.md`](data/audit.md), so data problems are visible instead of silent. It also lists REVIEW and Not used objects by OLM key, orphan tags and unmapped tags with photo IDs, crosswalk structure checks, and every layer's items, photos, and not-picked-up items:
 
 | Count | Meaning | Healthy value |
 |---|---|---|
@@ -156,7 +160,7 @@ A convention in the sheet supports this: when a row's local key is identical to 
 
 ### Layer tree rules
 
-The map will show an expandable tree of checkboxes, up to three levels deep: **Group → Subgroup → Layer**.
+The map shows an expandable tree of checkboxes, up to three levels deep: **Group → Subgroup → Layer**.
 
 1. **Counts roll up.** A Subgroup's count is the sum of its layers, and a Group's count is the sum of everything inside it.
 2. **Counts are items, not photos.** A photo showing 3 cans counts as 3. Photo counts appear in the audit report.
@@ -166,9 +170,18 @@ The map will show an expandable tree of checkboxes, up to three levels deep: **G
 6. **A Subgroup with only one layer shows as a single checkbox**, with no extra click to expand.
 7. **Empty layers are hidden.** A layer with nothing in it doesn't show a checkbox, so to-do layers like UNCLASS disappear once they reach zero.
 8. **Checkboxes cascade.** Ticking a Group turns everything inside it on or off. Unticking one layer leaves its parents partly ticked.
-9. **Full names outside the tree.** Short layer names like `Sml` only need to make sense in the tree. In popups and exports, the full path is shown, e.g. *Household Dumping – Sml*.
+9. **Full names outside the tree.** Short layer names like `Sml` only need to make sense in the tree. In popups and exports, the full path is shown, e.g. *Dumping – Sml*.
 
 A photo with several kinds of litter appears in every layer that applies to it. That's intended.
+
+### How the map shows it
+
+- **One dot per layer per photo.** A photo with cans and cigarette butts gets two dots, drawn a few pixels apart in a small cluster. The cluster is a display offset only; the photo's location is never moved.
+- **Colour hints at the group.** Each group has its own colour family (a fixed, colour-blind-tested order that is never recycled), subgroups shift the hue slightly, and layers are lighter or darker shades. With this many layers, colour alone can't identify one, so tick a layer on its own or click a dot: the popup names it in full.
+- **Filled dot = picked up, hollow ring = left in place.** A ring means at least one of those items was left where it was found (for example dog waste).
+- **Date filter.** From and To dates use Maple Ridge local time. OLM stores times in UTC, so without this, evening collections would land on the next day. The tree's counts follow the chosen dates.
+- **Popups** show the full layer name, the item count, picked up or left in place, the local date and time, other layers in the same photo, and a link to the photo on OLM.
+- **Dot positions come from the phone's GPS**, so they are usually within about 5 to 15 metres of where the photo was taken, and more near buildings and trees. Zoomed in, a dot can appear on a building near where the litter actually was.
 
 ### Current tree (from `config/crosswalk.csv`, 2026-09-26)
 
@@ -210,8 +223,8 @@ Smoking             Cigarette Butts, Butane Lighter, Nicotine Packaging, Cannabi
 Priority order: the code that applies the crosswalk and displays the points (steps 2 and 3), then the legacy review and reclass (step 4, which is the largest amount of human effort), then Stage 3, then Stage 4.
 
 1. ✅ **Finish the crosswalk.** Done 2026-09-25: exported to `config/crosswalk.csv`, with structural checks clean and no unmapped tags in the current data.
-2. **Build the crosswalk engine.** Update `scripts/sync_data.py` to read the CSV, apply the matching rules, and write an audit report alongside the GeoJSON.
-3. **Build the layer tree map.** Replace the three fixed checkboxes with the expandable tree, including counts and photo popups.
+2. ✅ **Build the crosswalk engine.** Done 2026-09-26: `scripts/sync_data.py` reads the CSV, applies the matching rules, and writes `data/audit.md` alongside the GeoJSON.
+3. ✅ **Build the layer tree map.** Done 2026-09-26: the expandable tree with counts, picked-up rings, a date filter, and photo popups replaced the three fixed checkboxes.
 4. **Clean up older tags in OLM (in progress).** The maintainer is reclassing tagged objects directly in OLM: tags on retired or excluded keys, tags the crosswalk flags for review ("OLM data needs fixes"), and orphan custom tags, meaning custom tags attached to no object. The aim is for the audit counts to reach zero.
 5. ✅ **Confirm OLM's modifier codes.** Done 2026-09-25: the API sends an object's type as `type` (`new_tags` format) or `type_id` (summary format), and the pipeline keeps it as `object_type`. `small` and `medium` are confirmed in real data; `large` has not appeared yet.
 
@@ -220,7 +233,8 @@ Priority order: the code that applies the crosswalk and displays the points (ste
 Once the layer tree works and the legacy data is conformed, add features that make the spatial data easier to read:
 
 - Heatmaps and clustering for dense collection routes
-- A date slider to show how litter changes over time
+- Zone summaries (zonal statistics): divide the collection area into zones such as blocks, add up every dot inside each zone, and show the totals on a card per zone (items, top layers, items left in place) or shade each zone by its total. Zone totals also smooth out GPS drift
+- A date slider to show how litter changes over time (a simple From/To date filter already exists)
 - Richer popups with photo previews and brand information
 
 ### Stage 4 — Municipal waste streams (later)
@@ -235,9 +249,14 @@ Ongoing reliability work is listed in [docs/hardening.md](docs/hardening.md).
 
 ```
 .
-├── .github/workflows/sync_data.yml   Scheduled workflow that runs the pipeline
-├── scripts/sync_data.py              Fetches OLM data and builds the GeoJSON
+├── .github/workflows/sync_data.yml   Workflow that runs the pipeline (every 12 hours and on crosswalk changes)
+├── scripts/sync_data.py              Fetches OLM data, applies the crosswalk, writes the GeoJSON and audit
+├── scripts/crosswalk.py              The crosswalk matching rules, shared by the pipeline and review tools
+├── scripts/export_raw_olm.py         Read-only raw export for the legacy review (local use)
+├── scripts/build_review_workbook.py  Builds the legacy review workbook from an export (local use)
+├── tests/                            Unit tests: python3 -m unittest discover -s tests
 ├── data/litter.geojson               Published dataset
+├── data/audit.md                     Audit report from the latest sync
 ├── public/data/litter.geojson        Copy of the dataset for hosting
 ├── index.html                        The web map
 ├── docs/                             Tagging protocol, decision log, hardening list, batch review method
@@ -250,7 +269,7 @@ Ongoing reliability work is listed in [docs/hardening.md](docs/hardening.md).
 
 The pipeline needs an OpenLitterMap account. Its email and password are stored as **GitHub repository secrets** named `OLM_EMAIL` and `OLM_PASSWORD` (Settings → Secrets and variables → Actions). They are never written into the code.
 
-- **Automatic:** the workflow runs every 12 hours.
+- **Automatic:** the workflow runs every 12 hours, and whenever a push changes `config/crosswalk.csv`.
 - **On demand:** go to the Actions tab, choose *Sync OpenLitterMap GeoJSON Data*, and click *Run workflow*.
 - **Locally:** with Python 3.11 installed:
 
@@ -260,6 +279,8 @@ export OLM_EMAIL="you@example.com"
 export OLM_PASSWORD="your-password"
 python scripts/sync_data.py
 ```
+
+To test without logging in, build from a saved raw export instead: `python scripts/sync_data.py --from-raw review/raw/photos_<date>.json` (see the [batch review method](docs/olm-batch-review-method.md) for making one). Run the unit tests with `python3 -m unittest discover -s tests`.
 
 Then open `index.html` through a local web server (for example, `python -m http.server`) rather than directly from the file system, so the browser allows it to load the GeoJSON.
 
@@ -284,9 +305,9 @@ The project is designed to cost nothing to run.
 
 **Source.** All litter records come from the maintainer's own OpenLitterMap contributions. Photos are hosted by OpenLitterMap; this repository stores only links to them.
 
-**What's published.** Each map point contains only these fields: photo ID, date and time, a link to the photo on OpenLitterMap, litter tags, and the group flags used by the map filters. Location comes from latitude and longitude only. Any other information OpenLitterMap supplies with a record is outside this project's scope and is discarded by the pipeline before anything is saved.
+**What's published.** Each map point contains only these fields: photo ID, date and time, a link to the photo on OpenLitterMap, litter tags, each tagged object's crosswalk layer and picked-up status, and the Stage 1 group flags. The audit report adds counts and photo IDs. Location comes from latitude and longitude only. Any other information OpenLitterMap supplies with a record is outside this project's scope and is discarded by the pipeline before anything is saved.
 
-**Location precision.** Coordinates are published at the precision OLM records. Collection routes are visible on the map by design. Contributors should avoid uploading photos that reveal their home, identify other people, or show private property details.
+**Location precision.** Coordinates are published at the precision OLM records. They come from the phone's GPS when the photo was taken, which is usually accurate to about 5 to 15 metres, so a dot can sit on a nearby building rather than on the sidewalk where the litter was. Dots are never moved or snapped to roads. Collection routes are visible on the map by design. Contributors should avoid uploading photos that reveal their home, identify other people, or show private property details.
 
 **What's deliberately left out.** Posters and signage that name individuals or businesses are not recorded, because a litter map could unfairly imply wrongdoing.
 

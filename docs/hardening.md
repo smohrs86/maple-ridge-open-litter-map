@@ -6,7 +6,8 @@
 - ✅ **Stable output.** Done 2026-09-25: each photo's `groups` are sorted, so unchanged data no longer produces large commits.
 - ✅ **Workflow push race.** Done 2026-09-25: the workflow rebases onto `main` before pushing its data commit.
 - Write the GeoJSON atomically, so an interrupted run can't leave a half-written file.
-- Add automated tests for tag parsing and crosswalk matching.
+- ✅ **Automated tests for crosswalk matching and the engine.** Done 2026-09-26: `tests/` covers the matching rules, object extraction from both OLM tag formats, picked-up states, map visibility, the audit report, and crosswalk loading. The older Stage 1 tag flattening (`tags`) is not yet tested.
+- Run the dataviz palette validator on the map's group colours (it needs Node.js, which wasn't available when the map was built).
 - Validate coordinates and the GeoJSON structure before publishing, and report anything dropped in the audit.
 - Record which crosswalk version (for example its file hash) produced each audit report, so any number on the map can be traced back.
 - Improve map accessibility: keyboard support, screen reader labels, and a text summary of the data.
