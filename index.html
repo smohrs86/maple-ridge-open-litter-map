@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Maple Ridge OpenLitterMap GIS</title>
+  <title>MROLM · Maple Ridge Open Litter Map</title>
 
   <!-- MapLibre Engine & Layout Dependencies -->
   <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
@@ -28,8 +28,12 @@
       font-size: 13px;
       color: #333;
     }
-    .panel-head { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px 6px; }
-    .panel-head strong { font-size: 14px; color: #222; }
+    .panel-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; padding: 12px 14px 8px; }
+    .brand { margin: 0; min-width: 0; }
+    .brand-name { display: block; font-size: 22px; font-weight: 800; letter-spacing: 0.08em; line-height: 1; color: #1c1c1a; }
+    .brand-sub { display: block; font-size: 11.5px; font-weight: 400; color: #5f5e5a; margin-top: 4px; letter-spacing: 0.01em; }
+    .brand-strip { display: flex; height: 3px; width: 100%; margin-top: 7px; border-radius: 2px; overflow: hidden; }
+    .brand-strip span { flex: 1; }
     .panel-head button, .tree-actions button {
       font: inherit; font-size: 12px; background: none; border: 1px solid #ccc; border-radius: 4px;
       padding: 2px 8px; cursor: pointer; color: #333;
@@ -51,6 +55,17 @@
       font: inherit; font-size: 12px; background: none; border: 1px solid #ccc; border-radius: 4px;
       padding: 2px 8px; cursor: pointer; color: #333;
     }
+
+    .view-switch { display: inline-flex; border: 1px solid #ccc; border-radius: 6px; overflow: hidden; margin: 0 0 8px; }
+    .view-switch button { font: inherit; font-size: 12px; border: none; background: #fff; padding: 3px 12px; cursor: pointer; color: #333; }
+    .view-switch button[aria-pressed="true"] { background: #333; color: #fff; }
+    .left-only { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #444; margin: 0 0 8px; cursor: pointer; }
+    .heat-legend { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #666; margin: 0 0 6px; }
+    .heat-legend i {
+      flex: 1; height: 8px; border-radius: 4px;
+      background: linear-gradient(to right, #fdd49e, #fdbb84, #fc8d59, #e34a33, #b30000);
+    }
+    .heat-legend[hidden], .key[hidden] { display: none; }
 
     .row { display: flex; align-items: center; gap: 4px; padding: 2px 0; }
     .row label { display: flex; align-items: center; gap: 6px; flex: 1; cursor: pointer; min-width: 0; }
@@ -78,10 +93,22 @@
   <!-- Layer tree: Group → Subgroup → Layer, built from the data -->
   <div class="filter-ctrl" id="panel">
     <div class="panel-head">
-      <strong>Litter layers</strong>
+      <h1 class="brand">
+        <span class="brand-name">MROLM</span>
+        <span class="brand-sub">Maple Ridge Open Litter Map</span>
+        <span class="brand-strip" id="brand-strip" aria-hidden="true"></span>
+      </h1>
       <button type="button" id="panel-toggle" aria-expanded="true">Hide</button>
     </div>
     <div class="panel-body">
+      <div class="view-switch" id="view-switch" role="group" aria-label="Map view">
+        <button type="button" id="view-dots" aria-pressed="true">Dots</button>
+        <button type="button" id="view-heat" aria-pressed="false">Heatmap</button>
+      </div>
+      <div class="heat-legend" id="heat-legend" hidden>
+        <span>Fewer items</span><i></i><span>More items</span>
+      </div>
+      <p class="note" id="heat-note" hidden>Heat is relative to the view, and it also reflects where collecting happened most. Zoom in to street level to see the dots.</p>
       <div class="key">
         <span><i class="dot filled"></i>Picked up</span>
         <span><i class="dot ring"></i>Left in place</span>
@@ -92,6 +119,7 @@
         <label>To <input type="date" id="date-to"></label>
         <button type="button" id="date-clear">All dates</button>
       </div>
+      <label class="left-only" id="left-only-row"><input type="checkbox" id="left-only"> Left in place only</label>
       <div class="tree-actions">
         <button type="button" id="all-on">All</button>
         <button type="button" id="all-off">None</button>
@@ -109,6 +137,9 @@
     const GROUP_COLOURS = ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4', '#008300', '#4a3aa7', '#e34948'];
     const EXTRA_GROUP_COLOUR = '#8a8984';
     const DOT_SPACING_PX = 7;   // distance between the dots of one photo
+    // Heatmap: one warm hue, light to dark (sequential), fading into the dots at street level
+    const HEAT_COLOURS = ['#fdd49e', '#fdbb84', '#fc8d59', '#e34a33', '#b30000'];
+    const HEAT_FADE_START = 15, HEAT_FADE_END = 16.5;   // zoom levels
     const TIME_ZONE = 'America/Vancouver';  // OLM stores UTC; show local time
 
     const map = new maplibregl.Map({
@@ -227,7 +258,7 @@
           dots.push({
             type: 'Feature',
             geometry: feature.geometry,
-            properties: { lid: e.lid, slot, pi, day, items: e.items, hollow: e.left > 0 }
+            properties: { lid: e.lid, slot, pi, day, items: e.items, left: e.left, hollow: e.left > 0 }
           });
         });
       });
@@ -380,6 +411,8 @@
       document.querySelector('.key').hidden = true;
       document.querySelector('.tree-actions').hidden = true;
       document.getElementById('dates').hidden = true;
+      document.getElementById('view-switch').hidden = true;
+      document.getElementById('left-only-row').hidden = true;
       document.getElementById('feature-count').innerText = `Total Points: ${data.features.length}`;
     }
 
@@ -402,6 +435,24 @@
         const { layers, photos, dots } = buildDots(data);
         map.addSource('litter-dots', { type: 'geojson', data: { type: 'FeatureCollection', features: dots } });
 
+        // Heatmap, under the dots and hidden until the Heatmap view is chosen. Weighted by items,
+        // so a photo of 10 butts counts 10. It fades out at street level, where the dots fade in.
+        map.addLayer({
+          id: 'litter-heat', type: 'heatmap', source: 'litter-dots',
+          layout: { visibility: 'none' },
+          paint: {
+            'heatmap-weight': ['get', 'items'],
+            'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 10, 0.4, 15, 1.2],
+            'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 10, 10, 14, 22, 17, 34],
+            'heatmap-color': ['interpolate', ['linear'], ['heatmap-density'],
+              0, 'rgba(253,212,158,0)', 0.1, HEAT_COLOURS[0], 0.3, HEAT_COLOURS[1],
+              0.5, HEAT_COLOURS[2], 0.75, HEAT_COLOURS[3], 1, HEAT_COLOURS[4]],
+            'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], HEAT_FADE_START, 0.85, HEAT_FADE_END, 0],
+          }
+        });
+        const DOT_FILL = ['case', ['get', 'hollow'], 0, 0.95];
+        const fadeIn = value => ['interpolate', ['linear'], ['zoom'], HEAT_FADE_START, 0, HEAT_FADE_END, value];
+
         // One circle layer per slot: a photo's dots sit in a small sunflower pattern
         // (fixed pixel offsets), so they stay apart at every zoom without moving the point.
         const slots = dots.reduce((m, d) => Math.max(m, d.properties.slot + 1), 0);
@@ -417,7 +468,7 @@
               'circle-radius': 5,
               'circle-translate': [r * Math.cos(angle), r * Math.sin(angle)],
               'circle-color': ['get', 'colour'],
-              'circle-opacity': ['case', ['get', 'hollow'], 0, 0.95],
+              'circle-opacity': DOT_FILL,
               'circle-stroke-color': ['case', ['get', 'hollow'], ['get', 'colour'], '#ffffff'],
               'circle-stroke-width': ['case', ['get', 'hollow'], 2.5, 1],
             }
@@ -435,6 +486,7 @@
           [fromInput, toInput].forEach(input => { input.min = first; input.max = last; });
         }
         const inputDay = input => input.value ? Number(input.value.replace(/-/g, '')) : null;
+        const leftOnlyBox = document.getElementById('left-only');
 
         function updateMapFilter() {
           tree.refresh();
@@ -443,31 +495,55 @@
           const from = inputDay(fromInput), to = inputDay(toInput);
           const inRange = day => (from === null || day >= from) && (to === null || day <= to);
 
-          const dateFilter = [];
-          if (from !== null) dateFilter.push(['>=', ['get', 'day'], from]);
-          if (to !== null) dateFilter.push(['<=', ['get', 'day'], to]);
-          slotLayerIds.forEach((id, s) => map.setFilter(id,
-            ['all', ['==', ['get', 'slot'], s], ['in', ['get', 'lid'], ['literal', checked]], ...dateFilter]));
+          const leftOnly = leftOnlyBox.checked;
 
-          // Tree counts follow the date range; the summary follows the date range and the ticked layers.
+          const conditions = [['in', ['get', 'lid'], ['literal', checked]]];
+          if (from !== null) conditions.push(['>=', ['get', 'day'], from]);
+          if (to !== null) conditions.push(['<=', ['get', 'day'], to]);
+          if (leftOnly) conditions.push(['>', ['get', 'left'], 0]);
+          slotLayerIds.forEach((id, s) => map.setFilter(id, ['all', ['==', ['get', 'slot'], s], ...conditions]));
+          map.setFilter('litter-heat', ['all', ...conditions]);
+          map.setPaintProperty('litter-heat', 'heatmap-weight', ['get', leftOnly ? 'left' : 'items']);
+
+          // Tree counts follow the date range (and "left in place only");
+          // the summary also follows the ticked layers.
           const itemsByLid = new Map();
           let items = 0, count = 0;
           const shownPhotos = new Set();
           dots.forEach(d => {
             const p = d.properties;
-            if (!inRange(p.day)) return;
-            itemsByLid.set(p.lid, (itemsByLid.get(p.lid) || 0) + p.items);
-            if (shown.has(p.lid)) { items += p.items; count++; shownPhotos.add(p.pi); }
+            const n = leftOnly ? p.left : p.items;
+            if (!inRange(p.day) || !n) return;
+            itemsByLid.set(p.lid, (itemsByLid.get(p.lid) || 0) + n);
+            if (shown.has(p.lid)) { items += n; count++; shownPhotos.add(p.pi); }
           });
           tree.setCounts(itemsByLid);
           document.getElementById('feature-count').innerText =
-            `Showing ${items.toLocaleString('en-CA')} items as ${count.toLocaleString('en-CA')} dots ` +
-            `from ${shownPhotos.size.toLocaleString('en-CA')} photos`;
+            `Showing ${items.toLocaleString('en-CA')} items${leftOnly ? ' left in place' : ''} ` +
+            `as ${count.toLocaleString('en-CA')} dots from ${shownPhotos.size.toLocaleString('en-CA')} photos`;
         }
+
+        // Dots or Heatmap. In the heatmap view the dots fade in at street level, so they can still be clicked there.
+        let heatView = false;
+        function setView(heat) {
+          heatView = heat;
+          map.setLayoutProperty('litter-heat', 'visibility', heat ? 'visible' : 'none');
+          slotLayerIds.forEach(id => {
+            map.setPaintProperty(id, 'circle-opacity', heat ? fadeIn(DOT_FILL) : DOT_FILL);
+            map.setPaintProperty(id, 'circle-stroke-opacity', heat ? fadeIn(1) : 1);
+          });
+          document.getElementById('view-dots').setAttribute('aria-pressed', String(!heat));
+          document.getElementById('view-heat').setAttribute('aria-pressed', String(heat));
+          document.getElementById('heat-legend').hidden = !heat;
+          document.getElementById('heat-note').hidden = !heat;
+        }
+        const dotsFaded = () => heatView && map.getZoom() < (HEAT_FADE_START + HEAT_FADE_END) / 2;
 
         document.getElementById('all-on').addEventListener('click', () => { tree.setAll(true); updateMapFilter(); });
         document.getElementById('all-off').addEventListener('click', () => { tree.setAll(false); updateMapFilter(); });
-        [fromInput, toInput].forEach(input => input.addEventListener('change', updateMapFilter));
+        [fromInput, toInput, leftOnlyBox].forEach(input => input.addEventListener('change', updateMapFilter));
+        document.getElementById('view-dots').addEventListener('click', () => setView(false));
+        document.getElementById('view-heat').addEventListener('click', () => setView(true));
         document.getElementById('date-clear').addEventListener('click', () => {
           fromInput.value = '';
           toInput.value = '';
@@ -476,12 +552,13 @@
         updateMapFilter();
 
         map.on('click', slotLayerIds, e => {
+          if (dotsFaded()) return;   // dots aren't visible yet in the heatmap view
           new maplibregl.Popup({ maxWidth: '280px' })
             .setLngLat(e.lngLat)
             .setHTML(popupHtml(e.features[0].properties, layers, photos))
             .addTo(map);
         });
-        map.on('mouseenter', slotLayerIds, () => { map.getCanvas().style.cursor = 'pointer'; });
+        map.on('mouseenter', slotLayerIds, () => { if (!dotsFaded()) map.getCanvas().style.cursor = 'pointer'; });
         map.on('mouseleave', slotLayerIds, () => { map.getCanvas().style.cursor = ''; });
 
       } catch (err) {
@@ -489,6 +566,10 @@
         document.getElementById('feature-count').innerText = 'Error loading dataset';
       }
     });
+
+    // The title's colour strip: one segment per group colour, the same fixed order the map uses
+    document.getElementById('brand-strip').innerHTML =
+      GROUP_COLOURS.slice(0, 7).map(c => `<span style="background:${c}"></span>`).join('');
 
     // Hide or show the panel body (handy on a phone)
     document.getElementById('panel-toggle').addEventListener('click', e => {
