@@ -46,6 +46,7 @@ Not part of the proof of concept: GIS features, municipal streams, a license, an
 
 Newest first, one line per change. Claude updates this whenever it updates the README.
 
+- **2026-09-27:** Map gets a favicon, a link-preview image (title card beside the real litter points), and a page description, so shared links show a proper preview card.
 - **2026-09-26:** Map gets a Dots | Heatmap switch (heat weighted by items, fading into the dots at street level), a "Left in place only" filter for both views, and an MROLM title block.
 - **2026-09-26:** Spot check passed (proof-of-concept criterion 4). An independent recount from OLM's raw export matched the live map for Pet Waste Unbagged, Dumping – Sml, Cannabis Packaging, Wood Debris, and E-waste Piece. The maintainer's searches on the OLM website (`dogshit`, `dogshit_in`, `dumping`, custom `E-waste`) matched the predicted photo and tag totals exactly.
 - **2026-09-26:** Stage 2 is live after the first push-triggered sync. The map now always checks for fresh data, so a new sync shows right away instead of after the browser's 10-minute cache.
@@ -263,6 +264,7 @@ Ongoing reliability work is listed in [docs/hardening.md](docs/hardening.md).
 ├── data/audit.md                     Audit report from the latest sync
 ├── public/data/litter.geojson        Copy of the dataset for hosting
 ├── index.html                        The web map
+├── assets/                           Favicon and link-preview image
 ├── docs/                             Tagging protocol, decision log, hardening list, batch review method
 └── config/crosswalk.csv              The crosswalk, exported from the spreadsheet
 ```
