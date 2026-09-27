@@ -46,6 +46,7 @@ Not part of the proof of concept: GIS features, municipal streams, a license, an
 
 Newest first, one line per change. Claude updates this whenever it updates the README.
 
+- **2026-09-26:** Legacy review check after a fresh export (2,680 photos, 3,355 tagged objects): REVIEW 1,574 (114 of them from newly uploaded photos on keys that carry a fix note), RECLASS 41, orphan tags 9, UNMAPPED 0, UNCLASS 0.
 - **2026-09-26:** Crosswalk updated: tinfoil moves to Piece as Foil Piece, Organic Debris becomes "Organic Debris, Misc.", and a new E-waste Piece layer (`other/other` with custom tag `E-waste`) is added under Household. Notes were tidied for publication. Git now stores the crosswalk with plain line endings so re-exports only show real edits.
 - **2026-09-26:** README now lists exactly which fields the pipeline publishes per point.
 - **2026-09-26:** Review workbook builder and a shared, tested crosswalk matcher added (offline, read-only). The first build matched the earlier snapshot except for 22 objects moving between REVIEW and RECLASS.
