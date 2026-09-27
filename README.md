@@ -19,7 +19,7 @@ Litter is photographed and tagged in the field using [OpenLitterMap](https://ope
 | Crosswalk logic and layer tree design | ✅ Designed | Exported to `config/crosswalk.csv`. Structure reviewed and clean |
 | Crosswalk engine (code that applies the crosswalk) | ✅ Built | Reads `config/crosswalk.csv` on every sync and writes an audit report, `data/audit.md` |
 | Layer tree map interface | ✅ Built | Group → Subgroup → Layer checkboxes, picked-up rings, date filter, popups |
-| GIS features on the map | ⬜ Planned | After the layer tree and the legacy review (Stage 3) |
+| GIS features on the map | 🟡 Started | Heatmap view built early; the rest of Stage 3 follows the legacy review |
 | Municipal waste streams | ⬜ Later | Communicating the data in municipal terms, built last (Stage 4) |
 | Cleanup of older tags in OLM | 🟡 In progress | The maintainer is reclassing legacy tags in OLM by hand (roadmap step 4) |
 
@@ -46,6 +46,7 @@ Not part of the proof of concept: GIS features, municipal streams, a license, an
 
 Newest first, one line per change. Claude updates this whenever it updates the README.
 
+- **2026-09-26:** Map gets a Dots | Heatmap switch (heat weighted by items, fading into the dots at street level), a "Left in place only" filter for both views, and an MROLM title block.
 - **2026-09-26:** Spot check passed (proof-of-concept criterion 4). An independent recount from OLM's raw export matched the live map for Pet Waste Unbagged, Dumping – Sml, Cannabis Packaging, Wood Debris, and E-waste Piece. The maintainer's searches on the OLM website (`dogshit`, `dogshit_in`, `dumping`, custom `E-waste`) matched the predicted photo and tag totals exactly.
 - **2026-09-26:** Stage 2 is live after the first push-triggered sync. The map now always checks for fresh data, so a new sync shows right away instead of after the browser's 10-minute cache.
 - **2026-09-26:** Stage 2 engine and map built and tested locally: the sync applies the crosswalk to every tagged object, writes `data/audit.md`, and runs when the crosswalk changes. The map has the Group → Subgroup → Layer tree, group colour families, hollow rings for items left in place, a local-time date filter, and photo popups.
@@ -180,7 +181,8 @@ A photo with several kinds of litter appears in every layer that applies to it. 
 
 - **One dot per layer per photo.** A photo with cans and cigarette butts gets two dots, drawn a few pixels apart in a small cluster. The cluster is a display offset only; the photo's location is never moved.
 - **Colour hints at the group.** Each group has its own colour family (a fixed, colour-blind-tested order that is never recycled), subgroups shift the hue slightly, and layers are lighter or darker shades. With this many layers, colour alone can't identify one, so tick a layer on its own or click a dot: the popup names it in full.
-- **Filled dot = picked up, hollow ring = left in place.** A ring means at least one of those items was left where it was found (for example dog waste).
+- **Filled dot = picked up, hollow ring = left in place.** A ring means at least one of those items was left where it was found (for example dog waste). **Left in place only** narrows either view to those items.
+- **Heatmap view.** The Dots | Heatmap switch shows where items concentrate, weighted by items and driven by the same checkboxes and dates. It uses one colour from pale to deep red, and it's relative: the deepest red is the densest place in view, not a fixed number. It fades into the dots at street level so they can be clicked. It also reflects collecting effort: routes walked often glow brighter than routes walked once.
 - **Date filter.** From and To dates use Maple Ridge local time. OLM stores times in UTC, so without this, evening collections would land on the next day. The tree's counts follow the chosen dates.
 - **Popups** show the full layer name, the item count, picked up or left in place, the local date and time, other layers in the same photo, and a link to the photo on OLM.
 - **Dot positions come from the phone's GPS**, so they are usually within about 5 to 15 metres of where the photo was taken, and more near buildings and trees. Zoomed in, a dot can appear on a building near where the litter actually was.
@@ -234,7 +236,7 @@ Priority order: the code that applies the crosswalk and displays the points (ste
 
 Once the layer tree works and the legacy data is conformed, add features that make the spatial data easier to read:
 
-- Heatmaps and clustering for dense collection routes
+- ✅ Heatmap view (built early, 2026-09-26). Clustering for dense collection routes is still open
 - Zone summaries (zonal statistics): divide the collection area into zones such as blocks, add up every dot inside each zone, and show the totals on a card per zone (items, top layers, items left in place) or shade each zone by its total. Zone totals also smooth out GPS drift
 - A date slider to show how litter changes over time (a simple From/To date filter already exists)
 - Richer popups with photo previews and brand information
