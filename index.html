@@ -18,33 +18,99 @@
       left: 12px;
       z-index: 10;
       background: #ffffff;
-      padding: 14px 18px;
       border-radius: 8px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.18);
-      min-width: 200px;
+      width: 300px;
+      max-width: calc(100vw - 24px);
+      max-height: calc(100vh - 24px);
+      display: flex;
+      flex-direction: column;
+      font-size: 13px;
+      color: #333;
     }
-    .filter-ctrl strong { display: block; margin-bottom: 10px; font-size: 14px; color: #222; }
-    .filter-ctrl label { display: flex; align-items: center; margin-bottom: 8px; font-size: 13px; color: #444; cursor: pointer; }
-    .filter-ctrl input { margin-right: 10px; cursor: pointer; }
+    .panel-head { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px 6px; }
+    .panel-head strong { font-size: 14px; color: #222; }
+    .panel-head button, .tree-actions button {
+      font: inherit; font-size: 12px; background: none; border: 1px solid #ccc; border-radius: 4px;
+      padding: 2px 8px; cursor: pointer; color: #333;
+    }
+    .panel-body { overflow-y: auto; padding: 0 14px 12px; }
+    .filter-ctrl.collapsed .panel-body { display: none; }
+
+    .key { display: flex; gap: 14px; align-items: center; font-size: 12px; color: #555; margin: 2px 0 6px; }
+    .key span { display: inline-flex; align-items: center; gap: 5px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex: none; }
+    .dot.filled { background: #777; }
+    .dot.ring { border: 2px solid #777; width: 7px; height: 7px; }
+    .note { font-size: 11px; color: #666; margin: 0 0 8px; }
+    .tree-actions { display: flex; gap: 6px; margin-bottom: 6px; }
+    .dates { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 0 0 8px; padding-bottom: 8px; border-bottom: 1px solid #eee; }
+    .dates label { display: flex; align-items: center; gap: 4px; font-size: 12px; color: #555; }
+    .dates input { font: inherit; font-size: 12px; padding: 1px 2px; }
+    .dates button {
+      font: inherit; font-size: 12px; background: none; border: 1px solid #ccc; border-radius: 4px;
+      padding: 2px 8px; cursor: pointer; color: #333;
+    }
+
+    .row { display: flex; align-items: center; gap: 4px; padding: 2px 0; }
+    .row label { display: flex; align-items: center; gap: 6px; flex: 1; cursor: pointer; min-width: 0; }
+    .row label .name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .row input { margin: 0; cursor: pointer; }
+    .row .count { color: #666; font-variant-numeric: tabular-nums; font-size: 12px; }
+    .caret { width: 18px; flex: none; border: none; background: none; cursor: pointer; padding: 0; color: #555; font-size: 11px; }
+    .caret-space { width: 18px; flex: none; }
+    .children { margin-left: 18px; }
+    .children[hidden] { display: none; }
+    .group-row > label .name { font-weight: 600; }
+
     .status-counter { font-size: 11px; color: #666; margin-top: 8px; border-top: 1px solid #eee; padding-top: 6px; }
+
+    .maplibregl-popup-content { font-size: 13px; line-height: 1.4; max-width: 260px; }
+    .maplibregl-popup-content h4 { margin: 0 0 4px; font-size: 13px; }
+    .maplibregl-popup-content .muted { color: #666; }
+    .maplibregl-popup-content ul { margin: 4px 0; padding-left: 16px; }
   </style>
 </head>
 <body>
 
   <div id="map"></div>
 
-  <!-- Interactive Category Control -->
-  <div class="filter-ctrl">
-    <strong>Categories</strong>
-    <label><input type="checkbox" class="category-filter" value="has_litter" checked> Litter</label>
-    <label><input type="checkbox" class="category-filter" value="has_pet_waste" checked> Pet Waste</label>
-    <label><input type="checkbox" class="category-filter" value="has_substances" checked> Nicotine, THC & Alcohol</label>
-    <div id="feature-count" class="status-counter">Loading points...</div>
+  <!-- Layer tree: Group → Subgroup → Layer, built from the data -->
+  <div class="filter-ctrl" id="panel">
+    <div class="panel-head">
+      <strong>Litter layers</strong>
+      <button type="button" id="panel-toggle" aria-expanded="true">Hide</button>
+    </div>
+    <div class="panel-body">
+      <div class="key">
+        <span><i class="dot filled"></i>Picked up</span>
+        <span><i class="dot ring"></i>Left in place</span>
+      </div>
+      <p class="note">Counts are items. Tick one layer on its own to see just that kind of litter; click a dot for details.</p>
+      <div class="dates" id="dates">
+        <label>From <input type="date" id="date-from"></label>
+        <label>To <input type="date" id="date-to"></label>
+        <button type="button" id="date-clear">All dates</button>
+      </div>
+      <div class="tree-actions">
+        <button type="button" id="all-on">All</button>
+        <button type="button" id="all-off">None</button>
+      </div>
+      <div id="tree"></div>
+      <div id="feature-count" class="status-counter">Loading points...</div>
+    </div>
   </div>
 
   <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 
   <script>
+    // Group colours: the dataviz reference palette's categorical slots, in fixed order,
+    // one per group in tree order. Never cycled: groups past the list share a neutral grey.
+    const GROUP_COLOURS = ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4', '#008300', '#4a3aa7', '#e34948'];
+    const EXTRA_GROUP_COLOUR = '#8a8984';
+    const DOT_SPACING_PX = 7;   // distance between the dots of one photo
+    const TIME_ZONE = 'America/Vancouver';  // OLM stores UTC; show local time
+
     const map = new maplibregl.Map({
       container: 'map',
       style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
@@ -63,69 +129,371 @@
       return await response.json();
     }
 
+    // ---------- colour helpers ----------
+    function hexToHsl(hex) {
+      const n = parseInt(hex.slice(1), 16);
+      const r = (n >> 16) / 255, g = ((n >> 8) & 255) / 255, b = (n & 255) / 255;
+      const max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
+      if (max === min) return [0, 0, l * 100];
+      const d = max - min, s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      let h = max === r ? (g - b) / d + (g < b ? 6 : 0) : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
+      return [h * 60, s * 100, l * 100];
+    }
+    function hslToHex(h, s, l) {
+      h = ((h % 360) + 360) % 360; s /= 100; l /= 100;
+      const k = n => (n + h / 30) % 12, a = s * Math.min(l, 1 - l);
+      const f = n => Math.round(255 * (l - a * Math.max(-1, Math.min(k(n) - 3, 9 - k(n), 1))));
+      return '#' + [f(0), f(8), f(4)].map(v => v.toString(16).padStart(2, '0')).join('');
+    }
+
+    // Colour per layer: group = colour family, subgroup = small hue shift, layer = lighter/darker shade.
+    function assignColours(layers) {
+      const groups = [...new Set(layers.map(l => l.group))];
+      groups.forEach((group, gi) => {
+        const base = hexToHsl(gi < GROUP_COLOURS.length ? GROUP_COLOURS[gi] : EXTRA_GROUP_COLOUR);
+        const inGroup = layers.filter(l => l.group === group);
+        const subs = [...new Set(inGroup.map(l => l.subgroup))];
+        subs.forEach((sub, si) => {
+          const hue = base[0] + (si - (subs.length - 1) / 2) * 14;
+          const inSub = inGroup.filter(l => l.subgroup === sub);
+          inSub.forEach(l => {
+            l.groupColour = hslToHex(base[0], base[1], base[2]);
+            l.subColour = hslToHex(hue, base[1], base[2]);
+          });
+          inSub.forEach((layer, k) => {
+            // Golden-ratio steps spread the shades so neighbours in the tree differ
+            const t = inSub.length === 1 ? 0 : ((k * 0.618034) % 1) - 0.5;
+            const light = Math.max(24, Math.min(72, base[2] + t * 36));
+            layer.colour = hslToHex(hue, base[1], light);
+          });
+        });
+      });
+    }
+
+    function escapeHtml(text) {
+      return String(text ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+    }
+    // Local calendar day as a number (20260923), so a date range is a simple comparison.
+    const DAY_FORMAT = new Intl.DateTimeFormat('en-CA', { timeZone: TIME_ZONE, year: 'numeric', month: '2-digit', day: '2-digit' });
+    function localDay(iso) {
+      const d = iso ? new Date(iso) : null;
+      return d && !isNaN(d) ? Number(DAY_FORMAT.format(d).replace(/\D/g, '')) : 0;
+    }
+    function dayToInput(day) {
+      const s = String(day);
+      return `${s.slice(0, 4)}-${s.slice(4, 6)}-${s.slice(6, 8)}`;
+    }
+    function localTime(iso) {
+      if (!iso) return 'Date unknown';
+      const d = new Date(iso);
+      if (isNaN(d)) return 'Date unknown';
+      return d.toLocaleString('en-CA', { timeZone: TIME_ZONE, dateStyle: 'medium', timeStyle: 'short' });
+    }
+    function layerKey(g, s, l) { return JSON.stringify([g, s, l]); }
+
+    // ---------- turn photos into one dot per layer per photo ----------
+    function buildDots(data) {
+      // Tree order comes from the data (mrolm_layers); layers missing from it are appended.
+      const layers = (data.mrolm_layers || []).map(l => ({ ...l }));
+      const index = new Map(layers.map((l, i) => [layerKey(l.group, l.subgroup, l.layer), i]));
+      const photos = [], dots = [];
+
+      data.features.forEach(feature => {
+        const p = feature.properties;
+        const byLayer = new Map();
+        (p.objects || []).forEach(o => {
+          if (!o.on_map) return;
+          const key = layerKey(o.group, o.subgroup, o.layer);
+          if (!index.has(key)) {
+            index.set(key, layers.length);
+            layers.push({ group: o.group, subgroup: o.subgroup, layer: o.layer });
+          }
+          const lid = index.get(key);
+          const entry = byLayer.get(lid) || { lid, items: 0, left: 0, unknown: 0 };
+          const qty = o.quantity || 0;
+          entry.items += qty;
+          if (o.picked_up === false) entry.left += qty;
+          if (o.picked_up === null || o.picked_up === undefined) entry.unknown += qty;
+          byLayer.set(lid, entry);
+        });
+        if (!byLayer.size) return;
+        const pi = photos.length;
+        const entries = [...byLayer.values()].sort((a, b) => a.lid - b.lid);
+        const day = localDay(p.datetime);
+        photos.push({ id: p.id, datetime: p.datetime, filename: p.filename, entries });
+        entries.forEach((e, slot) => {
+          dots.push({
+            type: 'Feature',
+            geometry: feature.geometry,
+            properties: { lid: e.lid, slot, pi, day, items: e.items, hollow: e.left > 0 }
+          });
+        });
+      });
+
+      layers.forEach((l, i) => {
+        l.lid = i;
+        l.fullName = [l.group, l.subgroup, l.layer].filter(Boolean).join(' – ');
+        l.items = 0;
+      });
+      dots.forEach(d => { layers[d.properties.lid].items += d.properties.items; });
+      assignColours(layers);
+      dots.forEach(d => { d.properties.colour = layers[d.properties.lid].colour; });
+      return { layers, photos, dots };
+    }
+
+    // ---------- the layer tree (README "Layer tree rules") ----------
+    function buildTree(layers, onChange) {
+      const container = document.getElementById('tree');
+      container.innerHTML = '';
+      const visible = layers.filter(l => l.items > 0);   // rule 7: empty layers are hidden
+      const allBoxes = [];
+
+      function layerRow(layer) {
+        const row = document.createElement('div');
+        row.className = 'row';
+        row.innerHTML = `<span class="caret-space"></span>
+          <label><input type="checkbox" checked><i class="dot" style="background:${layer.colour}"></i>
+          <span class="name" title="${escapeHtml(layer.fullName)}">${escapeHtml(layer.layer)}</span></label>
+          <span class="count">${layer.items.toLocaleString('en-CA')}</span>`;
+        const box = row.querySelector('input');
+        box.dataset.lid = layer.lid;
+        allBoxes.push(box);
+        const count = row.querySelector('.count');
+        const update = itemsByLid => {
+          const n = itemsByLid.get(layer.lid) || 0;
+          count.textContent = n.toLocaleString('en-CA');
+          return n;
+        };
+        return { el: row, boxes: [box], items: layer.items, update };
+      }
+
+      // A branch (group or subgroup): caret, cascading checkbox, rolled-up count (rules 1 and 8).
+      function branchNode(name, colour, children, extraClass) {
+        const node = document.createElement('div');
+        const row = document.createElement('div');
+        row.className = 'row ' + extraClass;
+        const items = children.reduce((sum, c) => sum + c.items, 0);
+        row.innerHTML = `<button type="button" class="caret" aria-expanded="false" aria-label="Expand ${escapeHtml(name)}">▸</button>
+          <label><input type="checkbox" checked><i class="dot" style="background:${colour}"></i>
+          <span class="name">${escapeHtml(name)}</span></label>
+          <span class="count">${items.toLocaleString('en-CA')}</span>`;
+        const kids = document.createElement('div');
+        kids.className = 'children';
+        kids.hidden = true;
+        children.forEach(c => kids.appendChild(c.el));
+        node.append(row, kids);
+
+        const caret = row.querySelector('.caret');
+        caret.addEventListener('click', () => {
+          kids.hidden = !kids.hidden;
+          caret.textContent = kids.hidden ? '▸' : '▾';
+          caret.setAttribute('aria-expanded', String(!kids.hidden));
+        });
+        const boxes = children.flatMap(c => c.boxes);
+        const own = row.querySelector('input');
+        own.addEventListener('change', () => {
+          boxes.forEach(b => { b.checked = own.checked; });
+          onChange();
+        });
+        own.refresh = () => {
+          const on = boxes.filter(b => b.checked).length;
+          own.checked = on === boxes.length;
+          own.indeterminate = on > 0 && on < boxes.length;
+        };
+        branchBoxes.push(own);
+        const count = row.querySelector('.count');
+        const update = itemsByLid => {
+          const n = children.reduce((sum, c) => sum + c.update(itemsByLid), 0);
+          count.textContent = n.toLocaleString('en-CA');
+          return n;
+        };
+        return { el: node, boxes, items, update };
+      }
+
+      const branchBoxes = [];
+      const roots = [];
+      const groups = [...new Set(visible.map(l => l.group))];
+      groups.forEach(group => {
+        const inGroup = visible.filter(l => l.group === group);
+        if (!group) {                           // rule 4: a blank Group means standalone
+          inGroup.forEach(l => {
+            const node = layerRow(l);
+            roots.push(node);
+            container.appendChild(node.el);
+          });
+          return;
+        }
+        const children = [];
+        [...new Set(inGroup.map(l => l.subgroup))].forEach(sub => {
+          const inSub = inGroup.filter(l => l.subgroup === sub);
+          if (!sub || inSub.length === 1) {     // rules 3 and 6: no subgroup, or a one-layer subgroup
+            inSub.forEach(l => children.push(layerRow(l)));
+          } else {
+            children.push(branchNode(sub, inSub[0].subColour, inSub.map(layerRow), 'sub-row'));
+          }
+        });
+        const node = branchNode(group, inGroup[0].groupColour, children, 'group-row');
+        roots.push(node);
+        container.appendChild(node.el);
+      });
+
+      allBoxes.forEach(b => b.addEventListener('change', onChange));
+      return {
+        checkedLids: () => allBoxes.filter(b => b.checked).map(b => Number(b.dataset.lid)),
+        setAll: on => { allBoxes.forEach(b => { b.checked = on; }); },
+        refresh: () => branchBoxes.forEach(b => b.refresh()),
+        setCounts: itemsByLid => roots.forEach(r => r.update(itemsByLid)),
+      };
+    }
+
+    // ---------- popups ----------
+    function popupHtml(dot, layers, photos) {
+      const layer = layers[dot.lid];
+      const photo = photos[dot.pi];
+      const entry = photo.entries.find(e => e.lid === dot.lid);
+      let state = 'Picked up';
+      if (entry.left === entry.items) state = 'Left in place';
+      else if (entry.left > 0) state = `${entry.left} of ${entry.items} left in place`;
+      else if (entry.unknown === entry.items) state = 'Picked up: not recorded';
+      const others = photo.entries.filter(e => e.lid !== dot.lid)
+        .map(e => `<li>${escapeHtml(layers[e.lid].fullName)} (${e.items})</li>`).join('');
+      const link = /^https:\/\//.test(photo.filename || '')
+        ? `<a href="${escapeHtml(photo.filename)}" target="_blank" rel="noopener">View photo</a> · ` : '';
+      return `<h4>${escapeHtml(layer.fullName)}</h4>
+        <div>${entry.items} item${entry.items === 1 ? '' : 's'} · ${state}</div>
+        <div class="muted">${escapeHtml(localTime(photo.datetime))}</div>
+        ${others ? `<div class="muted" style="margin-top:6px">Also in this photo:</div><ul>${others}</ul>` : ''}
+        <div class="muted">${link}OLM photo ${escapeHtml(photo.id)}</div>`;
+    }
+
+    // Old data (before the crosswalk engine's first sync): plain dots, so the map never breaks.
+    function showWithoutLayers(data) {
+      map.addSource('litter-data', { type: 'geojson', data });
+      map.addLayer({
+        id: 'litter-points', type: 'circle', source: 'litter-data',
+        paint: { 'circle-radius': 6, 'circle-color': '#6b7280', 'circle-stroke-width': 1.5, 'circle-stroke-color': '#ffffff' }
+      });
+      document.getElementById('tree').innerHTML =
+        '<p class="note">Layer data arrives with the next data sync. Showing all photos for now.</p>';
+      document.querySelector('.key').hidden = true;
+      document.querySelector('.tree-actions').hidden = true;
+      document.getElementById('dates').hidden = true;
+      document.getElementById('feature-count').innerText = `Total Points: ${data.features.length}`;
+    }
+
     map.on('load', async () => {
       try {
         const data = await loadGeoJsonData();
 
-        document.getElementById('feature-count').innerText = `Total Points: ${data.features.length}`;
-
-        map.addSource('litter-data', {
-          type: 'geojson',
-          data: data
-        });
-
-        // Circle Layer rendering driven by explicit boolean feature flags
-        map.addLayer({
-          id: 'litter-points',
-          type: 'circle',
-          source: 'litter-data',
-          paint: {
-            'circle-radius': 8,
-            'circle-color': [
-              'case',
-              ['boolean', ['get', 'has_substances'], false], '#dc2626',
-              ['boolean', ['get', 'has_pet_waste'], false], '#d97706',
-              '#16a34a'
-            ],
-            'circle-stroke-width': 2,
-            'circle-stroke-color': '#ffffff'
-          }
-        });
-
         // Auto-fit bounds to display all loaded features on view load
         if (data.features.length > 0) {
           const bounds = new maplibregl.LngLatBounds();
-          data.features.forEach(feature => {
-            bounds.extend(feature.geometry.coordinates);
-          });
+          data.features.forEach(feature => bounds.extend(feature.geometry.coordinates));
           map.fitBounds(bounds, { padding: 50, maxZoom: 15 });
         }
 
-        // Checkbox filtering using boolean property evaluation
-        function updateMapFilter() {
-          const checkedFilters = Array.from(document.querySelectorAll('.category-filter:checked'))
-            .map(cb => cb.value);
-
-          if (checkedFilters.length === 0) {
-            map.setFilter('litter-points', ['literal', false]);
-            return;
-          }
-
-          const filterConditions = checkedFilters.map(flag => [
-            '==', ['get', flag], true
-          ]);
-
-          map.setFilter('litter-points', ['any', ...filterConditions]);
+        if (!data.features.some(f => Array.isArray(f.properties.objects))) {
+          showWithoutLayers(data);
+          return;
         }
 
-        document.querySelectorAll('.category-filter').forEach(checkbox => {
-          checkbox.addEventListener('change', updateMapFilter);
+        const { layers, photos, dots } = buildDots(data);
+        map.addSource('litter-dots', { type: 'geojson', data: { type: 'FeatureCollection', features: dots } });
+
+        // One circle layer per slot: a photo's dots sit in a small sunflower pattern
+        // (fixed pixel offsets), so they stay apart at every zoom without moving the point.
+        const slots = dots.reduce((m, d) => Math.max(m, d.properties.slot + 1), 0);
+        const slotLayerIds = [];
+        for (let s = 0; s < slots; s++) {
+          const r = DOT_SPACING_PX * Math.sqrt(s), angle = s * 2.399963;
+          const id = `dots-${s}`;
+          slotLayerIds.push(id);
+          map.addLayer({
+            id, type: 'circle', source: 'litter-dots',
+            filter: ['==', ['get', 'slot'], s],
+            paint: {
+              'circle-radius': 5,
+              'circle-translate': [r * Math.cos(angle), r * Math.sin(angle)],
+              'circle-color': ['get', 'colour'],
+              'circle-opacity': ['case', ['get', 'hollow'], 0, 0.95],
+              'circle-stroke-color': ['case', ['get', 'hollow'], ['get', 'colour'], '#ffffff'],
+              'circle-stroke-width': ['case', ['get', 'hollow'], 2.5, 1],
+            }
+          });
+        }
+
+        const tree = buildTree(layers, updateMapFilter);
+
+        // Date range (local days). Empty boxes mean no limit on that side.
+        const fromInput = document.getElementById('date-from');
+        const toInput = document.getElementById('date-to');
+        const days = dots.map(d => d.properties.day).filter(Boolean);
+        if (days.length) {
+          const first = dayToInput(Math.min(...days)), last = dayToInput(Math.max(...days));
+          [fromInput, toInput].forEach(input => { input.min = first; input.max = last; });
+        }
+        const inputDay = input => input.value ? Number(input.value.replace(/-/g, '')) : null;
+
+        function updateMapFilter() {
+          tree.refresh();
+          const checked = tree.checkedLids();
+          const shown = new Set(checked);
+          const from = inputDay(fromInput), to = inputDay(toInput);
+          const inRange = day => (from === null || day >= from) && (to === null || day <= to);
+
+          const dateFilter = [];
+          if (from !== null) dateFilter.push(['>=', ['get', 'day'], from]);
+          if (to !== null) dateFilter.push(['<=', ['get', 'day'], to]);
+          slotLayerIds.forEach((id, s) => map.setFilter(id,
+            ['all', ['==', ['get', 'slot'], s], ['in', ['get', 'lid'], ['literal', checked]], ...dateFilter]));
+
+          // Tree counts follow the date range; the summary follows the date range and the ticked layers.
+          const itemsByLid = new Map();
+          let items = 0, count = 0;
+          const shownPhotos = new Set();
+          dots.forEach(d => {
+            const p = d.properties;
+            if (!inRange(p.day)) return;
+            itemsByLid.set(p.lid, (itemsByLid.get(p.lid) || 0) + p.items);
+            if (shown.has(p.lid)) { items += p.items; count++; shownPhotos.add(p.pi); }
+          });
+          tree.setCounts(itemsByLid);
+          document.getElementById('feature-count').innerText =
+            `Showing ${items.toLocaleString('en-CA')} items as ${count.toLocaleString('en-CA')} dots ` +
+            `from ${shownPhotos.size.toLocaleString('en-CA')} photos`;
+        }
+
+        document.getElementById('all-on').addEventListener('click', () => { tree.setAll(true); updateMapFilter(); });
+        document.getElementById('all-off').addEventListener('click', () => { tree.setAll(false); updateMapFilter(); });
+        [fromInput, toInput].forEach(input => input.addEventListener('change', updateMapFilter));
+        document.getElementById('date-clear').addEventListener('click', () => {
+          fromInput.value = '';
+          toInput.value = '';
+          updateMapFilter();
         });
+        updateMapFilter();
+
+        map.on('click', slotLayerIds, e => {
+          new maplibregl.Popup({ maxWidth: '280px' })
+            .setLngLat(e.lngLat)
+            .setHTML(popupHtml(e.features[0].properties, layers, photos))
+            .addTo(map);
+        });
+        map.on('mouseenter', slotLayerIds, () => { map.getCanvas().style.cursor = 'pointer'; });
+        map.on('mouseleave', slotLayerIds, () => { map.getCanvas().style.cursor = ''; });
 
       } catch (err) {
         console.error('Failed to load GeoJSON dataset:', err);
         document.getElementById('feature-count').innerText = 'Error loading dataset';
       }
+    });
+
+    // Hide or show the panel body (handy on a phone)
+    document.getElementById('panel-toggle').addEventListener('click', e => {
+      const panel = document.getElementById('panel');
+      const collapsed = panel.classList.toggle('collapsed');
+      e.target.textContent = collapsed ? 'Show' : 'Hide';
+      e.target.setAttribute('aria-expanded', String(!collapsed));
     });
   </script>
 </body>

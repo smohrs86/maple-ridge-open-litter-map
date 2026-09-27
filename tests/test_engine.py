@@ -155,6 +155,18 @@ class AuditTests(unittest.TestCase):
         self.assertEqual(self.audit(), self.audit())
 
 
+class TreeLayersTests(unittest.TestCase):
+    def test_groups_and_subgroups_kept_together_in_first_appearance_order(self):
+        rows = [row("a/1", group="House", sub="Liquor", local="Bottle"),
+                row("a/2", group="Drink", local="Cup"),
+                row("a/3", group="House", local="Batteries"),
+                row("a/4", group="House", sub="Liquor", local="Can"),
+                row("a/5", group="Drink", local="Cup"),  # second row for the same layer
+                row("a/6", group="", local="civic", include="no")]
+        self.assertEqual(sd.tree_layers(rows), [("House", "Liquor", "Bottle"), ("House", "Liquor", "Can"),
+                                                ("House", "", "Batteries"), ("Drink", "", "Cup")])
+
+
 class LoadCrosswalkTests(unittest.TestCase):
     def write(self, text):
         f = tempfile.NamedTemporaryFile("w", suffix=".csv", delete=False, encoding="utf-8")

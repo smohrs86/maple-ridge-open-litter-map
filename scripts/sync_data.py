@@ -207,6 +207,21 @@ def classify_object(raw, crosswalk_rows):
     return result
 
 
+def tree_layers(crosswalk_rows):
+    """Map layers as (group, subgroup, layer) in tree order: each Group together, each
+    Subgroup together within it, in order of first appearance in the sheet."""
+    layers = []
+    for r in crosswalk_rows:
+        if cw.norm(r["include on map"]) != "yes":
+            continue
+        layer = tuple(r[c].strip() for c in ("MROLM Group", "MROLM Subgroup", "MROLM local key"))
+        if layer not in layers:
+            layers.append(layer)
+    group_rank = {g: i for i, g in reversed(list(enumerate(l[0] for l in layers)))}
+    sub_rank = {gs: i for i, gs in reversed(list(enumerate(l[:2] for l in layers)))}
+    return sorted(layers, key=lambda l: (group_rank[l[0]], sub_rank[l[:2]]))
+
+
 def _cell(text):
     return str(text).replace("|", "\\|")
 
@@ -333,15 +348,7 @@ def build_audit(features, crosswalk_rows, skipped_photos=0):
         stats["photos"].add(pid)
         if o["picked_up"] is False:
             stats["left"] += o["quantity"] or 0
-    layers = []
-    for r in included:
-        layer = tuple(r[c].strip() for c in ("MROLM Group", "MROLM Subgroup", "MROLM local key"))
-        if layer not in layers:
-            layers.append(layer)
-    # Tree order: each Group together, each Subgroup together within it, in order of first appearance.
-    group_rank = {g: i for i, g in reversed(list(enumerate(l[0] for l in layers)))}
-    sub_rank = {gs: i for i, gs in reversed(list(enumerate(l[:2] for l in layers)))}
-    layers.sort(key=lambda l: (group_rank[l[0]], sub_rank[l[:2]]))
+    layers = tree_layers(crosswalk_rows)
     lines.extend(["", "## Layers", "",
                   "| Group | Subgroup | Layer | Items | Objects | Photos | Not picked up (items) |",
                   "|---|---|---|---:|---:|---:|---:|"])
@@ -549,6 +556,8 @@ def fetch_and_build_geojson(from_raw=None):
 
     geojson = {
         "type": "FeatureCollection",
+        # The map's layer tree, in tree order (a GeoJSON "foreign member"; other readers ignore it)
+        "mrolm_layers": [{"group": g, "subgroup": s, "layer": l} for g, s, l in tree_layers(crosswalk_rows)],
         "features": features
     }
 
