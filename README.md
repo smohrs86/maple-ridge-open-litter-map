@@ -1,12 +1,12 @@
-# MROLM — Maple Ridge OpenLitterMap
+# MROLM · Maple Ridge Open Litter Map
 
-**An open citizen-science project that turns litter observations from Maple Ridge, British Columbia into a free, automatically updated public map and a locally meaningful dataset.**
+**An interactive web map of citizen-science litter records from Maple Ridge, British Columbia, updated automatically from OpenLitterMap.**
 
-Litter is photographed and tagged in the field using [OpenLitterMap](https://openlittermap.com) (OLM). This repository pulls those records from the OLM API, reshapes them for local use, and publishes them as an interactive web map. The goal is good open data for citizen science: a consistent, well-documented record of where litter is, what it is, and how that changes over time. The local categories (the crosswalk) were built using the City of Vancouver litter audit and Maple Ridge municipal classifications as guides.
+**Live map:** https://smohrs86.github.io/maple-ridge-open-litter-map/
 
-*Last updated: September 26, 2026*
+Litter is photographed and tagged in the field using [OpenLitterMap](https://openlittermap.com) (OLM), an open citizen-science platform. MROLM is an independent volunteer project, not part of OpenLitterMap. It pulls those records from the OLM API every 12 hours, sorts each tagged item into local litter categories, and publishes the result as a free, interactive web map. The goal is good open data for citizen science: a consistent, well-documented record of where litter is, what it is, and how that changes over time.
 
-> **Status: working proof of concept.** Not ready for public use yet. A license and contributor guide will be added once the proof of concept works.
+> **Status: proof of concept achieved (2026-09-27).** The map is live and updates automatically. Refinements are ongoing: older tags in OpenLitterMap are still being cleaned up, so some categories will shift as that's finished.
 
 ---
 
@@ -25,18 +25,20 @@ Litter is photographed and tagged in the field using [OpenLitterMap](https://ope
 
 ---
 
-## Proof of concept: definition of done
+## Proof of concept: achieved (2026-09-27)
 
-The proof of concept is done when all of these are true:
+The proof of concept asked one question: can litter records made with OpenLitterMap's global tagging schema be translated into local terms, with a crosswalk the maintainer controls as the tool that manages the local schema? It can. The live map shows every tagged item in local categories, and changing a category means editing the crosswalk, not the code.
 
-1. **The engine applies the crosswalk.** Every run reads `config/crosswalk.csv` and puts each tag into exactly one layer, following the matching rules below. Unmapped = 0.
-2. **The audit report is published on every run**, with the counts in the audit table below. Tie-breaks are reviewed and either fixed in the crosswalk or accepted.
-3. **The layer tree works on the live map:** Group → Subgroup → Layer checkboxes that cascade, item counts that roll up, empty layers hidden, and full layer names in popups.
-4. **Counts are spot-checked.** For about five layers, the map count matches a manual count of the same tags in OLM.
-5. **Legacy data is conformed enough to trust.** Not used = 0 and UNCLASS = 0. Orphan tags are tracked in the audit with their photo IDs and fixed in OLM, or accepted as a known gap. The REVIEW backlog is tracked by Claude, which rebuilds the review workbook after the maintainer's OLM edits, and its remaining count is recorded in the progress log at each check.
-6. **The pipeline stays safe.** An incomplete fetch leaves the last good data live, and the tree map data is produced by the workflow without manual fixes.
-7. **A basic test exists** for crosswalk matching: a specific row beats the plain row, blank falls back, capitals and spacing are ignored, and the first match wins.
-8. **A newcomer can understand it in five minutes.** The README opens with what the map shows, and the live link works.
+The original criteria, with 5 and 8 moved to ongoing refinements because they improve quality rather than test the idea:
+
+1. ✅ **The engine applies the crosswalk.** Every run reads `config/crosswalk.csv` and puts each tag into exactly one layer, following the matching rules below. Unmapped = 0.
+2. ✅ **The audit report is published on every run**, with the counts in the audit table below. Tie-breaks are reviewed and either fixed in the crosswalk or accepted.
+3. ✅ **The layer tree works on the live map:** Group → Subgroup → Layer checkboxes that cascade, item counts that roll up, empty layers hidden, and full layer names in popups.
+4. ✅ **Counts are spot-checked.** For about five layers, the map count matches a manual count of the same tags in OLM.
+5. ➡️ *Refinement:* **Legacy data is conformed enough to trust.** Not used = 0 and UNCLASS = 0. Orphan tags are tracked in the audit with their photo IDs and fixed in OLM, or accepted as a known gap. The REVIEW backlog is tracked by Claude, which rebuilds the review workbook after the maintainer's OLM edits, and its remaining count is recorded in the progress log at each check.
+6. ✅ **The pipeline stays safe.** An incomplete fetch leaves the last good data live, and the tree map data is produced by the workflow without manual fixes.
+7. ✅ **A basic test exists** for crosswalk matching: a specific row beats the plain row, blank falls back, capitals and spacing are ignored, and the first match wins.
+8. ➡️ *Refinement:* **A newcomer can understand it in five minutes.** The README opens with what the map shows, and the live link works.
 
 Not part of the proof of concept: GIS features, municipal streams, a license, and a contributor guide.
 
@@ -46,6 +48,7 @@ Not part of the proof of concept: GIS features, municipal streams, a license, an
 
 Newest first, one line per change. Claude updates this whenever it updates the README.
 
+- **2026-09-27:** README opening rewritten so search engines and link scrapers see what the map is first: the live link and an "independent project" line. Proof of concept declared achieved; legacy cleanup (criterion 5) and the newcomer read-through (8) continue as refinements.
 - **2026-09-27:** Map gets a favicon, a link-preview image (title card beside the real litter points), and a page description, so shared links show a proper preview card.
 - **2026-09-26:** Map gets a Dots | Heatmap switch (heat weighted by items, fading into the dots at street level), a "Left in place only" filter for both views, and an MROLM title block.
 - **2026-09-26:** Spot check passed (proof-of-concept criterion 4). An independent recount from OLM's raw export matched the live map for Pet Waste Unbagged, Dumping – Sml, Cannabis Packaging, Wood Debris, and E-waste Piece. The maintainer's searches on the OLM website (`dogshit`, `dogshit_in`, `dumping`, custom `E-waste`) matched the predicted photo and tag totals exactly.
@@ -119,6 +122,8 @@ Related docs: [field tagging protocol](docs/tagging-protocol.md) (how items are 
 The crosswalk is the heart of Stage 2. It's a lookup table that says: *when a photo has this OpenLitterMap tag, treat it as this local object, and show it in this place on the map.*
 
 It is maintained as a Google Sheet by the project maintainer. It is exported to `config/crosswalk.csv` in this repository. The pipeline reads that file on every run, so **changing the map's categories means editing the spreadsheet, not the code.** After an edit, the whole sheet is exported and pushed, and the map updates within minutes.
+
+The local categories were built using the City of Vancouver litter audit and Maple Ridge municipal classifications as guides.
 
 ### Columns
 
