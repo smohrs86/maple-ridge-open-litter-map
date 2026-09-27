@@ -3,66 +3,67 @@ alcohol/bottle,,,,Household,Liquor,Liquor Bottle,used for liquor whole bottles,y
 alcohol/bottle_cap,,,,Household,Liquor,Liquor Bottle Cap,used for liquor bottle caps metal,yes,,yes,
 alcohol/broken_glass,,,,Household,Liquor,Liquor Broken Glass,"used for liquor drink bottle broken glass; see other/other custom 'broken glass', softdrinks/broken_glass.",yes,,no,
 alcohol/can,,,,Household,Liquor,Liquor Can,used for liquor drink cans aluminum,yes,,no,
-alcohol/other,,,,Household,Liquor,Liquor Debris,legacy tags used inconsistently to capture cannabis (THC) vapes,yes,,no,OLM reclass on existing key data to smoking/vape
-alcohol/packaging,,,,Household,Liquor,Liquor Packaging,"used for liquor packaging plastic pack rings, paperboard drink carriers, beer paperboard boxes",yes,,no,OLM legacy review and reclass THC objects to smoking/packaging'THC'
+alcohol/other,,,,Household,Liquor,Liquor Debris,"Legacy key, used inconsistently in the past to capture cannabis (THC) vapes. These objects are being reclassed in OLM to smoking/vape with custom tag 'THC'.",yes,,no,OLM reclass on existing key data to smoking/vape
+alcohol/packaging,,,,Household,Liquor,Liquor Packaging,"used for liquor packaging plastic pack rings, paper drink carriers, beer boxes",yes,,no,OLM legacy review and reclass THC objects to smoking/packaging with custom tag 'THC'
 civic/bags_litter,,,,,,civic/bags_litter,not used,no,Not a significant data point,no,
 civic/blocked_drain,,,,,,civic/blocked_drain,not used,no,out of scope,no,
-civic/other,,,,,,civic/other,not used,no,Not a significant data point,no,
+civic/other,,,,,,civic/other,not used; ,no,Not a significant data point,no,
 coffee/cup,,,,Convenient Food Drink,Drink,Poly-lined Hot Beverage Cup,"used to capture all hot drink take out cups, cold coffee drinks are classed under softdrinks/cup",yes,,no,
 coffee/lid,,,,Convenient Food Drink,Drink,Hot Beverage Cup Lid,used to capture the accompanying plastic lid that goes with take out hot drink cups,yes,,no,
 coffee/pod,,,,Convenient Food Drink,Drink,Single-Serve Coffee Pod,used for household coffee pods these can be plastic or foil,yes,,no,
 coffee/sleeve,,,,Convenient Food Drink,Drink,Corrugated Cardboard Cup Sleeve,used to capture cardboard sleeve accompanying take out hot drink cups; legacy photos likely have these in photos untagged,yes,,no,OLM review of OLM key coffee/cup and softdrinks/cup and tag any untagged sleeves
-coffee/straw,,,,,,coffee/straw,not used.   i'm capturing all straws related to take-out drinks under key softdrinks/straw and household plastic straws under food/straw material:plastic. coffee straws for cold drinks are like their cups indistinguishable from take out cold ones.,no,redundant and confusing,no,
-dumping/dumping,,,,Dumping,,UNCLASS,"used for dumping instances and abandoned household garbage.  Size measured by the item's longest dimension. Small = can carry away by hand, <30cm (e.g. a ladle, a spoon). Medium = can't carry away but smaller than a fridge or couch, 30–90cm (e.g. a printer, a folded box). Large = bigger than a full garbage bag, >90cm (e.g. an ironing board, a couch cushion).",yes,,no,OLM reclass so that all photos are tagged with secondary modifiers and not left to default
-dumping/dumping,small,,,Dumping,,Sml,"used for dumping instances and abandoned household garbage.  Size measured by the item's longest dimension. Small = can carry away by hand, <30cm (e.g. a ladle, a spoon). Medium = can't carry away but smaller than a fridge or couch, 30–90cm (e.g. a printer, a folded box). Large = bigger than a full garbage bag, >90cm (e.g. an ironing board, a couch cushion).",yes,,no,
-dumping/dumping,medium,,,Dumping,,Med,"used for dumping instances and abandoned household garbage.  Size measured by the item's longest dimension. Small = can carry away by hand, <30cm (e.g. a ladle, a spoon). Medium = can't carry away but smaller than a fridge or couch, 30–90cm (e.g. a printer, a folded box). Large = bigger than a full garbage bag, >90cm (e.g. an ironing board, a couch cushion).",yes,,no,
-dumping/dumping,large,,,Dumping,,Lrg,"used for dumping instances and abandoned household garbage.  Size measured by the item's longest dimension. Small = can carry away by hand, <30cm (e.g. a ladle, a spoon). Medium = can't carry away but smaller than a fridge or couch, 30–90cm (e.g. a printer, a folded box). Large = bigger than a full garbage bag, >90cm (e.g. an ironing board, a couch cushion).",yes,,no,
+coffee/straw,,,,,,coffee/straw,not used.   I'm capturing all straws related to take-out drinks under key softdrinks/straw and household plastic straws under food/straw material:plastic. coffee straws for cold drinks are like their cups indistinguishable from take out cold ones.,no,redundant and confusing,no,
+dumping/dumping,,,,Dumping,,UNCLASS,"Used for dumping instances and abandoned household garbage. Size is measured by the item's longest dimension. Small = can carry away by hand, <30 cm (e.g. a ladle, a spoon). Medium = can't carry away but smaller than a fridge or couch, 30–90 cm (e.g. a printer, a folded box). Large = bigger than a full garbage bag, >90 cm (e.g. an ironing board, a couch cushion).",yes,,no,OLM reclass so that all photos are tagged with secondary modifiers and not left to default
+dumping/dumping,small,,,Dumping,,Sml,"Used for dumping instances and abandoned household garbage. Size is measured by the item's longest dimension. Small = can carry away by hand, <30 cm (e.g. a ladle, a spoon). Medium = can't carry away but smaller than a fridge or couch, 30–90 cm (e.g. a printer, a folded box). Large = bigger than a full garbage bag, >90 cm (e.g. an ironing board, a couch cushion).",yes,,no,
+dumping/dumping,medium,,,Dumping,,Med,"Used for dumping instances and abandoned household garbage. Size is measured by the item's longest dimension. Small = can carry away by hand, <30 cm (e.g. a ladle, a spoon). Medium = can't carry away but smaller than a fridge or couch, 30–90 cm (e.g. a printer, a folded box). Large = bigger than a full garbage bag, >90 cm (e.g. an ironing board, a couch cushion).",yes,,no,
+dumping/dumping,large,,,Dumping,,Lrg,"Used for dumping instances and abandoned household garbage. Size is measured by the item's longest dimension. Small = can carry away by hand, <30 cm (e.g. a ladle, a spoon). Medium = can't carry away but smaller than a fridge or couch, 30–90 cm (e.g. a printer, a folded box). Large = bigger than a full garbage bag, >90 cm (e.g. an ironing board, a couch cushion).",yes,,no,
 dumping/other,,,,Dumping,,Commercial Dumping,used to capture obvious commercial dumping,yes,,no,
 electronics/battery,,,,Household,,Batteries,used for household batteries; I have been including size class 'AA' 'AAA' in custom field not going to be using though nor continuing this practice,yes,,no,
 food/bag,,,,Household,,Plastic (#4) or Paper Food Bag,used for paper or plastic food bags from grocery store products; take-out bags see food/packaging,yes,,no,OLM tag review of legacy entries move take-out bags to food/packaging
 food/box,,,,Household,,Corrugated Cardboard Box,used to capture any corrugated cardboard box for food or household; added and verified from OLM key options,yes,,no,
 food/can,,,,Household,,Household Food Can,used for food tin or metal cans; unlikely to find but possible,yes,,no,
 food/container,,,,Household,,"Food Container - Plastic, Paper, Foam","used for household containers; source grocery, snack or from recycling spillover; take-out containers go under food/packaging",yes,,no,OLM tag review of legacy entries move take-out containers to food/packaging
-food/crisp_packet,,,,Convenient Food Drink,Snack,Metalized Chip Bags,"used for metalized plastic food bags usually for chips, e.g. tortilla chips",yes,,no,
+food/crisp_packet,,,,Convenient Food Drink,Snack,Metalized Chip Bags,"used for metalized plastic food bags usually for the food called 'chips' tortilla chips, Doritos, Lay's, etc",yes,,no,
 food/cutlery,,,,Convenient Food Drink,Take-out,Cutlery,used for take-out utensils only; household cutlery should not go here.,yes,,no,
-food/gum,,,,Convenient Food Drink,Snack,Chewed Gum,used for chewed gum,yes,,no,
-food/lid,,,,Household,,Food Container Lid,"used for accompanying lids from food containers, e.g. a coffee tin's plastic lid; take-out lids go with food/packaging",yes,,no,
-food/napkins,,,,Convenient Food Drink,Take-out,Napkins,"used for identifiable napkins, if i can't ID as such it goes under OLM key other/paper.",yes,,no,
-food/other,,,,Household,,Organic Debris,used for organic food debris,yes,,yes,
+food/gum,,,,Convenient Food Drink,Snack,Chewed Gum,Used for chewed gum. Gum stuck to pavement is not tracked.,yes,,no,
+food/lid,,,,Household,,Food Container Lid,Used for lids from household food containers (e.g. a Folgers tin's plastic lid). Take-out food lids go under food/packaging; drink cup lids go under softdrinks/lid or coffee/lid.,yes,,no,
+food/napkins,,,,Convenient Food Drink,Take-out,Napkins,"used for identifiable napkins, if I can't ID as such it goes under OLM key other/paper.",yes,,no,
+food/other,,,,Household,,"Organic Debris, Misc.",used for organic food debris and household misc that cannot be classed elsewhere,yes,,yes,
 food/packaging,,,,Convenient Food Drink,Take-out,Food Packaging,"used for take-out food packaging fries container, burger wrapper, bags",yes,,no,OLM tag review of legacy entries
-food/packet,,,,Convenient Food Drink,Take-out,Condiment Packets,used for take out or household condiments only.  any other food packet like a baby food single use packet is food/packaging.,yes,,no,
-food/straw,,,,Household,,Plastic Straws,used for household straws or other plastic straws; take-out straws go under OLM key softdrinks/straw.,yes,,no,
-food/tinfoil,,,,Household,,Household Tinfoil,used for household foil pieces,yes,,yes,
-food/wrapper,,,,Convenient Food Drink,Snack,Foil / Plastic Film Snack Wrapper,"used for confectionary, snack plastic, foil, waxed paper wrapper; used inconsistently prior to september 23, 2026.  conflated with food/packaging.  significant reclass of legacy needed.",yes,,no,OLM tag review of legacy entries; retag food/packaging items
+food/packet,,,,Convenient Food Drink,Take-out,Condiment Packets,used for take out or household condiments only.  any other food packet like a baby food single use packet is food/packaging.  ,yes,,no,
+food/straw,,,,Household,,Plastic Straws,used for household straws or other plastic straws; takeout straws go under OLM key softdrinks/straw and these should be paper.,yes,,no,
+food/tinfoil,,,,Piece,,Foil Piece,"used for foil pieces, from household foil, wrappers, bags, other",yes,,no,
+food/wrapper,,,,Convenient Food Drink,Snack,Foil / Plastic Film Snack Wrapper,"used for confectionary, snack plastic, foil, waxed paper wrapper; used inconsistently prior to September 23, 2026.  conflated with food/packaging.  significant reclass of legacy needed.",yes,,no,OLM tag review of legacy entries; retag food/packaging items
 industrial/construction,,,,,,industrial/construction,not used,no,redundant see industrial/other,no,
 industrial/other,,,,Industrial,,Industrial Debris,"used for commercial industrial pieces screws, nails, heavy plastic, pipe piece, broken abandoned tool, wood piece, wire, bolts, tags",yes,there is enough of this small litter to be significant,no,OLM tag review of legacy entries in OLM key other/metal and other/plastic and other/other industrial/pipe
-industrial/pipe,,,,,,industrial/pipe,"for pipe pieces found, if small picked up if not tagged as 'not picked up'",no,i'm using industrial/other as a catchall for industrial debris except tape,no,OLM legacy objects need reclassing
+industrial/pipe,,,,,,industrial/pipe,"for pipe pieces found, if small picked up if not tagged as 'not picked up'",no,I'm using industrial/other as a catchall for industrial debris except tape,no,OLM legacy objects need reclassing
 industrial/tape,,,,Industrial,,Flagging Tape,"used for boundary, flagging, surveyors tape pvc/plastic",yes,,no,OLM legacy objects need reclassing
 marine/microplastics,,,,,,marine/microplastics,not used,no,out of scope,no,
 marine/polystyrene_fragment,,,,Piece,,Styrofoam Piece,used to capture polystyrene fragments only; this may have been used inconsistently or conflated with key marine/styrofoam,yes,,no,
 marine/styrofoam,,,,Piece,,Styrofoam Whole,this key should be used for full blocks of styrofoam not fragments,yes,,no,OLM tag review
 medical/bandage,,,,Household,,Medical Bandages,"used for household bandaids, bandage-like first aid litter",yes,,no,
-medical/gloves,,,,Household,,Latex / Nitrile Glove,used for latex or nitrile gloves,yes,,no,
-other/bags_litter,,,,,,other/bags_litter,not used,no,redundant and confusing,no,
+medical/gloves,,,,Household,,Latex / Nitrile Glove,used for latex nitrile gloves,yes,,no,
+other/bags_litter,,,,,,other/bags_litter,not used by me and can't think of any use for this,no,redundant and confusing,no,
 other/balloon,,,,Household,,Party Litter,"used to capture waste associated with party supply waste, confetti, balloons, hats, paper decor, signs, gift wrapping, and will use custom grouping for observed abandoned party trash using naming convention PAR[date:YYYYMMDD][alpha group starting with 'A'] ex PAR20260922A is used as a custom tag for all litter objects associated",yes,,no,
-other/clothing,,,,Household,,Abandoned Textile Apparel,"used for discarded clothing and accessories like hair ties, sweat bands, shoelaces, shoes.  i wouldn't put a watch or earrings here, it's mainly for textiles worn.",yes,,no,
+other/clothing,,,,Household,,Abandoned Textile Apparel,"used for discarded clothing and accessories like hair ties, sweat bands, shoelaces, shoes.  I wouldn't put a watch or earrings here, it's mainly for textiles worn.",yes,,no,
 other/metal,,,,Piece,,Household or Unknown Metal Piece,"used for household metal or hardware that cannot be distinguished as industrial, unidentifiable metal objects",yes,,no,OLM tag review to parse out industrial debris objects
-other/other,,,,Household,,Household misc,used for household that cannot be classed anywhere else duct tape piece that can't be distinguished as industrial would go here,yes,,no,OLM legacy objects need reclassing
+other/other,,,,Household,,Household misc,"used for household that cannot be classed anywhere else duct tape piece that can't be distinguished as industrial would go here; crayon piece, piece",yes,,no,OLM legacy objects need reclassing
+other/other,,,E-waste,Household,,E-waste Piece,used for household e-waste piece,yes,,no,
 other/other,,Wood,,Piece,,Wood Debris,"used to track wood debris that can't be distinguished as industrial, may come as 'picked up' or 'not picked up'",yes,,no,OLM tag review to parse out industrial debris objects
 other/other,,,broken glass,Piece,,Broken Glass Piece,used to track single piece broken glass,yes,,no,OLM tag review
 other/paper,,,,Piece,,Paper Piece,"used for any paper piece and cardboard piece that doesn't fit into other OLM key such as food/wrapper or food/bag or napkin or tissue, it could be a whole piece of paper like a post it, but when aged and wet it can't be defined so it's other/paper.  ",yes,,no,OLM tag review parse out [Party Litter] objects
-other/plastic,,,,Piece,,Plastic Piece,"used for any plastic piece fragment or in some cases whole, that does not fit with any other key.  includes soft, clear, rigid, hard plastic fragments but not polystyrene.",yes,,no,OLM tag review to parse out industrial debris AND other/balloon[Party Litter] objects
-other/plastic_bag,,,,Household,,Household Plastic Bag,"used for any plastic bag that cannot be IDd elsewhere such as a garbage bag, soil bag, household bag.",yes,,no,OLM tag review
-other/poster,,,,,,other/poster,not used,no,out of scope,no,
-pets/dogshit,,,,Fecal,,Pet Waste Unbagged,used to capture loose dog fecal droppings,yes,,no,
-pets/dogshit_in_bag,,,,Fecal,,Pet Waste Bagged,used to capture bagged dog feces,yes,,no,
+other/plastic,,,,Piece,,Plastic Piece,"used for any plastic piece fragment or in some cases whole, that does not fit with any other key.  includes soft, clear, rigid, hard plastic fragments but not polystyrene.",yes,,no,OLM tag review to parse out industrial debris AND other/balloon[Party Litter] objects 
+other/plastic_bag,,,,Household,,Household Plastic Bag,"used for any plastic bag that cannot be ID'd elsewhere such as a garbage bag, soil bag, household bag. Plastic shopping bags are rare locally.",yes,,no,OLM tag review
+other/poster,,,,,,other/poster,"Not used. Posters and signs are out of scope: the rules on where they can be placed and when they count as abandoned are complex, and they often name people or businesses, so mapping them could unfairly imply wrongdoing.",no,out of scope,no,
+pets/dogshit,,,,Fecal,,Pet Waste Unbagged,used to capture loose dog fecal droppings; these are a big problem locally ,yes,,no,
+pets/dogshit_in_bag,,,,Fecal,,Pet Waste Bagged,used to capture bagged dog feces; these are a big problem locally,yes,,no,
 pets/other,,,,Household,,Pet Supplies,"used to capture pet toys, pet related waste like dog food cans, bags, pet paraphernalia",yes,Not a significant data point,yes,
-sanitary/dental_floss,,,,Household,,Dental Waste,"used to capture single use flossers, and dental floss packaging or pieces, toothbrushes",yes,,no,
-sanitary/ear_swabs,,,,Household,,Cotton Swabs,"used to capture ear swabs, qtips",yes,,yes,
+sanitary/dental_floss,,,,Household,,Dental Waste,"used to capture single use flossers, and dental floss packaging or pieces, toothbrushes, toothpaste",yes,,no,
+sanitary/ear_swabs,,,,Household,,Cotton Swabs,"used to capture ear swabs, Q-tips",yes,,yes,
 sanitary/sanitary_pad,,,,Household,,Personal Hygiene Product,not used yet,yes,Not a significant data point,yes,
-sanitary/tissue,,,,Household,,Hygiene Paper,"used to capture dry tissues, toilet paper they can be IDd when dry, but when wet or aged they cannot; rarely used most go to other/paper",yes,,no,
+sanitary/tissue,,,,Household,,Hygiene Paper,"used to capture dry tissues, toilet paper they can be ID'd when dry, but when wet or aged they cannot; rarely used most go to other/paper",yes,,no,
 sanitary/wipes,,,,Household,,Wet Wipes,used to capture textile woven wipes they are called wet-wipes here and they are found in volume and easy to ID because of the mesh wove and the fact that they don't disintegrate when wet or aged.,yes,,no,
-smoking/box,,,,,,smoking/box,not used; captured under smoking/packaging,no,Not a significant data point,no,
+smoking/box,,,,,,smoking/box,not used; I want to capture these under smoking/packaging,no,Not a significant data point,no,
 smoking/butts,,,,Smoking,,Cigarette Butts,used to capture butts and broken cigarette pieces or other nicotine smoking products like cigarillos; In OLM app you can only tag a max of 10 per one photo. these are usually found in a cluster which sometimes has to be spread between two photos.  the two photos will be in the same collection spot.,yes,,no,
 smoking/lighters,,,,Smoking,,Butane Lighter,used for pieces or whole,yes,,no,
 smoking/packaging,,,,Smoking,,Nicotine Packaging,"used for all nicotine product packaging including cigarette, cigar, vape foil, wrapper, box",yes,,no,
@@ -79,8 +80,8 @@ softdrinks/juice_pouch,,,,Convenient Food Drink,Drink,Drink Box Pouch,"used to c
 softdrinks/lid,,,,Convenient Food Drink,Drink,Cold Beverage Lid,used for lids plastic for take out drink cups,yes,,no,
 softdrinks/packaging,,,,Convenient Food Drink,Drink,Household or Take-out Drink Packaging,used for packaging related to household and convenience drink products non-liquor,yes,,no,
 softdrinks/pull_ring,,,,Convenient Food Drink,Drink,Pull-tabs,used for aluminum can pull-tabs or other drink tabs,yes,,no,
-softdrinks/straw,,,,Convenient Food Drink,Drink,Paper Drink Straws,used for straws paper that are for take out drinks hot and cold,yes,,no,
+softdrinks/straw,,,,Convenient Food Drink,Drink,Paper Drink Straws,"Used for paper straws from take-out drinks, hot and cold. Plastic straws go under food/straw.",yes,,no,
 softdrinks/straw_wrapper,,,,Convenient Food Drink,Drink,Drink Straw Wrapper,used for straw wrappers paper that are for take out drink straws hot and cold,yes,,no,
 vehicles/bicycle,,,,,,vehicles/bicycle,not used,no,out of scope,no,
-vehicles/car_part,,,,Piece,,Motor Vehicle Part Piece,"used for detached car parts that appear to be abandoned or part of accident or damage incident aftermath; can be broken glass, kit pieces, anything from a motorized vehicle.  material not used as i cannot verify materials in the field.",yes,,no,
+vehicles/car_part,,,,Piece,,Motor Vehicle Part Piece,"used for detached car parts that appear to be abandoned or part of accident or damage incident aftermath; can be broken glass, kit pieces, anything from a motorized vehicle.  material not used as I cannot verify materials in the field.",yes,,no,
 vehicles/other,,,,Piece,,Motor Vehicle Spill,"not used yet but I would put anything else from the vehicle here like oil spill, fluid spill, gas spill",yes,,no,

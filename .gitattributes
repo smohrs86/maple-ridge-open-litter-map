@@ -1,0 +1,3 @@
+# Google Sheets exports CSV with Windows (CRLF) line endings. Store the crosswalk
+# with LF so a re-export only shows the cells that actually changed.
+config/crosswalk.csv text eol=lf

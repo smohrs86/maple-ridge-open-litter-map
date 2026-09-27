@@ -46,6 +46,7 @@ Not part of the proof of concept: GIS features, municipal streams, a license, an
 
 Newest first, one line per change. Claude updates this whenever it updates the README.
 
+- **2026-09-26:** Crosswalk updated: tinfoil moves to Piece as Foil Piece, Organic Debris becomes "Organic Debris, Misc.", and a new E-waste Piece layer (`other/other` with custom tag `E-waste`) is added under Household. Notes were tidied for publication. Git now stores the crosswalk with plain line endings so re-exports only show real edits.
 - **2026-09-26:** README now lists exactly which fields the pipeline publishes per point.
 - **2026-09-26:** Review workbook builder and a shared, tested crosswalk matcher added (offline, read-only). The first build matched the earlier snapshot except for 22 objects moving between REVIEW and RECLASS.
 - **2026-09-26:** Draft method for batch-fixing OLM tags through the API, with a review spreadsheet and a read-only raw export script: [docs/olm-batch-review-method.md](docs/olm-batch-review-method.md). Nothing has been written to OLM yet.
@@ -168,7 +169,7 @@ The map will show an expandable tree of checkboxes, up to three levels deep: **G
 
 A photo with several kinds of litter appears in every layer that applies to it. That's intended.
 
-### Current tree (from `config/crosswalk.csv`, 2026-09-25)
+### Current tree (from `config/crosswalk.csv`, 2026-09-26)
 
 Some layers sit directly under a group, with no subgroup.
 
@@ -176,10 +177,10 @@ Some layers sit directly under a group, with no subgroup.
 Household
 ├── Liquor          Liquor Bottle, Liquor Bottle Cap, Liquor Broken Glass, Liquor Can, Liquor Debris, Liquor Packaging
 └── (no subgroup)   Batteries, Plastic (#4) or Paper Food Bag, Corrugated Cardboard Box, Household Food Can,
-                    Food Container - Plastic, Paper, Foam, Food Container Lid, Organic Debris, Plastic Straws,
-                    Household Tinfoil, Medical Bandages, Latex / Nitrile Glove, Party Litter,
-                    Abandoned Textile Apparel, Household misc, Household Plastic Bag, Pet Supplies,
-                    Dental Waste, Cotton Swabs, Personal Hygiene Product, Hygiene Paper, Wet Wipes
+                    Food Container - Plastic, Paper, Foam, Food Container Lid, Organic Debris, Misc.,
+                    Plastic Straws, Medical Bandages, Latex / Nitrile Glove, Party Litter,
+                    Abandoned Textile Apparel, Household misc, E-waste Piece, Household Plastic Bag,
+                    Pet Supplies, Dental Waste, Cotton Swabs, Personal Hygiene Product, Hygiene Paper, Wet Wipes
 Convenient Food Drink
 ├── Drink           Poly-lined Hot Beverage Cup, Hot Beverage Cup Lid, Single-Serve Coffee Pod,
 │                   Corrugated Cardboard Cup Sleeve, Plastic or Glass Drink Bottle, Drink Bottle Cap,
@@ -190,7 +191,7 @@ Convenient Food Drink
 └── Take-out        Cutlery, Napkins, Food Packaging, Condiment Packets
 Dumping             UNCLASS, Sml, Med, Lrg, Commercial Dumping
 Industrial          Industrial Debris, Flagging Tape
-Piece               Styrofoam Piece, Styrofoam Whole, Household or Unknown Metal Piece, Wood Debris,
+Piece               Foil Piece, Styrofoam Piece, Styrofoam Whole, Household or Unknown Metal Piece, Wood Debris,
                     Broken Glass Piece, Paper Piece, Plastic Piece, Motor Vehicle Part Piece, Motor Vehicle Spill
 Fecal               Pet Waste Unbagged, Pet Waste Bagged
 Smoking             Cigarette Butts, Butane Lighter, Nicotine Packaging, Cannabis Packaging, Nicotine Vape,
