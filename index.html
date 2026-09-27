@@ -121,10 +121,12 @@
     map.addControl(new maplibregl.NavigationControl(), 'top-right');
 
     async function loadGeoJsonData() {
-      // Fetch path attempting primary path with fallback for build targets
-      let response = await fetch('./data/litter.geojson');
+      // Fetch path attempting primary path with fallback for build targets.
+      // 'no-cache' checks with the server before using a stored copy, so a fresh sync shows at once
+      // (GitHub Pages otherwise lets browsers reuse an old copy for 10 minutes).
+      let response = await fetch('./data/litter.geojson', { cache: 'no-cache' });
       if (!response.ok) {
-        response = await fetch('./public/data/litter.geojson');
+        response = await fetch('./public/data/litter.geojson', { cache: 'no-cache' });
       }
       return await response.json();
     }
