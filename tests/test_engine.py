@@ -106,6 +106,55 @@ class ClassifyObjectTests(unittest.TestCase):
         self.assertNotIn("tie_rows", self.classify("alcohol/bottle"))
 
 
+class AuditTests(unittest.TestCase):
+    ROWS = ClassifyObjectTests.ROWS
+
+    def feature(self, photo_id, *objects, when="2026-09-01T10:00:00Z"):
+        classified = []
+        for key, kw in objects:
+            raw = {"olm_key": key, "secondary": kw.get("sec", ""), "materials": kw.get("mat", []),
+                   "customs": kw.get("cus", []), "quantity": kw.get("qty", 1), "picked_up": kw.get("picked_up", True)}
+            classified.append(sd.classify_object(raw, self.ROWS))
+        return {"properties": {"id": photo_id, "datetime": when, "objects": classified}}
+
+    def audit(self):
+        features = [
+            self.feature(1, ("alcohol/bottle", {"qty": 3, "picked_up": False}), ("civic/other", {})),
+            self.feature(2, ("", {"cus": ["receipt"]}), ("space/rocket", {}), when="2026-09-20T01:00:00Z"),
+            self.feature(3, ("other/other", {"mat": ["Wood"], "cus": ["broken glass"]})),
+            self.feature(4, ("food/wrapper", {"qty": 2})),
+        ]
+        return sd.build_audit(features, self.ROWS, skipped_photos=1)
+
+    def test_summary_and_status_counts(self):
+        text = self.audit()
+        self.assertIn("- Photos: 4 (1 more skipped: no coordinates)", text)
+        self.assertIn("- Newest photo: 2026-09-20", text)
+        self.assertIn("- Tagged objects: 6 (9 items)", text)
+        self.assertIn("- Shown on the map: 3 objects (6 items) in 3 layers", text)
+        self.assertIn("| Not used | ", text)
+        self.assertRegex(text, r"\| Orphan tags \| [^|]+ \| 1 \| 1 \| 0 \|")
+        self.assertRegex(text, r"\| Unmapped \| [^|]+ \| 1 \| 1 \| 0 \|")
+        self.assertRegex(text, r"\| REVIEW \| [^|]+ \| 1 \| 2 \|")
+
+    def test_details_list_photo_ids(self):
+        text = self.audit()
+        self.assertIn("| 2 | receipt |", text)
+        self.assertIn("| space/rocket | 2 |", text)
+        self.assertIn("| 3 | other/other | Wood | 7, 8 |", text)
+        self.assertIn("| food/wrapper | 1 | 2 | needs a legacy review |", text)
+        self.assertIn("| civic/other | 1 | 1 |", text)
+
+    def test_layer_table_includes_empty_layers_and_not_picked_up(self):
+        text = self.audit()
+        self.assertIn("| Household | Liquor | Liquor Bottle | 3 | 1 | 1 | 3 |", text)
+        self.assertIn("| Dumping |  | Sml | 0 | 0 | 0 | 0 |", text)
+        self.assertNotIn("civic/other | 0", text)
+
+    def test_no_timestamp_so_unchanged_data_gives_unchanged_file(self):
+        self.assertEqual(self.audit(), self.audit())
+
+
 class LoadCrosswalkTests(unittest.TestCase):
     def write(self, text):
         f = tempfile.NamedTemporaryFile("w", suffix=".csv", delete=False, encoding="utf-8")

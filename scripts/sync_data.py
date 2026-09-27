@@ -4,6 +4,7 @@ import os
 import sys
 import time
 import json
+from collections import defaultdict
 import requests
 
 import crosswalk as cw
@@ -20,6 +21,7 @@ CROSSWALK_COLUMNS = ("OLM key",) + cw.NARROWING_COLUMNS + (
 # Statuses shown on the map. REVIEW is shown normally (decision log, 2026-09-26);
 # RECLASS, UNMAPPED and ORPHAN TAG stay off the map and are counted in the audit.
 MAP_STATUSES = ("OK", "REVIEW", "UNCLASS")
+AUDIT_PATH = "data/audit.md"
 
 
 def classify_tag_group(tag):  
@@ -203,6 +205,152 @@ def classify_object(raw, crosswalk_rows):
 
     result["on_map"] = result["status"] in MAP_STATUSES
     return result
+
+
+def _cell(text):
+    return str(text).replace("|", "\\|")
+
+
+def build_audit(features, crosswalk_rows, skipped_photos=0):
+    """The audit report (README "Audit counts") as Markdown.
+
+    No timestamp: an unchanged dataset gives an unchanged file, so the workflow makes no commit.
+    """
+    objects = [(f["properties"]["id"], o) for f in features for o in f["properties"]["objects"]]
+
+    def items(entries):
+        return sum(o["quantity"] or 0 for _, o in entries)
+
+    by_status = defaultdict(list)
+    for entry in objects:
+        by_status[entry[1]["status"]].append(entry)
+    on_map = [e for e in objects if e[1]["on_map"]]
+    ties = [e for e in objects if e[1].get("tie_rows")]
+    newest = max((f["properties"].get("datetime") or "" for f in features), default="")
+
+    lines = [
+        "# MROLM audit report",
+        "",
+        "Written by `scripts/sync_data.py` on every sync, following the README's \"Audit counts\". "
+        "Items are quantities (the map counts items); objects are tagged objects; photos are OLM photos.",
+        "",
+        f"- Photos: {len(features)}" + (f" ({skipped_photos} more skipped: no coordinates)" if skipped_photos else ""),
+        f"- Newest photo: {newest[:10] or 'none'}",
+        f"- Tagged objects: {len(objects)} ({items(objects)} items)",
+        f"- Shown on the map: {len(on_map)} objects ({items(on_map)} items) in "
+        f"{len({(o['group'], o['subgroup'], o['layer']) for _, o in on_map})} layers",
+        "",
+        "## Status counts",
+        "",
+        "| Status | Meaning | Objects | Items | Healthy value |",
+        "|---|---|---:|---:|---|",
+    ]
+    status_rows = [
+        ("OK", "OK", "Matched a map layer", "Most objects"),
+        ("REVIEW", "REVIEW", "Matched a map layer whose crosswalk row has an \"OLM data needs fixes\" note (shown on the map)",
+         "Falls as the legacy review is done"),
+        ("RECLASS", "Not used", "Matched a row with `include on map = no` (kept off the map)", "0"),
+        ("UNCLASS", "UNCLASS", "Household dumping with no size chosen", "0"),
+        ("ORPHAN TAG", "Orphan tags", "Custom tag attached to no object (kept off the map)", "0"),
+        ("UNMAPPED", "Unmapped", "Matched no crosswalk row: a gap in the crosswalk (kept off the map)", "0"),
+    ]
+    for status, label, meaning, healthy in status_rows:
+        entries = by_status.get(status, [])
+        lines.append(f"| {label} | {meaning} | {len(entries)} | {items(entries)} | {healthy} |")
+    lines.append(f"| Tie-breaks | Matched more than one equally specific row; the higher row won | "
+                 f"{len(ties)} | {items(ties)} | Informational |")
+
+    def keyed_table(title, entries, note_rows=None):
+        lines.extend(["", f"## {title}", ""])
+        if not entries:
+            lines.append("None.")
+            return
+        grouped = defaultdict(list)
+        for entry in entries:
+            grouped[entry[1]["olm_key"]].append(entry)
+        header = "| OLM key | Objects | Items |" + (" Note |" if note_rows else "")
+        lines.extend([header, "|---|---:|---:|" + ("---|" if note_rows else "")])
+        for key, group in sorted(grouped.items(), key=lambda kv: (-len(kv[1]), kv[0])):
+            note = f" {_cell(note_rows.get(key, ''))} |" if note_rows else ""
+            lines.append(f"| {_cell(key)} | {len(group)} | {items(group)} |{note}")
+
+    notes = {}
+    for row in crosswalk_rows:
+        notes.setdefault(cw.norm(row["OLM key"]), row["OLM data needs fixes"].strip())
+    review_notes = {o["olm_key"]: notes.get(cw.norm(o["olm_key"]), "") for _, o in by_status.get("REVIEW", [])}
+    keyed_table("REVIEW by OLM key", by_status.get("REVIEW", []), review_notes)
+    keyed_table("Not used (RECLASS) by OLM key", by_status.get("RECLASS", []))
+
+    lines.extend(["", "## Unmapped", ""])
+    unmapped = by_status.get("UNMAPPED", [])
+    if unmapped:
+        lines.extend(["| OLM key | Photo IDs |", "|---|---|"])
+        per_key = defaultdict(set)
+        for pid, o in unmapped:
+            per_key[o["olm_key"]].add(pid)
+        for key in sorted(per_key):
+            lines.append(f"| {_cell(key)} | {', '.join(str(p) for p in sorted(per_key[key]))} |")
+    else:
+        lines.append("None.")
+
+    lines.extend(["", "## Orphan tags", ""])
+    orphans = sorted(by_status.get("ORPHAN TAG", []), key=lambda e: e[0])
+    if orphans:
+        lines.extend(["| Photo ID | Custom tag(s) |", "|---|---|"])
+        lines.extend(f"| {pid} | {_cell(', '.join(o.get('custom_tags') or []))} |" for pid, o in orphans)
+    else:
+        lines.append("None.")
+
+    lines.extend(["", "## Tie-breaks", ""])
+    if ties:
+        lines.extend(["| Photo ID | OLM key | Layer used | Tied sheet rows |", "|---|---|---|---|"])
+        lines.extend(f"| {pid} | {_cell(o['olm_key'])} | {_cell(o['layer'])} | {', '.join(map(str, o['tie_rows']))} |"
+                     for pid, o in sorted(ties, key=lambda e: e[0]))
+    else:
+        lines.append("None.")
+
+    included = [r for r in crosswalk_rows if cw.norm(r["include on map"]) == "yes"]
+    standalone = sorted({r["MROLM local key"].strip() for r in included if not r["MROLM Group"].strip()})
+    orphan_subgroups = [r["_sheet_row"] for r in crosswalk_rows
+                        if r["MROLM Subgroup"].strip() and not r["MROLM Group"].strip()]
+    no_layer = [r["_sheet_row"] for r in included if not r["MROLM local key"].strip()]
+    convention = [r["_sheet_row"] for r in cw.convention_problems(crosswalk_rows)]
+    lines.extend([
+        "", "## Crosswalk checks", "",
+        f"- Standalone layers (no Group; informational): {', '.join(standalone) or 'none'}",
+        f"- Subgroup without a Group (error), sheet rows: {', '.join(map(str, orphan_subgroups)) or 'none'}",
+        f"- Map rows with no local key (error), sheet rows: {', '.join(map(str, no_layer)) or 'none'}",
+        f"- Local key = OLM key but `include on map` is not `no` (error), sheet rows: "
+        f"{', '.join(map(str, convention)) or 'none'}",
+    ])
+
+    # Every map layer, including empty ones, so a to-do layer at 0 is visible.
+    layer_stats = defaultdict(lambda: {"objects": 0, "items": 0, "photos": set(), "left": 0})
+    for pid, o in on_map:
+        stats = layer_stats[(o["group"], o["subgroup"], o["layer"])]
+        stats["objects"] += 1
+        stats["items"] += o["quantity"] or 0
+        stats["photos"].add(pid)
+        if o["picked_up"] is False:
+            stats["left"] += o["quantity"] or 0
+    layers = []
+    for r in included:
+        layer = tuple(r[c].strip() for c in ("MROLM Group", "MROLM Subgroup", "MROLM local key"))
+        if layer not in layers:
+            layers.append(layer)
+    # Tree order: each Group together, each Subgroup together within it, in order of first appearance.
+    group_rank = {g: i for i, g in reversed(list(enumerate(l[0] for l in layers)))}
+    sub_rank = {gs: i for i, gs in reversed(list(enumerate(l[:2] for l in layers)))}
+    layers.sort(key=lambda l: (group_rank[l[0]], sub_rank[l[:2]]))
+    lines.extend(["", "## Layers", "",
+                  "| Group | Subgroup | Layer | Items | Objects | Photos | Not picked up (items) |",
+                  "|---|---|---|---:|---:|---:|---:|"])
+    for layer in layers:
+        s = layer_stats.get(layer, {"objects": 0, "items": 0, "photos": set(), "left": 0})
+        lines.append(f"| {' | '.join(_cell(p) for p in layer)} | {s['items']} | {s['objects']} | "
+                     f"{len(s['photos'])} | {s['left']} |")
+
+    return "\n".join(lines) + "\n"
 
 
 def build_photo_properties(photo, crosswalk_rows):
@@ -411,13 +559,20 @@ def fetch_and_build_geojson(from_raw=None):
             statuses[obj["status"]] = statuses.get(obj["status"], 0) + 1
     print(f"[DIAGNOSTIC] Tagged objects by crosswalk status: {dict(sorted(statuses.items()))}")
 
+    # Built before any file is written, so a failure here leaves the last good data live.
+    audit = build_audit(features, crosswalk_rows, skipped_photos=len(raw_photos) - len(features))
+
     target_paths = ["data/litter.geojson", "public/data/litter.geojson"]
-    
+
     for path in target_paths:
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, "w", encoding="utf-8") as f:
             json.dump(geojson, f, indent=2)
         print(f"[SUCCESS] Exported canonical dataset -> {path}")
+
+    with open(AUDIT_PATH, "w", encoding="utf-8") as f:
+        f.write(audit)
+    print(f"[SUCCESS] Wrote audit report -> {AUDIT_PATH}")
 
 
 if __name__ == "__main__":
