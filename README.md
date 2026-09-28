@@ -50,6 +50,7 @@ Not part of the proof of concept: GIS features, municipal streams, a license, an
 
 Newest first, one line per change. Claude updates this whenever it updates the README.
 
+- **2026-09-28:** First batch of legacy tags fixed in OLM through the API: 19 `alcohol/packaging` objects reclassed (18 to Cannabis Packaging, 1 to `food/bag`) after a dry run, a one-photo test, and a small batch, each photo read back and still public. New tools: an offline dry run and a one-photo send with backup, read-back, and undo ([method](docs/olm-batch-review-method.md)). Legacy review check after a fresh export (2,836 photos, 3,520 tagged objects): REVIEW 1,648, RECLASS 41, orphan tags 9, UNMAPPED 0, UNCLASS 0.
 - **2026-09-27:** Contact email added for questions, contributors, and data inquiries.
 - **2026-09-27:** Map panel gets a one-line plain-text summary linking to this repository, and the page names its official address (canonical link) for search engines.
 - **2026-09-27:** Licenses added: MIT for the code, ODbL 1.0 for the data (as OpenLitterMap requires), with "© OpenLitterMap & Contributors" now credited on the map.
