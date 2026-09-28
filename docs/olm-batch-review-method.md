@@ -37,6 +37,8 @@ Legacy tags in OLM can be inconsistent (an object tagged with the wrong key, a c
 
 ## Quick start for a new session
 
+Two kinds of workbook, so nobody edits the same file: the assistant maintains the dated `legacy_tag_review_<date>.xlsx` workbooks built by the script, which are the lasting record of the edits. To review, the maintainer copies the newest one to a file ending in "(stuscopy)", edits only that copy, and deletes it when finished. Never edit the maintainer's copy; carry its edits forward with `--carry-from` (or from the newest dated workbook if no copy exists), and make sure they are carried before the copy is deleted.
+
 After the maintainer says they have finished editing a group in their review copy of the workbook:
 1. Ask where the OLM credentials are for this session (don't go looking for them).
 2. `python3 scripts/export_raw_olm.py --credentials-file <path>` (read-only).
