@@ -42,7 +42,7 @@ Two kinds of workbook, so nobody edits the same file: the assistant maintains th
 After the maintainer says they have finished editing a group in their review copy of the workbook:
 1. Ask where the OLM credentials are for this session (don't go looking for them).
 2. `python3 scripts/export_raw_olm.py --credentials-file <path>` (read-only).
-3. `python3 scripts/build_review_workbook.py --carry-from "<their review copy>"` (check "Carried over N of N").
+3. `python3 scripts/build_review_workbook.py --carry-from "<their review copy>"` (check "Carried over N of N"). Also run `python3 scripts/build_photo_gallery.py`, which rebuilds `review/photo_gallery.html`, the maintainer's local visual reference: every photo with its ID and date, searchable by ID, date range and OLM key.
 4. `python3 scripts/olm_batch_replace.py --workbook review/legacy_tag_review_<date>.xlsx --label <group>`.
 5. Report the result, any unedited objects left under the group's key (ask whether they are correct as is), and any new objects under that key uploaded since the last export.
 6. Send nothing until the maintainer has seen the dry run and explicitly says to send.
