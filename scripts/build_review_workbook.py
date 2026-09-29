@@ -32,10 +32,10 @@ OBJECT_COLUMNS = [
     "Quantity", "Picked_Up",
     "MROLM local key", "Status", "Notes", "OLM data needs fixes",
     "Change_To_OLMKey", "Change_to_OLM_secondary", "Change_to_OLM_Material", "Change_to_OLM_Custom",
-    "Batch_Status", "OLM_Tag_ID",
+    "Batch_Status", "OLM_Tag_ID", "Review notes",
 ]
 CHANGE_COLUMNS = ["Change_To_OLMKey", "Change_to_OLM_secondary", "Change_to_OLM_Material",
-                  "Change_to_OLM_Custom", "Batch_Status"]
+                  "Change_to_OLM_Custom", "Batch_Status", "Review notes"]  # carried on rebuild
 BATCH_COLUMNS = ["PhotoID", "Batch_Label", "Current_Tags_JSON", "Target_Tags_JSON", "Batch_Status",
                  "Verified_Before", "Verified_After", "Done_At", "Error_Or_Notes"]
 STATUS_VALUES = "pending,dry-run ok,sent,verified ok,failed,skipped"
@@ -160,7 +160,7 @@ def write_workbook(path, rows, photos, keys, types, materials):
             cell.font = Font(color="0563C1", underline="single")
     style_header(ws)
     ws.auto_filter.ref = f"A1:{get_column_letter(len(OBJECT_COLUMNS))}{len(rows) + 1}"
-    widths = {"PhotoLink": 30, "Notes": 40, "OLM data needs fixes": 40, "OLM_key": 24, "MROLM local key": 26}
+    widths = {"PhotoLink": 30, "Notes": 40, "OLM data needs fixes": 40, "OLM_key": 24, "MROLM local key": 26, "Review notes": 40}
     for i, name in enumerate(OBJECT_COLUMNS, start=1):
         ws.column_dimensions[get_column_letter(i)].width = widths.get(name, 16)
 
@@ -204,6 +204,7 @@ def write_workbook(path, rows, photos, keys, types, materials):
         ("Sheet", "Purpose"),
         ("Objects", "One row per tagged object. Filter OLM_key (and OLM_Custom) to isolate one group. Object_No is the object's position within its photo. Multiple materials or customs on one object are joined with '; '. Quantity and Picked_Up are shown for reference. OLM_Tag_ID is OLM's ID for that exact tag row, used to match your edits when this workbook is rebuilt."),
         ("Change columns", "Change_To_OLMKey, Change_to_OLM_secondary, Change_to_OLM_Material, Change_to_OLM_Custom: leave blank to keep the current value; type [remove] to remove it; otherwise type the new value. For materials or customs, whatever you type replaces the whole list (write several as 'a; b'). Nothing is sent to OLM by editing this sheet."),
+        ("Review notes", "Free-text notes on an object, carried into each rebuild. Never sent to OLM."),
         ("Photo_Batch", "One row per photo, filled by the batch script, not by hand. Current_Tags_JSON is a copy of the photo's tags as exported; the raw export file in review/raw/ is the real backup."),
         ("Lists", "Values for the dropdowns, from OLM's tag list."),
         ("", ""),

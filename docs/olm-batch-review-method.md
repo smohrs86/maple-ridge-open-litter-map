@@ -37,12 +37,12 @@ Legacy tags in OLM can be inconsistent (an object tagged with the wrong key, a c
 
 ## Quick start for a new session
 
-Two kinds of workbook, so nobody edits the same file: the assistant maintains the dated `legacy_tag_review_<date>.xlsx` workbooks built by the script, which are the lasting record of the edits. To review, the maintainer copies the newest one to a file ending in "(stuscopy)", edits only that copy, and deletes it when finished. Never edit the maintainer's copy; carry its edits forward with `--carry-from` (or from the newest dated workbook if no copy exists), and make sure they are carried before the copy is deleted.
+One workbook: the newest dated `legacy_tag_review_<date>.xlsx`, built by the script, is the single source of truth for the review edits. The maintainer edits it through Google Sheets (LibreOffice does not autosave) and says before saving a new version back over the local file. The assistant keeps a snapshot of the previous version in `review/snapshots/`, then compares the new save with it: it reports the change-column edits added, changed or removed, and flags any other difference (sheet names, row count, PhotoID, OLM_Tag_ID, dates, reference columns) that the round trip through Google Sheets might have caused. After a fresh export, the rebuild carries the edits into a new dated workbook, which becomes the one to edit; the superseded file moves to `review/snapshots/`.
 
-After the maintainer says they have finished editing a group in their review copy of the workbook:
+After the maintainer says they have finished editing a group in the workbook:
 1. Ask where the OLM credentials are for this session (don't go looking for them).
 2. `python3 scripts/export_raw_olm.py --credentials-file <path>` (read-only).
-3. `python3 scripts/build_review_workbook.py --carry-from "<their review copy>"` (check "Carried over N of N"). Also run `python3 scripts/build_photo_gallery.py`, which rebuilds `review/photo_gallery.html`, the maintainer's local visual reference: every photo with its ID and date, searchable by ID, date range and OLM key.
+3. `python3 scripts/build_review_workbook.py --carry-from review/legacy_tag_review_<current>.xlsx` (check "Carried over N of N"). Also run `python3 scripts/build_photo_gallery.py`, which rebuilds `review/photo_gallery.html`, the maintainer's local visual reference: every photo with its ID and date, searchable by ID, date range and OLM key.
 4. `python3 scripts/olm_batch_replace.py --workbook review/legacy_tag_review_<date>.xlsx --label <group>`.
 5. Report the result, any unedited objects left under the group's key (ask whether they are correct as is), and any new objects under that key uploaded since the last export.
 6. Send nothing until the maintainer has seen the dry run and explicitly says to send.
