@@ -55,6 +55,11 @@ class PlanMergeTests(unittest.TestCase):
         self.assertEqual(self.outcome({(1, 10): row()}, edit("Change_to_Picked_Up", "", "yes")), ["apply"])
         self.assertEqual(self.outcome({(1, 10): row()}, edit("Change_to_Picked_Up", "", "maybe")), ["invalid"])
 
+    def test_quantity_must_be_a_whole_number_of_one_or_more(self):
+        self.assertEqual(self.outcome({(1, 10): row()}, edit("Change_to_Quantity", "", "2")), ["apply"])
+        for bad in ("0", "2.5", "two", "[remove]"):
+            self.assertEqual(self.outcome({(1, 10): row()}, edit("Change_to_Quantity", "", bad)), ["invalid"], bad)
+
     def test_unknown_field_is_rejected(self):
         self.assertEqual(self.outcome({(1, 10): row()}, edit("OLM_key", "", "food/tinfoil")), ["bad_field"])
 

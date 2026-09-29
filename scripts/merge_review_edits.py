@@ -26,11 +26,13 @@ from datetime import datetime
 import openpyxl
 
 EDIT_FIELDS = ["Change_To_OLMKey", "Change_to_OLM_secondary", "Change_to_OLM_Material",
-               "Change_to_OLM_Custom", "Change_to_Picked_Up", "Review notes"]
+               "Change_to_OLM_Custom", "Change_to_Picked_Up", "Change_to_Quantity", "Review notes"]
 REMOVE = "[remove]"
 
 
 def text(value):
+    if isinstance(value, float) and value.is_integer():
+        value = int(value)
     return "" if value is None else str(value).strip()
 
 
@@ -44,6 +46,9 @@ def invalid_reason(field, value, lists):
         return None if value in lists["types"] or value == REMOVE else f"'{value}' is not an OLM type"
     if field == "Change_to_Picked_Up":
         return None if value in ("yes", "no") else f"picked up must be yes or no, not '{value}'"
+    if field == "Change_to_Quantity":
+        ok = value.isdigit() and int(value) >= 1
+        return None if ok else f"quantity must be a whole number of 1 or more, not '{value}'"
     if field == "Change_to_OLM_Material":
         if value == REMOVE:
             return None
@@ -159,7 +164,8 @@ def main():
     expected = set()
     for edit, now in plan["apply"]:
         r, c = rows[(int(edit["photo_id"]), int(edit["tag_id"]))], col[edit["field"]]
-        ws.cell(r, c).value = now or None
+        # A quantity is stored as a number so the workbook's whole-number check accepts it
+        ws.cell(r, c).value = (int(now) if edit["field"] == "Change_to_Quantity" and now else now) or None
         expected.add((r, c))
     wb.save(workbook)
 

@@ -20,7 +20,7 @@ import sys
 import openpyxl
 
 EDIT_FIELDS = ["Change_To_OLMKey", "Change_to_OLM_secondary", "Change_to_OLM_Material",
-               "Change_to_OLM_Custom", "Change_to_Picked_Up", "Review notes"]
+               "Change_to_OLM_Custom", "Change_to_Picked_Up", "Change_to_Quantity", "Review notes"]
 
 PAGE = r"""<!doctype html>
 <html lang="en">
@@ -93,7 +93,8 @@ PAGE = r"""<!doctype html>
 const DATA = __DATA__;
 const FIELDS = [["Change_To_OLMKey", "New OLM key", "dl-keys"], ["Change_to_OLM_secondary", "New secondary", "dl-types"],
                 ["Change_to_OLM_Material", "New material(s)", "dl-materials"], ["Change_to_OLM_Custom", "New custom tag(s)", ""],
-                ["Change_to_Picked_Up", "Picked up", ""], ["Review notes", "Review notes", ""]];
+                ["Change_to_Picked_Up", "Picked up", ""], ["Change_to_Quantity", "New quantity", ""],
+                ["Review notes", "Review notes", ""]];
 const PER_PAGE = 24;
 const STORE = "mrolm-review-edits";
 const $ = id => document.getElementById(id);
@@ -110,6 +111,7 @@ const changed = (o, f) => value(o, f) !== (o.edit[f] || "");
 const hasEdits = o => FIELDS.some(([f]) => value(o, f) !== "");
 const keySet = new Set(DATA.keys), typeSet = new Set(DATA.types), matSet = new Set(DATA.materials);
 function valid(f, v) {
+  if (f === "Change_to_Quantity") return !v || (/^\d+$/.test(v) && Number(v) >= 1);
   if (!v || v === "[remove]") return f !== "Change_To_OLMKey" || v !== "[remove]";
   if (f === "Change_To_OLMKey") return keySet.has(v);
   if (f === "Change_to_OLM_secondary") return typeSet.has(v);
@@ -174,6 +176,7 @@ function objectBlock(o) {
       input = el("select");
       [["", "keep (" + (o.picked === "yes" ? "yes" : "no") + ")"], ["yes", "yes"], ["no", "no"]].forEach(([v, t]) => input.add(new Option(t, v)));
     } else input = el("input");
+    if (f === "Change_to_Quantity") { input.placeholder = "keep (" + o.qty + ")"; input.inputMode = "numeric"; }
     input.value = value(o, f);
     if (list) input.setAttribute("list", list);
     const mark = () => { input.classList.toggle("changed", changed(o, f)); input.classList.toggle("bad", !valid(f, input.value.trim())); };
@@ -289,7 +292,8 @@ def main():
             "status": r["Status"] or "", "local": r["MROLM local key"] or "",
             "fix": index(fixes, (r["OLM data needs fixes"] or "").strip()),
             "def": index(defs, (r["Notes"] or "").strip()),
-            "edit": {f: str(r[f]).strip() for f in EDIT_FIELDS if r[f] not in (None, "")},
+            "edit": {f: str(int(r[f]) if isinstance(r[f], float) and r[f].is_integer() else r[f]).strip()
+                     for f in EDIT_FIELDS if r[f] not in (None, "")},
         })
     for photo in photos.values():
         photo["objects"].sort(key=lambda o: o["no"])
