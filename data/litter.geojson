@@ -973,20 +973,20 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
+            "category": "softdrinks",
             "item": "packaging",
             "quantity": 1
           }
         ],
         "objects": [
           {
-            "status": "REVIEW",
+            "status": "OK",
             "on_map": true,
             "group": "Convenient Food Drink",
-            "subgroup": "Take-out",
-            "layer": "Food Packaging",
-            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
-            "olm_key": "food/packaging",
+            "subgroup": "Drink",
+            "layer": "Household or Take-out Drink Packaging",
+            "full_name": "Convenient Food Drink \u2013 Drink \u2013 Household or Take-out Drink Packaging",
+            "olm_key": "softdrinks/packaging",
             "quantity": 1,
             "picked_up": true
           }
@@ -6182,7 +6182,7 @@
           {
             "type": "standard",
             "category": "sanitary",
-            "item": "tissue",
+            "item": "wipes",
             "quantity": 2
           }
         ],
@@ -6192,9 +6192,9 @@
             "on_map": true,
             "group": "Household",
             "subgroup": "",
-            "layer": "Hygiene Paper",
-            "full_name": "Household \u2013 Hygiene Paper",
-            "olm_key": "sanitary/tissue",
+            "layer": "Wet Wipes",
+            "full_name": "Household \u2013 Wet Wipes",
+            "olm_key": "sanitary/wipes",
             "quantity": 2,
             "picked_up": true
           }
@@ -6921,7 +6921,7 @@
           {
             "type": "standard",
             "category": "sanitary",
-            "item": "tissue",
+            "item": "wipes",
             "quantity": 1
           }
         ],
@@ -6931,9 +6931,9 @@
             "on_map": true,
             "group": "Household",
             "subgroup": "",
-            "layer": "Hygiene Paper",
-            "full_name": "Household \u2013 Hygiene Paper",
-            "olm_key": "sanitary/tissue",
+            "layer": "Wet Wipes",
+            "full_name": "Household \u2013 Wet Wipes",
+            "olm_key": "sanitary/wipes",
             "quantity": 1,
             "picked_up": true
           }
@@ -9414,28 +9414,20 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
+            "category": "other",
             "item": "other",
             "quantity": 1
-          },
-          {
-            "type": "custom_tag",
-            "category": "custom_tag",
-            "item": "Household misc",
-            "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "other"
           }
         ],
         "objects": [
           {
-            "status": "OK",
+            "status": "REVIEW",
             "on_map": true,
             "group": "Household",
             "subgroup": "",
-            "layer": "Organic Debris, Misc.",
-            "full_name": "Household \u2013 Organic Debris, Misc.",
-            "olm_key": "food/other",
+            "layer": "Household misc",
+            "full_name": "Household \u2013 Household misc",
+            "olm_key": "other/other",
             "quantity": 1,
             "picked_up": true
           }
@@ -10142,7 +10134,7 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "other",
+            "item": "straw",
             "quantity": 1
           }
         ],
@@ -10152,9 +10144,9 @@
             "on_map": true,
             "group": "Household",
             "subgroup": "",
-            "layer": "Organic Debris, Misc.",
-            "full_name": "Household \u2013 Organic Debris, Misc.",
-            "olm_key": "food/other",
+            "layer": "Plastic Straws",
+            "full_name": "Household \u2013 Plastic Straws",
+            "olm_key": "food/straw",
             "quantity": 1,
             "picked_up": true
           }
@@ -10367,28 +10359,20 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
+            "category": "other",
             "item": "other",
             "quantity": 1
-          },
-          {
-            "type": "custom_tag",
-            "category": "custom_tag",
-            "item": "Household misc",
-            "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "other"
           }
         ],
         "objects": [
           {
-            "status": "OK",
+            "status": "REVIEW",
             "on_map": true,
             "group": "Household",
             "subgroup": "",
-            "layer": "Organic Debris, Misc.",
-            "full_name": "Household \u2013 Organic Debris, Misc.",
-            "olm_key": "food/other",
+            "layer": "Household misc",
+            "full_name": "Household \u2013 Household misc",
+            "olm_key": "other/other",
             "quantity": 1,
             "picked_up": true
           }
@@ -11819,28 +11803,20 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
+            "category": "other",
             "item": "other",
             "quantity": 1
-          },
-          {
-            "type": "custom_tag",
-            "category": "custom_tag",
-            "item": "Household misc",
-            "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "other"
           }
         ],
         "objects": [
           {
-            "status": "OK",
+            "status": "REVIEW",
             "on_map": true,
             "group": "Household",
             "subgroup": "",
-            "layer": "Organic Debris, Misc.",
-            "full_name": "Household \u2013 Organic Debris, Misc.",
-            "olm_key": "food/other",
+            "layer": "Household misc",
+            "full_name": "Household \u2013 Household misc",
+            "olm_key": "other/other",
             "quantity": 1,
             "picked_up": true
           }
@@ -11869,28 +11845,20 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
+            "category": "other",
             "item": "other",
             "quantity": 1
-          },
-          {
-            "type": "custom_tag",
-            "category": "custom_tag",
-            "item": "Household misc",
-            "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "other"
           }
         ],
         "objects": [
           {
-            "status": "OK",
+            "status": "REVIEW",
             "on_map": true,
             "group": "Household",
             "subgroup": "",
-            "layer": "Organic Debris, Misc.",
-            "full_name": "Household \u2013 Organic Debris, Misc.",
-            "olm_key": "food/other",
+            "layer": "Household misc",
+            "full_name": "Household \u2013 Household misc",
+            "olm_key": "other/other",
             "quantity": 1,
             "picked_up": true
           }
@@ -14072,20 +14040,20 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
+            "category": "other",
             "item": "other",
             "quantity": 1
           }
         ],
         "objects": [
           {
-            "status": "OK",
+            "status": "REVIEW",
             "on_map": true,
             "group": "Household",
             "subgroup": "",
-            "layer": "Organic Debris, Misc.",
-            "full_name": "Household \u2013 Organic Debris, Misc.",
-            "olm_key": "food/other",
+            "layer": "Household misc",
+            "full_name": "Household \u2013 Household misc",
+            "olm_key": "other/other",
             "quantity": 1,
             "picked_up": true
           }
@@ -14290,20 +14258,20 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
+            "category": "other",
             "item": "other",
             "quantity": 1
           }
         ],
         "objects": [
           {
-            "status": "OK",
+            "status": "REVIEW",
             "on_map": true,
             "group": "Household",
             "subgroup": "",
-            "layer": "Organic Debris, Misc.",
-            "full_name": "Household \u2013 Organic Debris, Misc.",
-            "olm_key": "food/other",
+            "layer": "Household misc",
+            "full_name": "Household \u2013 Household misc",
+            "olm_key": "other/other",
             "quantity": 1,
             "picked_up": true
           }
@@ -14332,20 +14300,20 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
+            "category": "other",
             "item": "other",
             "quantity": 1
           }
         ],
         "objects": [
           {
-            "status": "OK",
+            "status": "REVIEW",
             "on_map": true,
             "group": "Household",
             "subgroup": "",
-            "layer": "Organic Debris, Misc.",
-            "full_name": "Household \u2013 Organic Debris, Misc.",
-            "olm_key": "food/other",
+            "layer": "Household misc",
+            "full_name": "Household \u2013 Household misc",
+            "olm_key": "other/other",
             "quantity": 1,
             "picked_up": true
           }
@@ -21071,7 +21039,7 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "bag",
+            "item": "packaging",
             "quantity": 1
           },
           {
@@ -21080,18 +21048,18 @@
             "item": "paper",
             "quantity": 1,
             "parent_category": "food",
-            "parent_item": "bag"
+            "parent_item": "packaging"
           }
         ],
         "objects": [
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Plastic (#4) or Paper Food Bag",
-            "full_name": "Household \u2013 Plastic (#4) or Paper Food Bag",
-            "olm_key": "food/bag",
+            "group": "Convenient Food Drink",
+            "subgroup": "Take-out",
+            "layer": "Food Packaging",
+            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
+            "olm_key": "food/packaging",
             "quantity": 1,
             "picked_up": true
           }
@@ -21506,7 +21474,7 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "bag",
+            "item": "packaging",
             "quantity": 1
           },
           {
@@ -21515,7 +21483,7 @@
             "item": "paper",
             "quantity": 1,
             "parent_category": "food",
-            "parent_item": "bag"
+            "parent_item": "packaging"
           },
           {
             "type": "brand",
@@ -21523,7 +21491,7 @@
             "item": "tim_hortons",
             "quantity": 1,
             "parent_category": "food",
-            "parent_item": "bag"
+            "parent_item": "packaging"
           },
           {
             "type": "standard",
@@ -21558,11 +21526,11 @@
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Plastic (#4) or Paper Food Bag",
-            "full_name": "Household \u2013 Plastic (#4) or Paper Food Bag",
-            "olm_key": "food/bag",
+            "group": "Convenient Food Drink",
+            "subgroup": "Take-out",
+            "layer": "Food Packaging",
+            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
+            "olm_key": "food/packaging",
             "quantity": 1,
             "picked_up": true
           },
@@ -22528,17 +22496,16 @@
         "tags": [
           {
             "type": "standard",
-            "category": "softdrinks",
+            "category": "coffee",
             "item": "cup",
-            "quantity": 1,
-            "object_type": "tea"
+            "quantity": 1
           },
           {
             "type": "brand",
             "category": "brand",
             "item": "tim_hortons",
             "quantity": 1,
-            "parent_category": "softdrinks",
+            "parent_category": "coffee",
             "parent_item": "cup"
           },
           {
@@ -22560,9 +22527,9 @@
             "on_map": true,
             "group": "Convenient Food Drink",
             "subgroup": "Drink",
-            "layer": "Cold Beverage Cup",
-            "full_name": "Convenient Food Drink \u2013 Drink \u2013 Cold Beverage Cup",
-            "olm_key": "softdrinks/cup",
+            "layer": "Poly-lined Hot Beverage Cup",
+            "full_name": "Convenient Food Drink \u2013 Drink \u2013 Poly-lined Hot Beverage Cup",
+            "olm_key": "coffee/cup",
             "quantity": 1,
             "picked_up": false
           },
@@ -25979,7 +25946,7 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "bag",
+            "item": "packaging",
             "quantity": 1
           },
           {
@@ -25988,7 +25955,7 @@
             "item": "paper",
             "quantity": 1,
             "parent_category": "food",
-            "parent_item": "bag"
+            "parent_item": "packaging"
           },
           {
             "type": "standard",
@@ -26039,11 +26006,11 @@
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Plastic (#4) or Paper Food Bag",
-            "full_name": "Household \u2013 Plastic (#4) or Paper Food Bag",
-            "olm_key": "food/bag",
+            "group": "Convenient Food Drink",
+            "subgroup": "Take-out",
+            "layer": "Food Packaging",
+            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
+            "olm_key": "food/packaging",
             "quantity": 1,
             "picked_up": true
           },
@@ -27756,8 +27723,8 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
-            "item": "packaging",
+            "category": "other",
+            "item": "plastic",
             "quantity": 1
           },
           {
@@ -27765,27 +27732,27 @@
             "category": "material",
             "item": "plastic",
             "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "packaging"
+            "parent_category": "other",
+            "parent_item": "plastic"
           },
           {
             "type": "custom_tag",
             "category": "custom_tag",
             "item": "Piece",
             "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "packaging"
+            "parent_category": "other",
+            "parent_item": "plastic"
           }
         ],
         "objects": [
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Convenient Food Drink",
-            "subgroup": "Take-out",
-            "layer": "Food Packaging",
-            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
-            "olm_key": "food/packaging",
+            "group": "Piece",
+            "subgroup": "",
+            "layer": "Plastic Piece",
+            "full_name": "Piece \u2013 Plastic Piece",
+            "olm_key": "other/plastic",
             "quantity": 1,
             "picked_up": true
           }
@@ -30840,7 +30807,7 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "container",
+            "item": "packaging",
             "quantity": 1
           },
           {
@@ -30849,18 +30816,18 @@
             "item": "mcdonalds",
             "quantity": 1,
             "parent_category": "food",
-            "parent_item": "container"
+            "parent_item": "packaging"
           }
         ],
         "objects": [
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Food Container - Plastic, Paper, Foam",
-            "full_name": "Household \u2013 Food Container - Plastic, Paper, Foam",
-            "olm_key": "food/container",
+            "group": "Convenient Food Drink",
+            "subgroup": "Take-out",
+            "layer": "Food Packaging",
+            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
+            "olm_key": "food/packaging",
             "quantity": 1,
             "picked_up": true
           }
@@ -31277,8 +31244,8 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
-            "item": "packaging",
+            "category": "other",
+            "item": "plastic",
             "quantity": 1
           },
           {
@@ -31286,19 +31253,19 @@
             "category": "custom_tag",
             "item": "Breadclip",
             "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "packaging"
+            "parent_category": "other",
+            "parent_item": "plastic"
           }
         ],
         "objects": [
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Convenient Food Drink",
-            "subgroup": "Take-out",
-            "layer": "Food Packaging",
-            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
-            "olm_key": "food/packaging",
+            "group": "Piece",
+            "subgroup": "",
+            "layer": "Plastic Piece",
+            "full_name": "Piece \u2013 Plastic Piece",
+            "olm_key": "other/plastic",
             "quantity": 1,
             "picked_up": true
           }
@@ -32407,16 +32374,8 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "bag",
+            "item": "packaging",
             "quantity": 1
-          },
-          {
-            "type": "material",
-            "category": "material",
-            "item": "paper",
-            "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "bag"
           },
           {
             "type": "brand",
@@ -32424,51 +32383,18 @@
             "item": "mcdonalds",
             "quantity": 1,
             "parent_category": "food",
-            "parent_item": "bag"
-          },
-          {
-            "type": "standard",
-            "category": "food",
-            "item": "container",
-            "quantity": 1
-          },
-          {
-            "type": "material",
-            "category": "material",
-            "item": "paper",
-            "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "container"
-          },
-          {
-            "type": "brand",
-            "category": "brand",
-            "item": "mcdonalds",
-            "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "container"
+            "parent_item": "packaging"
           }
         ],
         "objects": [
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Plastic (#4) or Paper Food Bag",
-            "full_name": "Household \u2013 Plastic (#4) or Paper Food Bag",
-            "olm_key": "food/bag",
-            "quantity": 1,
-            "picked_up": true
-          },
-          {
-            "status": "REVIEW",
-            "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Food Container - Plastic, Paper, Foam",
-            "full_name": "Household \u2013 Food Container - Plastic, Paper, Foam",
-            "olm_key": "food/container",
+            "group": "Convenient Food Drink",
+            "subgroup": "Take-out",
+            "layer": "Food Packaging",
+            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
+            "olm_key": "food/packaging",
             "quantity": 1,
             "picked_up": true
           }
@@ -36167,6 +36093,12 @@
             "type": "standard",
             "category": "food",
             "item": "bag",
+            "quantity": 2
+          },
+          {
+            "type": "standard",
+            "category": "other",
+            "item": "paper",
             "quantity": 1
           },
           {
@@ -36174,14 +36106,8 @@
             "category": "material",
             "item": "paper",
             "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "bag"
-          },
-          {
-            "type": "standard",
-            "category": "other",
-            "item": "bags_litter",
-            "quantity": 1
+            "parent_category": "other",
+            "parent_item": "paper"
           }
         ],
         "objects": [
@@ -36193,17 +36119,17 @@
             "layer": "Plastic (#4) or Paper Food Bag",
             "full_name": "Household \u2013 Plastic (#4) or Paper Food Bag",
             "olm_key": "food/bag",
-            "quantity": 1,
+            "quantity": 2,
             "picked_up": true
           },
           {
-            "status": "RECLASS",
-            "on_map": false,
-            "group": "",
+            "status": "REVIEW",
+            "on_map": true,
+            "group": "Piece",
             "subgroup": "",
-            "layer": "other/bags_litter",
-            "full_name": "other/bags_litter",
-            "olm_key": "other/bags_litter",
+            "layer": "Paper Piece",
+            "full_name": "Piece \u2013 Paper Piece",
+            "olm_key": "other/paper",
             "quantity": 1,
             "picked_up": true
           }
@@ -37200,7 +37126,7 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "container",
+            "item": "packaging",
             "quantity": 1
           },
           {
@@ -37214,11 +37140,11 @@
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Food Container - Plastic, Paper, Foam",
-            "full_name": "Household \u2013 Food Container - Plastic, Paper, Foam",
-            "olm_key": "food/container",
+            "group": "Convenient Food Drink",
+            "subgroup": "Take-out",
+            "layer": "Food Packaging",
+            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
+            "olm_key": "food/packaging",
             "quantity": 1,
             "picked_up": true
           },
@@ -37259,7 +37185,7 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "container",
+            "item": "packaging",
             "quantity": 1
           },
           {
@@ -37268,18 +37194,18 @@
             "item": "paper",
             "quantity": 1,
             "parent_category": "food",
-            "parent_item": "container"
+            "parent_item": "packaging"
           }
         ],
         "objects": [
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Food Container - Plastic, Paper, Foam",
-            "full_name": "Household \u2013 Food Container - Plastic, Paper, Foam",
-            "olm_key": "food/container",
+            "group": "Convenient Food Drink",
+            "subgroup": "Take-out",
+            "layer": "Food Packaging",
+            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
+            "olm_key": "food/packaging",
             "quantity": 1,
             "picked_up": true
           }
@@ -43803,12 +43729,6 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
-            "item": "lid",
-            "quantity": 1
-          },
-          {
-            "type": "standard",
             "category": "softdrinks",
             "item": "cup",
             "quantity": 1
@@ -43821,17 +43741,6 @@
           }
         ],
         "objects": [
-          {
-            "status": "OK",
-            "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Food Container Lid",
-            "full_name": "Household \u2013 Food Container Lid",
-            "olm_key": "food/lid",
-            "quantity": 1,
-            "picked_up": true
-          },
           {
             "status": "OK",
             "on_map": true,
@@ -44551,7 +44460,7 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "packaging",
+            "item": "bag",
             "quantity": 1
           },
           {
@@ -44565,11 +44474,11 @@
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Convenient Food Drink",
-            "subgroup": "Take-out",
-            "layer": "Food Packaging",
-            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
-            "olm_key": "food/packaging",
+            "group": "Household",
+            "subgroup": "",
+            "layer": "Plastic (#4) or Paper Food Bag",
+            "full_name": "Household \u2013 Plastic (#4) or Paper Food Bag",
+            "olm_key": "food/bag",
             "quantity": 1,
             "picked_up": true
           },
@@ -45888,16 +45797,16 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "bag",
+            "item": "crisp_packet",
             "quantity": 1
           },
           {
             "type": "material",
             "category": "material",
-            "item": "paper",
+            "item": "foil",
             "quantity": 1,
             "parent_category": "food",
-            "parent_item": "bag"
+            "parent_item": "crisp_packet"
           },
           {
             "type": "standard",
@@ -45916,13 +45825,13 @@
         ],
         "objects": [
           {
-            "status": "REVIEW",
+            "status": "OK",
             "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Plastic (#4) or Paper Food Bag",
-            "full_name": "Household \u2013 Plastic (#4) or Paper Food Bag",
-            "olm_key": "food/bag",
+            "group": "Convenient Food Drink",
+            "subgroup": "Snack",
+            "layer": "Metalized Chip Bags",
+            "full_name": "Convenient Food Drink \u2013 Snack \u2013 Metalized Chip Bags",
+            "olm_key": "food/crisp_packet",
             "quantity": 1,
             "picked_up": true
           },
@@ -48408,7 +48317,7 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "bag",
+            "item": "packaging",
             "quantity": 1
           },
           {
@@ -48417,7 +48326,7 @@
             "item": "paper",
             "quantity": 1,
             "parent_category": "food",
-            "parent_item": "bag"
+            "parent_item": "packaging"
           },
           {
             "type": "standard",
@@ -48430,11 +48339,11 @@
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Plastic (#4) or Paper Food Bag",
-            "full_name": "Household \u2013 Plastic (#4) or Paper Food Bag",
-            "olm_key": "food/bag",
+            "group": "Convenient Food Drink",
+            "subgroup": "Take-out",
+            "layer": "Food Packaging",
+            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
+            "olm_key": "food/packaging",
             "quantity": 1,
             "picked_up": true
           },
@@ -48880,7 +48789,7 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "packaging",
+            "item": "container",
             "quantity": 1
           }
         ],
@@ -48888,11 +48797,11 @@
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Convenient Food Drink",
-            "subgroup": "Take-out",
-            "layer": "Food Packaging",
-            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
-            "olm_key": "food/packaging",
+            "group": "Household",
+            "subgroup": "",
+            "layer": "Food Container - Plastic, Paper, Foam",
+            "full_name": "Household \u2013 Food Container - Plastic, Paper, Foam",
+            "olm_key": "food/container",
             "quantity": 1,
             "picked_up": true
           }
@@ -49988,7 +49897,7 @@
             "category": "dumping",
             "item": "dumping",
             "quantity": 1,
-            "object_type": "small"
+            "object_type": "medium"
           },
           {
             "type": "material",
@@ -50013,8 +49922,8 @@
             "on_map": true,
             "group": "Dumping",
             "subgroup": "",
-            "layer": "Sml",
-            "full_name": "Dumping \u2013 Sml",
+            "layer": "Med",
+            "full_name": "Dumping \u2013 Med",
             "olm_key": "dumping/dumping",
             "quantity": 1,
             "picked_up": false
@@ -55641,7 +55550,7 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "container",
+            "item": "packaging",
             "quantity": 1
           }
         ],
@@ -55649,11 +55558,11 @@
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Food Container - Plastic, Paper, Foam",
-            "full_name": "Household \u2013 Food Container - Plastic, Paper, Foam",
-            "olm_key": "food/container",
+            "group": "Convenient Food Drink",
+            "subgroup": "Take-out",
+            "layer": "Food Packaging",
+            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
+            "olm_key": "food/packaging",
             "quantity": 1,
             "picked_up": true
           }
@@ -59851,7 +59760,7 @@
         "tags": [
           {
             "type": "standard",
-            "category": "dumping",
+            "category": "other",
             "item": "other",
             "quantity": 1
           },
@@ -59860,19 +59769,19 @@
             "category": "material",
             "item": "ceramic",
             "quantity": 1,
-            "parent_category": "dumping",
+            "parent_category": "other",
             "parent_item": "other"
           }
         ],
         "objects": [
           {
-            "status": "OK",
+            "status": "REVIEW",
             "on_map": true,
-            "group": "Dumping",
+            "group": "Household",
             "subgroup": "",
-            "layer": "Commercial Dumping",
-            "full_name": "Dumping \u2013 Commercial Dumping",
-            "olm_key": "dumping/other",
+            "layer": "Household misc",
+            "full_name": "Household \u2013 Household misc",
+            "olm_key": "other/other",
             "quantity": 1,
             "picked_up": true
           }
@@ -62148,9 +62057,10 @@
         "tags": [
           {
             "type": "standard",
-            "category": "coffee",
+            "category": "softdrinks",
             "item": "cup",
-            "quantity": 1
+            "quantity": 1,
+            "object_type": "soda"
           }
         ],
         "objects": [
@@ -62159,9 +62069,9 @@
             "on_map": true,
             "group": "Convenient Food Drink",
             "subgroup": "Drink",
-            "layer": "Poly-lined Hot Beverage Cup",
-            "full_name": "Convenient Food Drink \u2013 Drink \u2013 Poly-lined Hot Beverage Cup",
-            "olm_key": "coffee/cup",
+            "layer": "Cold Beverage Cup",
+            "full_name": "Convenient Food Drink \u2013 Drink \u2013 Cold Beverage Cup",
+            "olm_key": "softdrinks/cup",
             "quantity": 1,
             "picked_up": true
           }
@@ -63064,7 +62974,7 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "container",
+            "item": "packaging",
             "quantity": 1
           },
           {
@@ -63094,11 +63004,11 @@
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Food Container - Plastic, Paper, Foam",
-            "full_name": "Household \u2013 Food Container - Plastic, Paper, Foam",
-            "olm_key": "food/container",
+            "group": "Convenient Food Drink",
+            "subgroup": "Take-out",
+            "layer": "Food Packaging",
+            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
+            "olm_key": "food/packaging",
             "quantity": 1,
             "picked_up": true
           },
@@ -65928,7 +65838,7 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
+            "category": "softdrinks",
             "item": "lid",
             "quantity": 1
           }
@@ -65937,11 +65847,11 @@
           {
             "status": "OK",
             "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Food Container Lid",
-            "full_name": "Household \u2013 Food Container Lid",
-            "olm_key": "food/lid",
+            "group": "Convenient Food Drink",
+            "subgroup": "Drink",
+            "layer": "Cold Beverage Lid",
+            "full_name": "Convenient Food Drink \u2013 Drink \u2013 Cold Beverage Lid",
+            "olm_key": "softdrinks/lid",
             "quantity": 1,
             "picked_up": true
           }
@@ -66112,7 +66022,7 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
+            "category": "softdrinks",
             "item": "lid",
             "quantity": 1
           }
@@ -66121,11 +66031,11 @@
           {
             "status": "OK",
             "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Food Container Lid",
-            "full_name": "Household \u2013 Food Container Lid",
-            "olm_key": "food/lid",
+            "group": "Convenient Food Drink",
+            "subgroup": "Drink",
+            "layer": "Cold Beverage Lid",
+            "full_name": "Convenient Food Drink \u2013 Drink \u2013 Cold Beverage Lid",
+            "olm_key": "softdrinks/lid",
             "quantity": 1,
             "picked_up": true
           }
@@ -67736,28 +67646,20 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
-            "item": "container",
+            "category": "softdrinks",
+            "item": "lid",
             "quantity": 1
-          },
-          {
-            "type": "material",
-            "category": "material",
-            "item": "foil",
-            "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "container"
           }
         ],
         "objects": [
           {
-            "status": "REVIEW",
+            "status": "OK",
             "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Food Container - Plastic, Paper, Foam",
-            "full_name": "Household \u2013 Food Container - Plastic, Paper, Foam",
-            "olm_key": "food/container",
+            "group": "Convenient Food Drink",
+            "subgroup": "Drink",
+            "layer": "Cold Beverage Lid",
+            "full_name": "Convenient Food Drink \u2013 Drink \u2013 Cold Beverage Lid",
+            "olm_key": "softdrinks/lid",
             "quantity": 1,
             "picked_up": true
           }
@@ -68676,7 +68578,7 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "bag",
+            "item": "packaging",
             "quantity": 1
           },
           {
@@ -68685,7 +68587,7 @@
             "item": "paper",
             "quantity": 1,
             "parent_category": "food",
-            "parent_item": "bag"
+            "parent_item": "packaging"
           },
           {
             "type": "standard",
@@ -68710,11 +68612,11 @@
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Plastic (#4) or Paper Food Bag",
-            "full_name": "Household \u2013 Plastic (#4) or Paper Food Bag",
-            "olm_key": "food/bag",
+            "group": "Convenient Food Drink",
+            "subgroup": "Take-out",
+            "layer": "Food Packaging",
+            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
+            "olm_key": "food/packaging",
             "quantity": 1,
             "picked_up": true
           },
@@ -69496,7 +69398,7 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "packaging",
+            "item": "container",
             "quantity": 1
           }
         ],
@@ -69504,11 +69406,11 @@
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Convenient Food Drink",
-            "subgroup": "Take-out",
-            "layer": "Food Packaging",
-            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
-            "olm_key": "food/packaging",
+            "group": "Household",
+            "subgroup": "",
+            "layer": "Food Container - Plastic, Paper, Foam",
+            "full_name": "Household \u2013 Food Container - Plastic, Paper, Foam",
+            "olm_key": "food/container",
             "quantity": 1,
             "picked_up": true
           }
@@ -70448,7 +70350,7 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "bag",
+            "item": "packaging",
             "quantity": 1
           },
           {
@@ -70457,7 +70359,7 @@
             "item": "paper",
             "quantity": 1,
             "parent_category": "food",
-            "parent_item": "bag"
+            "parent_item": "packaging"
           }
         ],
         "objects": [
@@ -70475,11 +70377,11 @@
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Plastic (#4) or Paper Food Bag",
-            "full_name": "Household \u2013 Plastic (#4) or Paper Food Bag",
-            "olm_key": "food/bag",
+            "group": "Convenient Food Drink",
+            "subgroup": "Take-out",
+            "layer": "Food Packaging",
+            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
+            "olm_key": "food/packaging",
             "quantity": 1,
             "picked_up": true
           }
@@ -70566,7 +70468,7 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
+            "category": "softdrinks",
             "item": "lid",
             "quantity": 1
           },
@@ -70581,11 +70483,11 @@
           {
             "status": "OK",
             "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Food Container Lid",
-            "full_name": "Household \u2013 Food Container Lid",
-            "olm_key": "food/lid",
+            "group": "Convenient Food Drink",
+            "subgroup": "Drink",
+            "layer": "Cold Beverage Lid",
+            "full_name": "Convenient Food Drink \u2013 Drink \u2013 Cold Beverage Lid",
+            "olm_key": "softdrinks/lid",
             "quantity": 1,
             "picked_up": true
           },
@@ -71407,7 +71309,7 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "bag",
+            "item": "packaging",
             "quantity": 1
           },
           {
@@ -71416,18 +71318,18 @@
             "item": "paper",
             "quantity": 1,
             "parent_category": "food",
-            "parent_item": "bag"
+            "parent_item": "packaging"
           }
         ],
         "objects": [
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Plastic (#4) or Paper Food Bag",
-            "full_name": "Household \u2013 Plastic (#4) or Paper Food Bag",
-            "olm_key": "food/bag",
+            "group": "Convenient Food Drink",
+            "subgroup": "Take-out",
+            "layer": "Food Packaging",
+            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
+            "olm_key": "food/packaging",
             "quantity": 1,
             "picked_up": true
           }
@@ -71598,20 +71500,20 @@
         "tags": [
           {
             "type": "standard",
-            "category": "dumping",
-            "item": "other",
+            "category": "other",
+            "item": "paper",
             "quantity": 1
           }
         ],
         "objects": [
           {
-            "status": "OK",
+            "status": "REVIEW",
             "on_map": true,
-            "group": "Dumping",
+            "group": "Piece",
             "subgroup": "",
-            "layer": "Commercial Dumping",
-            "full_name": "Dumping \u2013 Commercial Dumping",
-            "olm_key": "dumping/other",
+            "layer": "Paper Piece",
+            "full_name": "Piece \u2013 Paper Piece",
+            "olm_key": "other/paper",
             "quantity": 1,
             "picked_up": true
           }
@@ -72767,8 +72669,9 @@
           {
             "type": "standard",
             "category": "dumping",
-            "item": "other",
-            "quantity": 2
+            "item": "dumping",
+            "quantity": 2,
+            "object_type": "small"
           }
         ],
         "objects": [
@@ -72777,9 +72680,9 @@
             "on_map": true,
             "group": "Dumping",
             "subgroup": "",
-            "layer": "Commercial Dumping",
-            "full_name": "Dumping \u2013 Commercial Dumping",
-            "olm_key": "dumping/other",
+            "layer": "Sml",
+            "full_name": "Dumping \u2013 Sml",
+            "olm_key": "dumping/dumping",
             "quantity": 2,
             "picked_up": false
           }
@@ -79098,7 +79001,7 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "container",
+            "item": "packaging",
             "quantity": 1
           },
           {
@@ -79112,11 +79015,11 @@
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Food Container - Plastic, Paper, Foam",
-            "full_name": "Household \u2013 Food Container - Plastic, Paper, Foam",
-            "olm_key": "food/container",
+            "group": "Convenient Food Drink",
+            "subgroup": "Take-out",
+            "layer": "Food Packaging",
+            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
+            "olm_key": "food/packaging",
             "quantity": 1,
             "picked_up": true
           },
@@ -82511,7 +82414,7 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "container",
+            "item": "packaging",
             "quantity": 2
           },
           {
@@ -82520,7 +82423,7 @@
             "item": "paper",
             "quantity": 1,
             "parent_category": "food",
-            "parent_item": "container"
+            "parent_item": "packaging"
           },
           {
             "type": "standard",
@@ -82553,11 +82456,11 @@
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Food Container - Plastic, Paper, Foam",
-            "full_name": "Household \u2013 Food Container - Plastic, Paper, Foam",
-            "olm_key": "food/container",
+            "group": "Convenient Food Drink",
+            "subgroup": "Take-out",
+            "layer": "Food Packaging",
+            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
+            "olm_key": "food/packaging",
             "quantity": 2,
             "picked_up": true
           },
@@ -82720,8 +82623,8 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
-            "item": "bag",
+            "category": "other",
+            "item": "paper",
             "quantity": 1
           },
           {
@@ -82729,19 +82632,19 @@
             "category": "material",
             "item": "paper",
             "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "bag"
+            "parent_category": "other",
+            "parent_item": "paper"
           }
         ],
         "objects": [
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Household",
+            "group": "Piece",
             "subgroup": "",
-            "layer": "Plastic (#4) or Paper Food Bag",
-            "full_name": "Household \u2013 Plastic (#4) or Paper Food Bag",
-            "olm_key": "food/bag",
+            "layer": "Paper Piece",
+            "full_name": "Piece \u2013 Paper Piece",
+            "olm_key": "other/paper",
             "quantity": 1,
             "picked_up": true
           }
@@ -84016,7 +83919,7 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "bag",
+            "item": "crisp_packet",
             "quantity": 1
           },
           {
@@ -84025,7 +83928,7 @@
             "item": "foil",
             "quantity": 1,
             "parent_category": "food",
-            "parent_item": "bag"
+            "parent_item": "crisp_packet"
           },
           {
             "type": "standard",
@@ -84063,13 +83966,13 @@
             "picked_up": true
           },
           {
-            "status": "REVIEW",
+            "status": "OK",
             "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Plastic (#4) or Paper Food Bag",
-            "full_name": "Household \u2013 Plastic (#4) or Paper Food Bag",
-            "olm_key": "food/bag",
+            "group": "Convenient Food Drink",
+            "subgroup": "Snack",
+            "layer": "Metalized Chip Bags",
+            "full_name": "Convenient Food Drink \u2013 Snack \u2013 Metalized Chip Bags",
+            "olm_key": "food/crisp_packet",
             "quantity": 1,
             "picked_up": true
           },
@@ -86830,7 +86733,7 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "packaging",
+            "item": "crisp_packet",
             "quantity": 1
           },
           {
@@ -86850,13 +86753,13 @@
         ],
         "objects": [
           {
-            "status": "REVIEW",
+            "status": "OK",
             "on_map": true,
             "group": "Convenient Food Drink",
-            "subgroup": "Take-out",
-            "layer": "Food Packaging",
-            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
-            "olm_key": "food/packaging",
+            "subgroup": "Snack",
+            "layer": "Metalized Chip Bags",
+            "full_name": "Convenient Food Drink \u2013 Snack \u2013 Metalized Chip Bags",
+            "olm_key": "food/crisp_packet",
             "quantity": 1,
             "picked_up": true
           },
@@ -88164,12 +88067,6 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
-            "item": "lid",
-            "quantity": 1
-          },
-          {
-            "type": "standard",
             "category": "other",
             "item": "paper",
             "quantity": 1
@@ -88181,20 +88078,15 @@
             "quantity": 1,
             "parent_category": "other",
             "parent_item": "paper"
+          },
+          {
+            "type": "standard",
+            "category": "softdrinks",
+            "item": "lid",
+            "quantity": 1
           }
         ],
         "objects": [
-          {
-            "status": "OK",
-            "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Food Container Lid",
-            "full_name": "Household \u2013 Food Container Lid",
-            "olm_key": "food/lid",
-            "quantity": 1,
-            "picked_up": true
-          },
           {
             "status": "REVIEW",
             "on_map": true,
@@ -88203,6 +88095,17 @@
             "layer": "Paper Piece",
             "full_name": "Piece \u2013 Paper Piece",
             "olm_key": "other/paper",
+            "quantity": 1,
+            "picked_up": true
+          },
+          {
+            "status": "OK",
+            "on_map": true,
+            "group": "Convenient Food Drink",
+            "subgroup": "Drink",
+            "layer": "Cold Beverage Lid",
+            "full_name": "Convenient Food Drink \u2013 Drink \u2013 Cold Beverage Lid",
+            "olm_key": "softdrinks/lid",
             "quantity": 1,
             "picked_up": true
           }
@@ -90124,7 +90027,7 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "packaging",
+            "item": "container",
             "quantity": 1
           },
           {
@@ -90133,7 +90036,7 @@
             "item": "plastic",
             "quantity": 1,
             "parent_category": "food",
-            "parent_item": "packaging"
+            "parent_item": "container"
           },
           {
             "type": "standard",
@@ -90146,11 +90049,11 @@
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Convenient Food Drink",
-            "subgroup": "Take-out",
-            "layer": "Food Packaging",
-            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
-            "olm_key": "food/packaging",
+            "group": "Household",
+            "subgroup": "",
+            "layer": "Food Container - Plastic, Paper, Foam",
+            "full_name": "Household \u2013 Food Container - Plastic, Paper, Foam",
+            "olm_key": "food/container",
             "quantity": 1,
             "picked_up": true
           },
@@ -92899,6 +92802,12 @@
             "quantity": 1,
             "parent_category": "food",
             "parent_item": "bag"
+          },
+          {
+            "type": "standard",
+            "category": "food",
+            "item": "other",
+            "quantity": 2
           }
         ],
         "objects": [
@@ -92911,6 +92820,17 @@
             "full_name": "Household \u2013 Plastic (#4) or Paper Food Bag",
             "olm_key": "food/bag",
             "quantity": 1,
+            "picked_up": true
+          },
+          {
+            "status": "OK",
+            "on_map": true,
+            "group": "Household",
+            "subgroup": "",
+            "layer": "Organic Debris, Misc.",
+            "full_name": "Household \u2013 Organic Debris, Misc.",
+            "olm_key": "food/other",
+            "quantity": 2,
             "picked_up": true
           }
         ],
@@ -106159,7 +106079,7 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "packaging",
+            "item": "bag",
             "quantity": 1
           },
           {
@@ -106168,18 +106088,18 @@
             "item": "plastic",
             "quantity": 1,
             "parent_category": "food",
-            "parent_item": "packaging"
+            "parent_item": "bag"
           }
         ],
         "objects": [
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Convenient Food Drink",
-            "subgroup": "Take-out",
-            "layer": "Food Packaging",
-            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
-            "olm_key": "food/packaging",
+            "group": "Household",
+            "subgroup": "",
+            "layer": "Plastic (#4) or Paper Food Bag",
+            "full_name": "Household \u2013 Plastic (#4) or Paper Food Bag",
+            "olm_key": "food/bag",
             "quantity": 1,
             "picked_up": true
           }
@@ -106852,6 +106772,12 @@
           },
           {
             "type": "standard",
+            "category": "coffee",
+            "item": "sleeve",
+            "quantity": 1
+          },
+          {
+            "type": "standard",
             "category": "softdrinks",
             "item": "can",
             "quantity": 1,
@@ -106886,6 +106812,17 @@
             "layer": "Hot Beverage Cup Lid",
             "full_name": "Convenient Food Drink \u2013 Drink \u2013 Hot Beverage Cup Lid",
             "olm_key": "coffee/lid",
+            "quantity": 1,
+            "picked_up": true
+          },
+          {
+            "status": "REVIEW",
+            "on_map": true,
+            "group": "Convenient Food Drink",
+            "subgroup": "Drink",
+            "layer": "Corrugated Cardboard Cup Sleeve",
+            "full_name": "Convenient Food Drink \u2013 Drink \u2013 Corrugated Cardboard Cup Sleeve",
+            "olm_key": "coffee/sleeve",
             "quantity": 1,
             "picked_up": true
           },
@@ -108129,7 +108066,7 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
+            "category": "softdrinks",
             "item": "lid",
             "quantity": 1
           },
@@ -108150,11 +108087,11 @@
           {
             "status": "OK",
             "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Food Container Lid",
-            "full_name": "Household \u2013 Food Container Lid",
-            "olm_key": "food/lid",
+            "group": "Convenient Food Drink",
+            "subgroup": "Drink",
+            "layer": "Cold Beverage Lid",
+            "full_name": "Convenient Food Drink \u2013 Drink \u2013 Cold Beverage Lid",
+            "olm_key": "softdrinks/lid",
             "quantity": 1,
             "picked_up": true
           },
@@ -108348,6 +108285,12 @@
             "type": "standard",
             "category": "coffee",
             "item": "sleeve",
+            "quantity": 2
+          },
+          {
+            "type": "standard",
+            "category": "coffee",
+            "item": "lid",
             "quantity": 1
           }
         ],
@@ -108371,6 +108314,17 @@
             "layer": "Corrugated Cardboard Cup Sleeve",
             "full_name": "Convenient Food Drink \u2013 Drink \u2013 Corrugated Cardboard Cup Sleeve",
             "olm_key": "coffee/sleeve",
+            "quantity": 2,
+            "picked_up": true
+          },
+          {
+            "status": "OK",
+            "on_map": true,
+            "group": "Convenient Food Drink",
+            "subgroup": "Drink",
+            "layer": "Hot Beverage Cup Lid",
+            "full_name": "Convenient Food Drink \u2013 Drink \u2013 Hot Beverage Cup Lid",
+            "olm_key": "coffee/lid",
             "quantity": 1,
             "picked_up": true
           }
@@ -109710,19 +109664,19 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "packaging",
+            "item": "crisp_packet",
             "quantity": 1
           }
         ],
         "objects": [
           {
-            "status": "REVIEW",
+            "status": "OK",
             "on_map": true,
             "group": "Convenient Food Drink",
-            "subgroup": "Take-out",
-            "layer": "Food Packaging",
-            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
-            "olm_key": "food/packaging",
+            "subgroup": "Snack",
+            "layer": "Metalized Chip Bags",
+            "full_name": "Convenient Food Drink \u2013 Snack \u2013 Metalized Chip Bags",
+            "olm_key": "food/crisp_packet",
             "quantity": 1,
             "picked_up": true
           }
@@ -112737,7 +112691,7 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "packaging",
+            "item": "container",
             "quantity": 1
           },
           {
@@ -112746,18 +112700,18 @@
             "item": "plastic",
             "quantity": 1,
             "parent_category": "food",
-            "parent_item": "packaging"
+            "parent_item": "container"
           }
         ],
         "objects": [
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Convenient Food Drink",
-            "subgroup": "Take-out",
-            "layer": "Food Packaging",
-            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
-            "olm_key": "food/packaging",
+            "group": "Household",
+            "subgroup": "",
+            "layer": "Food Container - Plastic, Paper, Foam",
+            "full_name": "Household \u2013 Food Container - Plastic, Paper, Foam",
+            "olm_key": "food/container",
             "quantity": 1,
             "picked_up": true
           }
@@ -113367,7 +113321,7 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "bag",
+            "item": "packaging",
             "quantity": 1
           },
           {
@@ -113376,7 +113330,7 @@
             "item": "paper",
             "quantity": 1,
             "parent_category": "food",
-            "parent_item": "bag"
+            "parent_item": "packaging"
           },
           {
             "type": "brand",
@@ -113384,18 +113338,18 @@
             "item": "mcdonalds",
             "quantity": 1,
             "parent_category": "food",
-            "parent_item": "bag"
+            "parent_item": "packaging"
           }
         ],
         "objects": [
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Plastic (#4) or Paper Food Bag",
-            "full_name": "Household \u2013 Plastic (#4) or Paper Food Bag",
-            "olm_key": "food/bag",
+            "group": "Convenient Food Drink",
+            "subgroup": "Take-out",
+            "layer": "Food Packaging",
+            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
+            "olm_key": "food/packaging",
             "quantity": 1,
             "picked_up": true
           }
@@ -114685,7 +114639,7 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "packaging",
+            "item": "bag",
             "quantity": 1
           },
           {
@@ -114694,18 +114648,18 @@
             "item": "plastic",
             "quantity": 1,
             "parent_category": "food",
-            "parent_item": "packaging"
+            "parent_item": "bag"
           }
         ],
         "objects": [
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Convenient Food Drink",
-            "subgroup": "Take-out",
-            "layer": "Food Packaging",
-            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
-            "olm_key": "food/packaging",
+            "group": "Household",
+            "subgroup": "",
+            "layer": "Plastic (#4) or Paper Food Bag",
+            "full_name": "Household \u2013 Plastic (#4) or Paper Food Bag",
+            "olm_key": "food/bag",
             "quantity": 1,
             "picked_up": true
           }
@@ -115875,7 +115829,7 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
+            "category": "other",
             "item": "other",
             "quantity": 1
           },
@@ -115884,19 +115838,19 @@
             "category": "material",
             "item": "plastic",
             "quantity": 1,
-            "parent_category": "food",
+            "parent_category": "other",
             "parent_item": "other"
           }
         ],
         "objects": [
           {
-            "status": "OK",
+            "status": "REVIEW",
             "on_map": true,
             "group": "Household",
             "subgroup": "",
-            "layer": "Organic Debris, Misc.",
-            "full_name": "Household \u2013 Organic Debris, Misc.",
-            "olm_key": "food/other",
+            "layer": "Household misc",
+            "full_name": "Household \u2013 Household misc",
+            "olm_key": "other/other",
             "quantity": 1,
             "picked_up": true
           }
@@ -115947,33 +115901,9 @@
           },
           {
             "type": "standard",
-            "category": "coffee",
-            "item": "lid",
-            "quantity": 1
-          },
-          {
-            "type": "material",
-            "category": "material",
+            "category": "other",
             "item": "plastic",
-            "quantity": 1,
-            "parent_category": "coffee",
-            "parent_item": "lid"
-          },
-          {
-            "type": "brand",
-            "category": "brand",
-            "item": "tim_hortons",
-            "quantity": 1,
-            "parent_category": "coffee",
-            "parent_item": "lid"
-          },
-          {
-            "type": "custom_tag",
-            "category": "custom_tag",
-            "item": "Piece",
-            "quantity": 1,
-            "parent_category": "coffee",
-            "parent_item": "lid"
+            "quantity": 1
           }
         ],
         "objects": [
@@ -115989,13 +115919,13 @@
             "picked_up": true
           },
           {
-            "status": "OK",
+            "status": "REVIEW",
             "on_map": true,
-            "group": "Convenient Food Drink",
-            "subgroup": "Drink",
-            "layer": "Hot Beverage Cup Lid",
-            "full_name": "Convenient Food Drink \u2013 Drink \u2013 Hot Beverage Cup Lid",
-            "olm_key": "coffee/lid",
+            "group": "Piece",
+            "subgroup": "",
+            "layer": "Plastic Piece",
+            "full_name": "Piece \u2013 Plastic Piece",
+            "olm_key": "other/plastic",
             "quantity": 1,
             "picked_up": true
           }
@@ -117526,8 +117456,8 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
-            "item": "packaging",
+            "category": "other",
+            "item": "paper",
             "quantity": 1
           },
           {
@@ -117535,27 +117465,27 @@
             "category": "material",
             "item": "paper",
             "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "packaging"
+            "parent_category": "other",
+            "parent_item": "paper"
           },
           {
             "type": "custom_tag",
             "category": "custom_tag",
             "item": "Piece",
             "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "packaging"
+            "parent_category": "other",
+            "parent_item": "paper"
           }
         ],
         "objects": [
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Convenient Food Drink",
-            "subgroup": "Take-out",
-            "layer": "Food Packaging",
-            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
-            "olm_key": "food/packaging",
+            "group": "Piece",
+            "subgroup": "",
+            "layer": "Paper Piece",
+            "full_name": "Piece \u2013 Paper Piece",
+            "olm_key": "other/paper",
             "quantity": 1,
             "picked_up": true
           }
@@ -118724,8 +118654,8 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
-            "item": "packaging",
+            "category": "other",
+            "item": "paper",
             "quantity": 1
           }
         ],
@@ -118733,11 +118663,11 @@
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Convenient Food Drink",
-            "subgroup": "Take-out",
-            "layer": "Food Packaging",
-            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
-            "olm_key": "food/packaging",
+            "group": "Piece",
+            "subgroup": "",
+            "layer": "Paper Piece",
+            "full_name": "Piece \u2013 Paper Piece",
+            "olm_key": "other/paper",
             "quantity": 1,
             "picked_up": true
           }
@@ -119504,7 +119434,7 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "bag",
+            "item": "packaging",
             "quantity": 1
           },
           {
@@ -119513,7 +119443,7 @@
             "item": "paper",
             "quantity": 1,
             "parent_category": "food",
-            "parent_item": "bag"
+            "parent_item": "packaging"
           },
           {
             "type": "brand",
@@ -119521,7 +119451,7 @@
             "item": "mcdonalds",
             "quantity": 1,
             "parent_category": "food",
-            "parent_item": "bag"
+            "parent_item": "packaging"
           },
           {
             "type": "standard",
@@ -119534,11 +119464,11 @@
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Plastic (#4) or Paper Food Bag",
-            "full_name": "Household \u2013 Plastic (#4) or Paper Food Bag",
-            "olm_key": "food/bag",
+            "group": "Convenient Food Drink",
+            "subgroup": "Take-out",
+            "layer": "Food Packaging",
+            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
+            "olm_key": "food/packaging",
             "quantity": 1,
             "picked_up": true
           },
@@ -119972,28 +119902,31 @@
         "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/06/30/mzTPL44mtMlFPXNpvOsBvJ8Vgd5Z9RnqimfgwMH8.jpg",
         "tags": [
           {
+            "type": "standard",
+            "category": "food",
+            "item": "other",
+            "quantity": 1
+          },
+          {
             "type": "custom_tag",
             "category": "custom_tag",
             "item": "food waste",
             "quantity": 1,
-            "parent_category": null,
-            "parent_item": null
+            "parent_category": "food",
+            "parent_item": "other"
           }
         ],
         "objects": [
           {
-            "status": "ORPHAN TAG",
-            "on_map": false,
-            "group": "",
+            "status": "OK",
+            "on_map": true,
+            "group": "Household",
             "subgroup": "",
-            "layer": "",
-            "full_name": "",
-            "olm_key": "",
+            "layer": "Organic Debris, Misc.",
+            "full_name": "Household \u2013 Organic Debris, Misc.",
+            "olm_key": "food/other",
             "quantity": 1,
-            "picked_up": false,
-            "custom_tags": [
-              "food waste"
-            ]
+            "picked_up": false
           }
         ],
         "groups": [
@@ -120928,28 +120861,31 @@
         "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/06/30/iAABb6uKebhiMYU0zhtNu2fFhYoEFZ9ozObB5H4r.jpg",
         "tags": [
           {
+            "type": "standard",
+            "category": "other",
+            "item": "paper",
+            "quantity": 1
+          },
+          {
             "type": "custom_tag",
             "category": "custom_tag",
             "item": "receipt",
             "quantity": 1,
-            "parent_category": null,
-            "parent_item": null
+            "parent_category": "other",
+            "parent_item": "paper"
           }
         ],
         "objects": [
           {
-            "status": "ORPHAN TAG",
-            "on_map": false,
-            "group": "",
+            "status": "REVIEW",
+            "on_map": true,
+            "group": "Piece",
             "subgroup": "",
-            "layer": "",
-            "full_name": "",
-            "olm_key": "",
+            "layer": "Paper Piece",
+            "full_name": "Piece \u2013 Paper Piece",
+            "olm_key": "other/paper",
             "quantity": 1,
-            "picked_up": false,
-            "custom_tags": [
-              "receipt"
-            ]
+            "picked_up": true
           }
         ],
         "groups": [
@@ -121428,15 +121364,15 @@
           },
           {
             "type": "standard",
-            "category": "food",
-            "item": "lid",
-            "quantity": 1
-          },
-          {
-            "type": "standard",
             "category": "smoking",
             "item": "butts",
             "quantity": 6
+          },
+          {
+            "type": "standard",
+            "category": "softdrinks",
+            "item": "lid",
+            "quantity": 1
           }
         ],
         "objects": [
@@ -121454,23 +121390,23 @@
           {
             "status": "OK",
             "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Food Container Lid",
-            "full_name": "Household \u2013 Food Container Lid",
-            "olm_key": "food/lid",
-            "quantity": 1,
-            "picked_up": true
-          },
-          {
-            "status": "OK",
-            "on_map": true,
             "group": "Smoking",
             "subgroup": "",
             "layer": "Cigarette Butts",
             "full_name": "Smoking \u2013 Cigarette Butts",
             "olm_key": "smoking/butts",
             "quantity": 6,
+            "picked_up": true
+          },
+          {
+            "status": "OK",
+            "on_map": true,
+            "group": "Convenient Food Drink",
+            "subgroup": "Drink",
+            "layer": "Cold Beverage Lid",
+            "full_name": "Convenient Food Drink \u2013 Drink \u2013 Cold Beverage Lid",
+            "olm_key": "softdrinks/lid",
+            "quantity": 1,
             "picked_up": true
           }
         ],
@@ -122848,8 +122784,8 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
-            "item": "packaging",
+            "category": "other",
+            "item": "paper",
             "quantity": 1
           },
           {
@@ -122857,8 +122793,8 @@
             "category": "material",
             "item": "paper",
             "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "packaging"
+            "parent_category": "other",
+            "parent_item": "paper"
           },
           {
             "type": "standard",
@@ -122903,11 +122839,11 @@
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Convenient Food Drink",
-            "subgroup": "Take-out",
-            "layer": "Food Packaging",
-            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
-            "olm_key": "food/packaging",
+            "group": "Piece",
+            "subgroup": "",
+            "layer": "Paper Piece",
+            "full_name": "Piece \u2013 Paper Piece",
+            "olm_key": "other/paper",
             "quantity": 1,
             "picked_up": true
           },
@@ -123842,7 +123778,7 @@
             "category": "dumping",
             "item": "dumping",
             "quantity": 1,
-            "object_type": "small"
+            "object_type": "medium"
           },
           {
             "type": "material",
@@ -123867,8 +123803,8 @@
             "on_map": true,
             "group": "Dumping",
             "subgroup": "",
-            "layer": "Sml",
-            "full_name": "Dumping \u2013 Sml",
+            "layer": "Med",
+            "full_name": "Dumping \u2013 Med",
             "olm_key": "dumping/dumping",
             "quantity": 1,
             "picked_up": false
@@ -126190,8 +126126,8 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
-            "item": "packaging",
+            "category": "other",
+            "item": "paper",
             "quantity": 1
           },
           {
@@ -126199,27 +126135,27 @@
             "category": "material",
             "item": "paper",
             "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "packaging"
+            "parent_category": "other",
+            "parent_item": "paper"
           },
           {
             "type": "custom_tag",
             "category": "custom_tag",
             "item": "Piece",
             "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "packaging"
+            "parent_category": "other",
+            "parent_item": "paper"
           }
         ],
         "objects": [
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Convenient Food Drink",
-            "subgroup": "Take-out",
-            "layer": "Food Packaging",
-            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
-            "olm_key": "food/packaging",
+            "group": "Piece",
+            "subgroup": "",
+            "layer": "Paper Piece",
+            "full_name": "Piece \u2013 Paper Piece",
+            "olm_key": "other/paper",
             "quantity": 1,
             "picked_up": true
           }
@@ -127296,7 +127232,7 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
+            "category": "other",
             "item": "other",
             "quantity": 1
           },
@@ -127305,19 +127241,19 @@
             "category": "material",
             "item": "plastic",
             "quantity": 1,
-            "parent_category": "food",
+            "parent_category": "other",
             "parent_item": "other"
           }
         ],
         "objects": [
           {
-            "status": "OK",
+            "status": "REVIEW",
             "on_map": true,
             "group": "Household",
             "subgroup": "",
-            "layer": "Organic Debris, Misc.",
-            "full_name": "Household \u2013 Organic Debris, Misc.",
-            "olm_key": "food/other",
+            "layer": "Household misc",
+            "full_name": "Household \u2013 Household misc",
+            "olm_key": "other/other",
             "quantity": 1,
             "picked_up": true
           }
@@ -128604,8 +128540,8 @@
         "tags": [
           {
             "type": "standard",
-            "category": "coffee",
-            "item": "lid",
+            "category": "other",
+            "item": "plastic",
             "quantity": 1
           },
           {
@@ -128613,19 +128549,19 @@
             "category": "custom_tag",
             "item": "Piece",
             "quantity": 1,
-            "parent_category": "coffee",
-            "parent_item": "lid"
+            "parent_category": "other",
+            "parent_item": "plastic"
           }
         ],
         "objects": [
           {
-            "status": "OK",
+            "status": "REVIEW",
             "on_map": true,
-            "group": "Convenient Food Drink",
-            "subgroup": "Drink",
-            "layer": "Hot Beverage Cup Lid",
-            "full_name": "Convenient Food Drink \u2013 Drink \u2013 Hot Beverage Cup Lid",
-            "olm_key": "coffee/lid",
+            "group": "Piece",
+            "subgroup": "",
+            "layer": "Plastic Piece",
+            "full_name": "Piece \u2013 Plastic Piece",
+            "olm_key": "other/plastic",
             "quantity": 1,
             "picked_up": true
           }
@@ -128738,8 +128674,8 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
-            "item": "other",
+            "category": "other",
+            "item": "plastic",
             "quantity": 1
           },
           {
@@ -128747,27 +128683,27 @@
             "category": "material",
             "item": "plastic",
             "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "other"
+            "parent_category": "other",
+            "parent_item": "plastic"
           },
           {
             "type": "custom_tag",
             "category": "custom_tag",
             "item": "Bread clip",
             "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "other"
+            "parent_category": "other",
+            "parent_item": "plastic"
           }
         ],
         "objects": [
           {
-            "status": "OK",
+            "status": "REVIEW",
             "on_map": true,
-            "group": "Household",
+            "group": "Piece",
             "subgroup": "",
-            "layer": "Organic Debris, Misc.",
-            "full_name": "Household \u2013 Organic Debris, Misc.",
-            "olm_key": "food/other",
+            "layer": "Plastic Piece",
+            "full_name": "Piece \u2013 Plastic Piece",
+            "olm_key": "other/plastic",
             "quantity": 1,
             "picked_up": true
           }
@@ -129288,46 +129224,45 @@
         "tags": [
           {
             "type": "standard",
-            "category": "softdrinks",
-            "item": "cup",
-            "quantity": 1,
-            "object_type": "smoothie"
+            "category": "other",
+            "item": "plastic",
+            "quantity": 10
           },
           {
             "type": "material",
             "category": "material",
             "item": "plastic",
             "quantity": 1,
-            "parent_category": "softdrinks",
-            "parent_item": "cup"
+            "parent_category": "other",
+            "parent_item": "plastic"
           },
           {
             "type": "brand",
             "category": "brand",
             "item": "7 Eleven",
             "quantity": 1,
-            "parent_category": "softdrinks",
-            "parent_item": "cup"
+            "parent_category": "other",
+            "parent_item": "plastic"
           },
           {
             "type": "custom_tag",
             "category": "custom_tag",
             "item": "Shredded cup",
             "quantity": 1,
-            "parent_category": "softdrinks",
-            "parent_item": "cup"
+            "parent_category": "other",
+            "parent_item": "plastic"
           }
         ],
         "objects": [
           {
-            "status": "OK",
+            "status": "REVIEW",
             "on_map": true,
-            "group": "Convenient Food Drink",
-            "subgroup": "Drink",
-            "layer": "Cold Beverage Cup",
-            "full_name": "Convenient Food Drink \u2013 Drink \u2013 Cold Beverage Cup",
-            "olm_key": "softdrinks/cup",
-            "quantity": 1,
+            "group": "Piece",
+            "subgroup": "",
+            "layer": "Plastic Piece",
+            "full_name": "Piece \u2013 Plastic Piece",
+            "olm_key": "other/plastic",
+            "quantity": 10,
             "picked_up": true
           }
         ],
@@ -129531,7 +129466,7 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "container",
+            "item": "packet",
             "quantity": 1
           },
           {
@@ -129540,7 +129475,7 @@
             "item": "plastic",
             "quantity": 1,
             "parent_category": "food",
-            "parent_item": "container"
+            "parent_item": "packet"
           },
           {
             "type": "material",
@@ -129548,7 +129483,7 @@
             "item": "foil",
             "quantity": 1,
             "parent_category": "food",
-            "parent_item": "container"
+            "parent_item": "packet"
           },
           {
             "type": "brand",
@@ -129556,18 +129491,18 @@
             "item": "Heinz",
             "quantity": 1,
             "parent_category": "food",
-            "parent_item": "container"
+            "parent_item": "packet"
           }
         ],
         "objects": [
           {
-            "status": "REVIEW",
+            "status": "OK",
             "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Food Container - Plastic, Paper, Foam",
-            "full_name": "Household \u2013 Food Container - Plastic, Paper, Foam",
-            "olm_key": "food/container",
+            "group": "Convenient Food Drink",
+            "subgroup": "Take-out",
+            "layer": "Condiment Packets",
+            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Condiment Packets",
+            "olm_key": "food/packet",
             "quantity": 1,
             "picked_up": true
           }
@@ -130938,28 +130873,31 @@
         "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/06/29/yM7AZuPCkY4AKb1Y1X7suKpAYBHOxaQ7qzh6VZzf.jpg",
         "tags": [
           {
+            "type": "standard",
+            "category": "other",
+            "item": "other",
+            "quantity": 1
+          },
+          {
             "type": "custom_tag",
             "category": "custom_tag",
             "item": "sticker",
             "quantity": 1,
-            "parent_category": null,
-            "parent_item": null
+            "parent_category": "other",
+            "parent_item": "other"
           }
         ],
         "objects": [
           {
-            "status": "ORPHAN TAG",
-            "on_map": false,
-            "group": "",
+            "status": "REVIEW",
+            "on_map": true,
+            "group": "Household",
             "subgroup": "",
-            "layer": "",
-            "full_name": "",
-            "olm_key": "",
+            "layer": "Household misc",
+            "full_name": "Household \u2013 Household misc",
+            "olm_key": "other/other",
             "quantity": 1,
-            "picked_up": false,
-            "custom_tags": [
-              "sticker"
-            ]
+            "picked_up": true
           }
         ],
         "groups": [
@@ -131598,7 +131536,7 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "packaging",
+            "item": "bag",
             "quantity": 1
           },
           {
@@ -131607,18 +131545,18 @@
             "item": "plastic",
             "quantity": 1,
             "parent_category": "food",
-            "parent_item": "packaging"
+            "parent_item": "bag"
           }
         ],
         "objects": [
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Convenient Food Drink",
-            "subgroup": "Take-out",
-            "layer": "Food Packaging",
-            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
-            "olm_key": "food/packaging",
+            "group": "Household",
+            "subgroup": "",
+            "layer": "Plastic (#4) or Paper Food Bag",
+            "full_name": "Household \u2013 Plastic (#4) or Paper Food Bag",
+            "olm_key": "food/bag",
             "quantity": 1,
             "picked_up": true
           }
@@ -133456,8 +133394,8 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
-            "item": "packaging",
+            "category": "other",
+            "item": "plastic",
             "quantity": 1
           },
           {
@@ -133465,27 +133403,27 @@
             "category": "material",
             "item": "plastic",
             "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "packaging"
+            "parent_category": "other",
+            "parent_item": "plastic"
           },
           {
             "type": "custom_tag",
             "category": "custom_tag",
             "item": "safety seal",
             "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "packaging"
+            "parent_category": "other",
+            "parent_item": "plastic"
           }
         ],
         "objects": [
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Convenient Food Drink",
-            "subgroup": "Take-out",
-            "layer": "Food Packaging",
-            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
-            "olm_key": "food/packaging",
+            "group": "Piece",
+            "subgroup": "",
+            "layer": "Plastic Piece",
+            "full_name": "Piece \u2013 Plastic Piece",
+            "olm_key": "other/plastic",
             "quantity": 1,
             "picked_up": true
           }
@@ -133882,8 +133820,8 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
-            "item": "cutlery",
+            "category": "other",
+            "item": "other",
             "quantity": 1
           },
           {
@@ -133891,35 +133829,35 @@
             "category": "custom_tag",
             "item": "material:stainless steel",
             "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "cutlery"
+            "parent_category": "other",
+            "parent_item": "other"
           },
           {
             "type": "custom_tag",
             "category": "custom_tag",
             "item": "fork",
             "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "cutlery"
+            "parent_category": "other",
+            "parent_item": "other"
           },
           {
             "type": "custom_tag",
             "category": "custom_tag",
             "item": "Household",
             "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "cutlery"
+            "parent_category": "other",
+            "parent_item": "other"
           }
         ],
         "objects": [
           {
-            "status": "OK",
+            "status": "REVIEW",
             "on_map": true,
-            "group": "Convenient Food Drink",
-            "subgroup": "Take-out",
-            "layer": "Cutlery",
-            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Cutlery",
-            "olm_key": "food/cutlery",
+            "group": "Household",
+            "subgroup": "",
+            "layer": "Household misc",
+            "full_name": "Household \u2013 Household misc",
+            "olm_key": "other/other",
             "quantity": 1,
             "picked_up": true
           }
@@ -135281,7 +135219,7 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "packaging",
+            "item": "tinfoil",
             "quantity": 1
           },
           {
@@ -135290,7 +135228,7 @@
             "item": "foil",
             "quantity": 1,
             "parent_category": "food",
-            "parent_item": "packaging"
+            "parent_item": "tinfoil"
           },
           {
             "type": "custom_tag",
@@ -135298,18 +135236,18 @@
             "item": "Piece",
             "quantity": 1,
             "parent_category": "food",
-            "parent_item": "packaging"
+            "parent_item": "tinfoil"
           }
         ],
         "objects": [
           {
-            "status": "REVIEW",
+            "status": "OK",
             "on_map": true,
-            "group": "Convenient Food Drink",
-            "subgroup": "Take-out",
-            "layer": "Food Packaging",
-            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
-            "olm_key": "food/packaging",
+            "group": "Piece",
+            "subgroup": "",
+            "layer": "Foil Piece",
+            "full_name": "Piece \u2013 Foil Piece",
+            "olm_key": "food/tinfoil",
             "quantity": 1,
             "picked_up": true
           }
@@ -135389,7 +135327,7 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "packaging",
+            "item": "wrapper",
             "quantity": 1
           },
           {
@@ -135398,7 +135336,7 @@
             "item": "plastic",
             "quantity": 1,
             "parent_category": "food",
-            "parent_item": "packaging"
+            "parent_item": "wrapper"
           },
           {
             "type": "material",
@@ -135406,7 +135344,7 @@
             "item": "foil",
             "quantity": 1,
             "parent_category": "food",
-            "parent_item": "packaging"
+            "parent_item": "wrapper"
           },
           {
             "type": "brand",
@@ -135414,7 +135352,7 @@
             "item": "cadburys",
             "quantity": 1,
             "parent_category": "food",
-            "parent_item": "packaging"
+            "parent_item": "wrapper"
           }
         ],
         "objects": [
@@ -135422,10 +135360,10 @@
             "status": "REVIEW",
             "on_map": true,
             "group": "Convenient Food Drink",
-            "subgroup": "Take-out",
-            "layer": "Food Packaging",
-            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
-            "olm_key": "food/packaging",
+            "subgroup": "Snack",
+            "layer": "Foil / Plastic Film Snack Wrapper",
+            "full_name": "Convenient Food Drink \u2013 Snack \u2013 Foil / Plastic Film Snack Wrapper",
+            "olm_key": "food/wrapper",
             "quantity": 1,
             "picked_up": true
           }
@@ -137235,8 +137173,8 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
-            "item": "packaging",
+            "category": "other",
+            "item": "plastic",
             "quantity": 1
           },
           {
@@ -137244,27 +137182,27 @@
             "category": "material",
             "item": "plastic",
             "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "packaging"
+            "parent_category": "other",
+            "parent_item": "plastic"
           },
           {
             "type": "custom_tag",
             "category": "custom_tag",
             "item": "Bread clip",
             "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "packaging"
+            "parent_category": "other",
+            "parent_item": "plastic"
           }
         ],
         "objects": [
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Convenient Food Drink",
-            "subgroup": "Take-out",
-            "layer": "Food Packaging",
-            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
-            "olm_key": "food/packaging",
+            "group": "Piece",
+            "subgroup": "",
+            "layer": "Plastic Piece",
+            "full_name": "Piece \u2013 Plastic Piece",
+            "olm_key": "other/plastic",
             "quantity": 1,
             "picked_up": true
           }
@@ -137460,28 +137398,31 @@
         "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/06/29/sObnSyEYrY0jfUiWV1uRaq59tUBNB9uRwaAzf2ra.jpg",
         "tags": [
           {
+            "type": "standard",
+            "category": "industrial",
+            "item": "other",
+            "quantity": 1
+          },
+          {
             "type": "custom_tag",
             "category": "custom_tag",
             "item": "construction waste",
             "quantity": 1,
-            "parent_category": null,
-            "parent_item": null
+            "parent_category": "industrial",
+            "parent_item": "other"
           }
         ],
         "objects": [
           {
-            "status": "ORPHAN TAG",
-            "on_map": false,
-            "group": "",
+            "status": "REVIEW",
+            "on_map": true,
+            "group": "Industrial",
             "subgroup": "",
-            "layer": "",
-            "full_name": "",
-            "olm_key": "",
+            "layer": "Industrial Debris",
+            "full_name": "Industrial \u2013 Industrial Debris",
+            "olm_key": "industrial/other",
             "quantity": 1,
-            "picked_up": false,
-            "custom_tags": [
-              "construction waste"
-            ]
+            "picked_up": true
           }
         ],
         "groups": [
@@ -138025,75 +137966,23 @@
         "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/06/29/HCmq5jThTxB4iNz3g1TcPS2SFh88efa0ZgqLrcKQ.jpg",
         "tags": [
           {
-            "type": "custom_tag",
-            "category": "custom_tag",
-            "item": "receipt",
-            "quantity": 1,
-            "parent_category": null,
-            "parent_item": null
+            "type": "standard",
+            "category": "sanitary",
+            "item": "tissue",
+            "quantity": 1
           }
         ],
         "objects": [
           {
-            "status": "ORPHAN TAG",
-            "on_map": false,
-            "group": "",
+            "status": "OK",
+            "on_map": true,
+            "group": "Household",
             "subgroup": "",
-            "layer": "",
-            "full_name": "",
-            "olm_key": "",
+            "layer": "Hygiene Paper",
+            "full_name": "Household \u2013 Hygiene Paper",
+            "olm_key": "sanitary/tissue",
             "quantity": 1,
-            "picked_up": false,
-            "custom_tags": [
-              "receipt"
-            ]
-          }
-        ],
-        "groups": [
-          "litter"
-        ],
-        "has_litter": true,
-        "has_pet_waste": false,
-        "has_substances": false
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -122.55690002441,
-          49.218837738037
-        ]
-      },
-      "properties": {
-        "id": 546050,
-        "datetime": "2026-06-29T02:38:52.000000Z",
-        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/06/29/kJe4fu9aFWFZiZU61xlYVO4BLVDgJuuiAgqLWX9a.jpg",
-        "tags": [
-          {
-            "type": "custom_tag",
-            "category": "custom_tag",
-            "item": "receipt",
-            "quantity": 1,
-            "parent_category": null,
-            "parent_item": null
-          }
-        ],
-        "objects": [
-          {
-            "status": "ORPHAN TAG",
-            "on_map": false,
-            "group": "",
-            "subgroup": "",
-            "layer": "",
-            "full_name": "",
-            "olm_key": "",
-            "quantity": 1,
-            "picked_up": false,
-            "custom_tags": [
-              "receipt"
-            ]
+            "picked_up": true
           }
         ],
         "groups": [
@@ -138161,28 +138050,31 @@
         "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/06/29/8QPcBbuSFLrzFoIyxba4ZIFbbwPZcY35NhiLdmTk.jpg",
         "tags": [
           {
+            "type": "standard",
+            "category": "other",
+            "item": "paper",
+            "quantity": 1
+          },
+          {
             "type": "custom_tag",
             "category": "custom_tag",
             "item": "receipt",
             "quantity": 1,
-            "parent_category": null,
-            "parent_item": null
+            "parent_category": "other",
+            "parent_item": "paper"
           }
         ],
         "objects": [
           {
-            "status": "ORPHAN TAG",
-            "on_map": false,
-            "group": "",
+            "status": "REVIEW",
+            "on_map": true,
+            "group": "Piece",
             "subgroup": "",
-            "layer": "",
-            "full_name": "",
-            "olm_key": "",
+            "layer": "Paper Piece",
+            "full_name": "Piece \u2013 Paper Piece",
+            "olm_key": "other/paper",
             "quantity": 1,
-            "picked_up": false,
-            "custom_tags": [
-              "receipt"
-            ]
+            "picked_up": true
           }
         ],
         "groups": [
@@ -138334,28 +138226,31 @@
         "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/06/29/Mr6vvfrhEinbIIwDWyTjT7sKBX36ddtNMgmBAtKU.jpg",
         "tags": [
           {
+            "type": "standard",
+            "category": "other",
+            "item": "paper",
+            "quantity": 1
+          },
+          {
             "type": "custom_tag",
             "category": "custom_tag",
             "item": "business card",
             "quantity": 1,
-            "parent_category": null,
-            "parent_item": null
+            "parent_category": "other",
+            "parent_item": "paper"
           }
         ],
         "objects": [
           {
-            "status": "ORPHAN TAG",
-            "on_map": false,
-            "group": "",
+            "status": "REVIEW",
+            "on_map": true,
+            "group": "Piece",
             "subgroup": "",
-            "layer": "",
-            "full_name": "",
-            "olm_key": "",
+            "layer": "Paper Piece",
+            "full_name": "Piece \u2013 Paper Piece",
+            "olm_key": "other/paper",
             "quantity": 1,
-            "picked_up": false,
-            "custom_tags": [
-              "business card"
-            ]
+            "picked_up": true
           }
         ],
         "groups": [
@@ -138968,28 +138863,31 @@
         "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/06/29/IxohNMzHGanHSJyEKKomxWwwxr70q7vNKOPFWTEw.jpg",
         "tags": [
           {
+            "type": "standard",
+            "category": "other",
+            "item": "paper",
+            "quantity": 1
+          },
+          {
             "type": "custom_tag",
             "category": "custom_tag",
             "item": "flyer",
             "quantity": 1,
-            "parent_category": null,
-            "parent_item": null
+            "parent_category": "other",
+            "parent_item": "paper"
           }
         ],
         "objects": [
           {
-            "status": "ORPHAN TAG",
-            "on_map": false,
-            "group": "",
+            "status": "REVIEW",
+            "on_map": true,
+            "group": "Piece",
             "subgroup": "",
-            "layer": "",
-            "full_name": "",
-            "olm_key": "",
+            "layer": "Paper Piece",
+            "full_name": "Piece \u2013 Paper Piece",
+            "olm_key": "other/paper",
             "quantity": 1,
-            "picked_up": false,
-            "custom_tags": [
-              "flyer"
-            ]
+            "picked_up": true
           }
         ],
         "groups": [
@@ -139108,33 +139006,9 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
-            "item": "packaging",
-            "quantity": 1
-          },
-          {
-            "type": "material",
-            "category": "material",
+            "category": "other",
             "item": "plastic",
-            "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "packaging"
-          },
-          {
-            "type": "material",
-            "category": "material",
-            "item": "foil",
-            "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "packaging"
-          },
-          {
-            "type": "custom_tag",
-            "category": "custom_tag",
-            "item": "Piece",
-            "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "packaging"
+            "quantity": 2
           },
           {
             "type": "standard",
@@ -139158,18 +139032,30 @@
             "quantity": 1,
             "parent_category": "softdrinks",
             "parent_item": "cup"
+          },
+          {
+            "type": "standard",
+            "category": "softdrinks",
+            "item": "straw",
+            "quantity": 1
+          },
+          {
+            "type": "standard",
+            "category": "softdrinks",
+            "item": "lid",
+            "quantity": 1
           }
         ],
         "objects": [
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Convenient Food Drink",
-            "subgroup": "Take-out",
-            "layer": "Food Packaging",
-            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
-            "olm_key": "food/packaging",
-            "quantity": 1,
+            "group": "Piece",
+            "subgroup": "",
+            "layer": "Plastic Piece",
+            "full_name": "Piece \u2013 Plastic Piece",
+            "olm_key": "other/plastic",
+            "quantity": 2,
             "picked_up": true
           },
           {
@@ -139180,6 +139066,28 @@
             "layer": "Cold Beverage Cup",
             "full_name": "Convenient Food Drink \u2013 Drink \u2013 Cold Beverage Cup",
             "olm_key": "softdrinks/cup",
+            "quantity": 1,
+            "picked_up": true
+          },
+          {
+            "status": "OK",
+            "on_map": true,
+            "group": "Convenient Food Drink",
+            "subgroup": "Drink",
+            "layer": "Paper Drink Straws",
+            "full_name": "Convenient Food Drink \u2013 Drink \u2013 Paper Drink Straws",
+            "olm_key": "softdrinks/straw",
+            "quantity": 1,
+            "picked_up": true
+          },
+          {
+            "status": "OK",
+            "on_map": true,
+            "group": "Convenient Food Drink",
+            "subgroup": "Drink",
+            "layer": "Cold Beverage Lid",
+            "full_name": "Convenient Food Drink \u2013 Drink \u2013 Cold Beverage Lid",
+            "olm_key": "softdrinks/lid",
             "quantity": 1,
             "picked_up": true
           }
@@ -143922,7 +143830,7 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "packaging",
+            "item": "wrapper",
             "quantity": 2
           },
           {
@@ -143961,10 +143869,10 @@
             "status": "REVIEW",
             "on_map": true,
             "group": "Convenient Food Drink",
-            "subgroup": "Take-out",
-            "layer": "Food Packaging",
-            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
-            "olm_key": "food/packaging",
+            "subgroup": "Snack",
+            "layer": "Foil / Plastic Film Snack Wrapper",
+            "full_name": "Convenient Food Drink \u2013 Snack \u2013 Foil / Plastic Film Snack Wrapper",
+            "olm_key": "food/wrapper",
             "quantity": 2,
             "picked_up": true
           },
