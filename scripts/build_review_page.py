@@ -20,7 +20,7 @@ import sys
 import openpyxl
 
 EDIT_FIELDS = ["Change_To_OLMKey", "Change_to_OLM_secondary", "Change_to_OLM_Material",
-               "Change_to_OLM_Custom", "Review notes"]
+               "Change_to_OLM_Custom", "Change_to_Picked_Up", "Review notes"]
 
 PAGE = r"""<!doctype html>
 <html lang="en">
@@ -63,7 +63,8 @@ PAGE = r"""<!doctype html>
   .OK { color: var(--ok); } .REVIEW { color: var(--review); } .RECLASS, .UNCLASS, .UNMAPPED, .ORPHAN { color: var(--reclass); }
   .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 8px; margin-top: 6px; }
   .fields label { font-size: 11px; } .fields input { width: 100%; padding: 4px 6px; }
-  .fields .wide { grid-column: 1 / -1; }
+  .fields .wide { grid-column: 1 / -1; } .fields select { width: 100%; padding: 4px 6px; }
+  select.changed { background: var(--edit); }
   input.changed { background: var(--edit); } input.bad { border-color: var(--warn); outline: 1px solid var(--warn); }
   nav { display: flex; gap: 8px; justify-content: center; align-items: center; padding: 8px 16px 24px; }
   .empty { grid-column: 1 / -1; color: var(--muted); text-align: center; padding: 40px 0; }
@@ -92,7 +93,7 @@ PAGE = r"""<!doctype html>
 const DATA = __DATA__;
 const FIELDS = [["Change_To_OLMKey", "New OLM key", "dl-keys"], ["Change_to_OLM_secondary", "New secondary", "dl-types"],
                 ["Change_to_OLM_Material", "New material(s)", "dl-materials"], ["Change_to_OLM_Custom", "New custom tag(s)", ""],
-                ["Review notes", "Review notes", ""]];
+                ["Change_to_Picked_Up", "Picked up", ""], ["Review notes", "Review notes", ""]];
 const PER_PAGE = 24;
 const STORE = "mrolm-review-edits";
 const $ = id => document.getElementById(id);
@@ -112,6 +113,7 @@ function valid(f, v) {
   if (!v || v === "[remove]") return f !== "Change_To_OLMKey" || v !== "[remove]";
   if (f === "Change_To_OLMKey") return keySet.has(v);
   if (f === "Change_to_OLM_secondary") return typeSet.has(v);
+  if (f === "Change_to_Picked_Up") return v === "yes" || v === "no";
   if (f === "Change_to_OLM_Material") return v.split(";").map(s => s.trim()).filter(Boolean).every(m => matSet.has(m));
   return true;
 }
@@ -167,7 +169,11 @@ function objectBlock(o) {
   const grid = el("div", "fields");
   for (const [f, label, list] of FIELDS) {
     const lab = el("label", f === "Review notes" ? "wide" : null, label);
-    const input = el("input");
+    let input;
+    if (f === "Change_to_Picked_Up") {
+      input = el("select");
+      [["", "keep (" + (o.picked === "yes" ? "yes" : "no") + ")"], ["yes", "yes"], ["no", "no"]].forEach(([v, t]) => input.add(new Option(t, v)));
+    } else input = el("input");
     input.value = value(o, f);
     if (list) input.setAttribute("list", list);
     const mark = () => { input.classList.toggle("changed", changed(o, f)); input.classList.toggle("bad", !valid(f, input.value.trim())); };

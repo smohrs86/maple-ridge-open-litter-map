@@ -51,6 +51,10 @@ class PlanMergeTests(unittest.TestCase):
     def test_custom_tags_and_notes_are_free_text(self):
         self.assertEqual(self.outcome({(1, 10): row()}, edit("Change_to_OLM_Custom", "", "Piece; anything")), ["apply"])
 
+    def test_picked_up_must_be_yes_or_no(self):
+        self.assertEqual(self.outcome({(1, 10): row()}, edit("Change_to_Picked_Up", "", "yes")), ["apply"])
+        self.assertEqual(self.outcome({(1, 10): row()}, edit("Change_to_Picked_Up", "", "maybe")), ["invalid"])
+
     def test_unknown_field_is_rejected(self):
         self.assertEqual(self.outcome({(1, 10): row()}, edit("OLM_key", "", "food/tinfoil")), ["bad_field"])
 

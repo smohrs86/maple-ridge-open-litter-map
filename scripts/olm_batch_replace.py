@@ -25,8 +25,10 @@ import openpyxl
 import crosswalk as cw
 
 REMOVE = "[remove]"
-CHANGE_KEY, CHANGE_TYPE, CHANGE_MATERIAL, CHANGE_CUSTOM = (
-    "Change_To_OLMKey", "Change_to_OLM_secondary", "Change_to_OLM_Material", "Change_to_OLM_Custom")
+CHANGE_KEY, CHANGE_TYPE, CHANGE_MATERIAL, CHANGE_CUSTOM, CHANGE_PICKED = (
+    "Change_To_OLMKey", "Change_to_OLM_secondary", "Change_to_OLM_Material", "Change_to_OLM_Custom",
+    "Change_to_Picked_Up")
+CHANGE_COLUMNS = (CHANGE_KEY, CHANGE_TYPE, CHANGE_MATERIAL, CHANGE_CUSTOM, CHANGE_PICKED)
 
 
 def newest(pattern):
@@ -60,17 +62,20 @@ def read_edits(path):
     edits = {}
     for values in ws.iter_rows(min_row=2, values_only=True):
         row = dict(zip(header, values))
-        change = {name: str(row[name]).strip() for name in (CHANGE_KEY, CHANGE_TYPE, CHANGE_MATERIAL, CHANGE_CUSTOM)
-                  if row.get(name) not in (None, "")}
+        change = {name: str(row[name]).strip() for name in CHANGE_COLUMNS if row.get(name) not in (None, "")}
         if change:
             edits.setdefault(int(row["PhotoID"]), {})[int(row["OLM_Tag_ID"])] = change
     return edits
 
 
 def to_payload(tag):
-    """One raw export tag in the PUT /api/v3/tags format, keeping every value as it is."""
+    """One raw export tag in the PUT /api/v3/tags format, keeping every value as it is.
+
+    A custom tag with no object (an orphan) uses OLM's custom-tag-only format: "custom" and
+    "key" (the first custom tag), with no category_litter_object_id.
+    """
     extras = tag.get("extra_tags") or []
-    return {
+    payload = {
         "category_litter_object_id": tag.get("category_litter_object_id"),
         "litter_object_type_id": tag.get("litter_object_type_id"),
         "quantity": tag.get("quantity"),
@@ -79,6 +84,28 @@ def to_payload(tag):
         "brands": [{"id": e["tag"]["id"], "quantity": e.get("quantity", 1)} for e in extras if e["type"] == "brand"],
         "custom_tags": [e["tag"]["key"] for e in extras if e["type"] == "custom_tag"],
     }
+    return as_orphan(payload) if payload["category_litter_object_id"] is None else payload
+
+
+def is_orphan(payload):
+    return "category_litter_object_id" not in payload
+
+
+def as_orphan(payload):
+    """An object-less payload in OLM's custom-tag-only format."""
+    customs = payload["custom_tags"]
+    return {"custom": True, "key": customs[0] if customs else "", "quantity": payload["quantity"],
+            "picked_up": payload["picked_up"], "materials": payload["materials"], "brands": payload["brands"],
+            "custom_tags": customs[1:]}
+
+
+def canonical(payload):
+    """Either payload format as one dict with the object fields, for comparing and editing."""
+    if not is_orphan(payload):
+        return payload
+    return {"category_litter_object_id": None, "litter_object_type_id": None, "quantity": payload["quantity"],
+            "picked_up": payload["picked_up"], "materials": payload["materials"], "brands": payload["brands"],
+            "custom_tags": ([payload["key"]] if payload["key"] else []) + payload["custom_tags"]}
 
 
 def matches_summary(payloads, photo):
@@ -87,7 +114,7 @@ def matches_summary(payloads, photo):
     custom_ids = {v: int(k) for k, v in ((photo.get("summary") or {}).get("keys", {}).get("custom_tags") or {}).items()}
     rebuilt = [(p["category_litter_object_id"], p["litter_object_type_id"], p["quantity"], p["picked_up"],
                 sorted(p["materials"]), sorted((b["id"], b["quantity"]) for b in p["brands"]),
-                sorted(custom_ids.get(c) for c in p["custom_tags"])) for p in payloads]
+                sorted(custom_ids.get(c) for c in p["custom_tags"])) for p in map(canonical, payloads)]
     def brand_pairs(brands):
         # The summary stores brands as {"<brand id>": quantity} or a list of such dicts
         dicts = [brands] if isinstance(brands, dict) else brands
@@ -99,8 +126,11 @@ def matches_summary(payloads, photo):
 
 
 def apply_change(payload, change, tags, problems):
-    """Apply one row's Change_to_* cells to a payload tag. Blank keeps, [remove] removes, else the new value."""
-    new = dict(payload)
+    """Apply one row's Change_to_* cells to a payload tag. Blank keeps, [remove] removes, else the new value.
+
+    An orphan given a key becomes an ordinary object; without a key it stays an orphan.
+    """
+    new = dict(canonical(payload))
     if CHANGE_KEY in change:
         clo = tags.clo_by_key.get(change[CHANGE_KEY])
         if clo is None:
@@ -125,6 +155,17 @@ def apply_change(payload, change, tags, problems):
     if CHANGE_CUSTOM in change:
         value = change[CHANGE_CUSTOM]
         new["custom_tags"] = [] if value == REMOVE else [c.strip() for c in value.split(";") if c.strip()]
+    if CHANGE_PICKED in change:
+        if change[CHANGE_PICKED] in ("yes", "no"):
+            new["picked_up"] = change[CHANGE_PICKED] == "yes"
+        else:
+            problems.append(f"picked up must be yes or no, not '{change[CHANGE_PICKED]}'")
+    if new["category_litter_object_id"] is None:
+        if new["litter_object_type_id"] or new["materials"]:
+            problems.append("an orphan custom tag needs a new OLM key before it can take a type or material")
+        if not new["custom_tags"]:
+            problems.append("removing an orphan's only custom tag would leave an empty tag; give it a key instead")
+        return as_orphan(new)
     type_id = new["litter_object_type_id"]
     if type_id and (new["category_litter_object_id"], type_id) not in tags.valid_types:
         problems.append(f"type '{tags.type_key.get(type_id)}' is not valid for "
@@ -133,7 +174,8 @@ def apply_change(payload, change, tags, problems):
 
 
 def describe(payload, tags):
-    key = tags.clo_key.get(payload["category_litter_object_id"], "?")
+    payload = canonical(payload)
+    key = tags.clo_key.get(payload["category_litter_object_id"], "(orphan custom tag)")
     parts = [key]
     if payload["litter_object_type_id"]:
         parts.append(f"type={tags.type_key.get(payload['litter_object_type_id'])}")
@@ -148,6 +190,8 @@ def describe(payload, tags):
 
 
 def layer_for(payload, tags, crosswalk_rows):
+    if is_orphan(payload):
+        return "ORPHAN TAG (not on the map)"
     materials = [tags.material_key.get(m, "") for m in payload["materials"]]
     secondary = tags.type_key.get(payload["litter_object_type_id"], "") if payload["litter_object_type_id"] else ""
     matched, _ = cw.match_tag(crosswalk_rows, tags.clo_key.get(payload["category_litter_object_id"], ""),
@@ -186,8 +230,6 @@ def main():
             continue
         raw_tags = photo.get("new_tags") or []
         before = [to_payload(t) for t in raw_tags]
-        if any(p["category_litter_object_id"] is None for p in before):
-            problems.append("photo has a custom tag with no object (orphan); orphans are not supported yet")
         if not matches_summary(before, photo):
             problems.append("rebuilt tags do not match OLM's summary, so a replay might not be exact")
         found = {t["id"] for t in raw_tags}
@@ -196,9 +238,11 @@ def main():
                 problems.append(f"edited tag {tag_id} is no longer on the photo (re-export and rebuild the workbook)")
         after = [apply_change(p, edits[photo_id].get(t["id"], {}), tags, problems) if t["id"] in edits[photo_id] else p
                  for t, p in zip(raw_tags, before)]
-        for b, a in zip(before, after):
-            if (b["quantity"], b["picked_up"]) != (a["quantity"], a["picked_up"]):
-                problems.append("quantity or picked_up would change")
+        for t, b, a in zip(raw_tags, before, after):
+            if b["quantity"] != a["quantity"]:
+                problems.append("quantity would change")
+            if b["picked_up"] != a["picked_up"] and CHANGE_PICKED not in edits[photo_id].get(t["id"], {}):
+                problems.append("picked_up would change without a Change_to_Picked_Up request")
 
         print(f"Photo {photo_id}  ({str(photo.get('datetime'))[:10]}, verified={photo.get('verified')})")
         for t, b, a in zip(raw_tags, before, after):

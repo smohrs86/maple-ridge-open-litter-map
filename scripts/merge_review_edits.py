@@ -26,7 +26,7 @@ from datetime import datetime
 import openpyxl
 
 EDIT_FIELDS = ["Change_To_OLMKey", "Change_to_OLM_secondary", "Change_to_OLM_Material",
-               "Change_to_OLM_Custom", "Review notes"]
+               "Change_to_OLM_Custom", "Change_to_Picked_Up", "Review notes"]
 REMOVE = "[remove]"
 
 
@@ -42,6 +42,8 @@ def invalid_reason(field, value, lists):
         return None if value in lists["keys"] else f"'{value}' is not an OLM key"
     if field == "Change_to_OLM_secondary":
         return None if value in lists["types"] or value == REMOVE else f"'{value}' is not an OLM type"
+    if field == "Change_to_Picked_Up":
+        return None if value in ("yes", "no") else f"picked up must be yes or no, not '{value}'"
     if field == "Change_to_OLM_Material":
         if value == REMOVE:
             return None
