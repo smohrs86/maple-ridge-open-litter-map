@@ -65,7 +65,7 @@ sanitary/tissue,,,,Household,,Hygiene Paper,"used to capture dry tissues, toilet
 sanitary/wipes,,,,Household,,Wet Wipes,used to capture textile woven wipes they are called wet-wipes here and they are found in volume and easy to ID because of the mesh wove and the fact that they don't disintegrate when wet or aged.,yes,,no,
 smoking/box,,,,,,smoking/box,not used; I want to capture these under smoking/packaging,no,Not a significant data point,no,
 smoking/butts,,,,Smoking,,Cigarette Butts,used to capture butts and broken cigarette pieces or other nicotine smoking products like cigarillos; In OLM app you can only tag a max of 10 per one photo. these are usually found in a cluster which sometimes has to be spread between two photos.  the two photos will be in the same collection spot.,yes,,no,
-smoking/lighters,,,,Smoking,,Butane Lighter,used for pieces or whole,yes,,no,
+smoking/lighters,,,,Smoking,,Butane Lighter,"used for whole lighters only; a lighter piece is tagged by what it is: other/plastic or other/metal by main material, other/other + E-waste for an electronic part, or other/other if neither fits",yes,,no,
 smoking/packaging,,,,Smoking,,Nicotine Packaging,"used for all nicotine product packaging including cigarette, cigar, vape foil, wrapper, box",yes,,no,
 smoking/packaging,,,THC,Smoking,,Cannabis Packaging,"used for all cannabis product packaging including vape, flower, edibles, except drinks",yes,,no,
 smoking/vape,,,,Smoking,,Nicotine Vape,"used for nicotine vape disposables, carts, piece fragments, battery",yes,,no,
