@@ -50,6 +50,7 @@ Not part of the proof of concept: GIS features, municipal streams, a license, an
 
 Newest first, one line per change. Claude updates this whenever it updates the README.
 
+- **2026-09-28:** Local review page (`scripts/build_review_page.py`): one card per photo with its objects' tags, status, and fix notes, editable change fields, and filters. Edits are exported from the browser and merged into the review workbook by `scripts/merge_review_edits.py`, which reports first and skips conflicts. Never published.
 - **2026-09-28:** Local photo gallery for the legacy review (`scripts/build_photo_gallery.py`): every photo with its ID and date, searchable by ID, date range and OLM key. It is built from the raw export and never published.
 - **2026-09-28:** First batch of legacy tags fixed in OLM through the API: 19 `alcohol/packaging` objects reclassed (18 to Cannabis Packaging, 1 to `food/bag`) after a dry run, a one-photo test, and a small batch, each photo read back and still public. New tools: an offline dry run and a one-photo send with backup, read-back, and undo ([method](docs/olm-batch-review-method.md)). Legacy review check after a fresh export (2,836 photos, 3,520 tagged objects): REVIEW 1,648, RECLASS 41, orphan tags 9, UNMAPPED 0, UNCLASS 0.
 - **2026-09-27:** Contact email added for questions, contributors, and data inquiries.
