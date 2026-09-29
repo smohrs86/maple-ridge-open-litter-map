@@ -50,6 +50,7 @@ Not part of the proof of concept: GIS features, municipal streams, a license, an
 
 Newest first, one line per change. Claude updates this whenever it updates the README.
 
+- **2026-09-28:** Batch quantity changes: the review workbook has a `Change_to_Quantity` column, and the dry run allows a quantity change only when that column asks for one. Added because quantity edits on OLM's website often didn't save.
 - **2026-09-28:** Tagging protocol: the custom tag `Piece` is no longer used; pieces are identified by key through the crosswalk.
 - **2026-09-28:** Crosswalk: Butane Lighter (`smoking/lighters`) is now for whole lighters only; lighter pieces are tagged by material or as E-waste (see `docs/tagging-protocol.md`).
 - **2026-09-28:** Local review page (`scripts/build_review_page.py`): one card per photo with its objects' tags, status, and fix notes, editable change fields, and filters. Edits are exported from the browser and merged into the review workbook by `scripts/merge_review_edits.py`, which reports first and skips conflicts. Never published.

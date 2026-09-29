@@ -32,10 +32,11 @@ OBJECT_COLUMNS = [
     "Quantity", "Picked_Up",
     "MROLM local key", "Status", "Notes", "OLM data needs fixes",
     "Change_To_OLMKey", "Change_to_OLM_secondary", "Change_to_OLM_Material", "Change_to_OLM_Custom",
-    "Change_to_Picked_Up", "Batch_Status", "OLM_Tag_ID", "Review notes",
+    "Change_to_Picked_Up", "Change_to_Quantity", "Batch_Status", "OLM_Tag_ID", "Review notes",
 ]
 CHANGE_COLUMNS = ["Change_To_OLMKey", "Change_to_OLM_secondary", "Change_to_OLM_Material",
-                  "Change_to_OLM_Custom", "Change_to_Picked_Up", "Batch_Status", "Review notes"]  # carried on rebuild
+                  "Change_to_OLM_Custom", "Change_to_Picked_Up", "Change_to_Quantity", "Batch_Status",
+                  "Review notes"]  # carried on rebuild
 BATCH_COLUMNS = ["PhotoID", "Batch_Label", "Current_Tags_JSON", "Target_Tags_JSON", "Batch_Status",
                  "Verified_Before", "Verified_After", "Done_At", "Error_Or_Notes"]
 STATUS_VALUES = "pending,dry-run ok,sent,verified ok,failed,skipped"
@@ -185,6 +186,11 @@ def write_workbook(path, rows, photos, keys, types, materials):
     add_validation("Change_to_OLM_Material", f"=Lists!$C$2:$C${len(materials) + 2}", strict=False)
     add_validation("Change_to_Picked_Up", '"yes,no"', strict=True)
     add_validation("Batch_Status", f'"{STATUS_VALUES}"', strict=True)
+    qty_col = get_column_letter(OBJECT_COLUMNS.index("Change_to_Quantity") + 1)
+    qty_dv = DataValidation(type="whole", operator="greaterThanOrEqual", formula1="1", allow_blank=True,
+                            errorStyle="stop", showErrorMessage=True)
+    ws.add_data_validation(qty_dv)
+    qty_dv.add(f"{qty_col}2:{qty_col}{last}")
 
     batch = wb.create_sheet("Photo_Batch")
     batch.append(BATCH_COLUMNS)
@@ -204,7 +210,7 @@ def write_workbook(path, rows, photos, keys, types, materials):
     guide_rows = [
         ("Sheet", "Purpose"),
         ("Objects", "One row per tagged object. Filter OLM_key (and OLM_Custom) to isolate one group. Object_No is the object's position within its photo. Multiple materials or customs on one object are joined with '; '. Quantity and Picked_Up are shown for reference. OLM_Tag_ID is OLM's ID for that exact tag row, used to match your edits when this workbook is rebuilt."),
-        ("Change columns", "Change_To_OLMKey, Change_to_OLM_secondary, Change_to_OLM_Material, Change_to_OLM_Custom: leave blank to keep the current value; type [remove] to remove it; otherwise type the new value. For materials or customs, whatever you type replaces the whole list (write several as 'a; b'). Change_to_Picked_Up: yes or no to correct whether the object was picked up; blank keeps it. Nothing is sent to OLM by editing this sheet."),
+        ("Change columns", "Change_To_OLMKey, Change_to_OLM_secondary, Change_to_OLM_Material, Change_to_OLM_Custom: leave blank to keep the current value; type [remove] to remove it; otherwise type the new value. For materials or customs, whatever you type replaces the whole list (write several as 'a; b'). Change_to_Picked_Up: yes or no to correct whether the object was picked up; blank keeps it. Change_to_Quantity: the object's new total quantity (a whole number, 1 or more); blank keeps it. Nothing is sent to OLM by editing this sheet."),
         ("Review notes", "Free-text notes on an object, carried into each rebuild. Never sent to OLM."),
         ("Photo_Batch", "One row per photo, filled by the batch script, not by hand. Current_Tags_JSON is a copy of the photo's tags as exported; the raw export file in review/raw/ is the real backup."),
         ("Lists", "Values for the dropdowns, from OLM's tag list."),

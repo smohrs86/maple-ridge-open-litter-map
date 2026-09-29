@@ -25,10 +25,10 @@ import openpyxl
 import crosswalk as cw
 
 REMOVE = "[remove]"
-CHANGE_KEY, CHANGE_TYPE, CHANGE_MATERIAL, CHANGE_CUSTOM, CHANGE_PICKED = (
+CHANGE_KEY, CHANGE_TYPE, CHANGE_MATERIAL, CHANGE_CUSTOM, CHANGE_PICKED, CHANGE_QTY = (
     "Change_To_OLMKey", "Change_to_OLM_secondary", "Change_to_OLM_Material", "Change_to_OLM_Custom",
-    "Change_to_Picked_Up")
-CHANGE_COLUMNS = (CHANGE_KEY, CHANGE_TYPE, CHANGE_MATERIAL, CHANGE_CUSTOM, CHANGE_PICKED)
+    "Change_to_Picked_Up", "Change_to_Quantity")
+CHANGE_COLUMNS = (CHANGE_KEY, CHANGE_TYPE, CHANGE_MATERIAL, CHANGE_CUSTOM, CHANGE_PICKED, CHANGE_QTY)
 
 
 def newest(pattern):
@@ -160,6 +160,14 @@ def apply_change(payload, change, tags, problems):
             new["picked_up"] = change[CHANGE_PICKED] == "yes"
         else:
             problems.append(f"picked up must be yes or no, not '{change[CHANGE_PICKED]}'")
+    if CHANGE_QTY in change:
+        value = change[CHANGE_QTY]
+        # Excel may hand back a whole number as "2.0"
+        number = value[:-2] if value.endswith(".0") else value
+        if number.isdigit() and int(number) >= 1:
+            new["quantity"] = int(number)
+        else:
+            problems.append(f"quantity must be a whole number of 1 or more, not '{value}'")
     if new["category_litter_object_id"] is None:
         if new["litter_object_type_id"] or new["materials"]:
             problems.append("an orphan custom tag needs a new OLM key before it can take a type or material")
@@ -239,8 +247,8 @@ def main():
         after = [apply_change(p, edits[photo_id].get(t["id"], {}), tags, problems) if t["id"] in edits[photo_id] else p
                  for t, p in zip(raw_tags, before)]
         for t, b, a in zip(raw_tags, before, after):
-            if b["quantity"] != a["quantity"]:
-                problems.append("quantity would change")
+            if b["quantity"] != a["quantity"] and CHANGE_QTY not in edits[photo_id].get(t["id"], {}):
+                problems.append("quantity would change without a Change_to_Quantity request")
             if b["picked_up"] != a["picked_up"] and CHANGE_PICKED not in edits[photo_id].get(t["id"], {}):
                 problems.append("picked_up would change without a Change_to_Picked_Up request")
 

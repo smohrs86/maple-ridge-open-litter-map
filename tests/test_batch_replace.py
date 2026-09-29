@@ -79,5 +79,27 @@ class PickedUpTests(unittest.TestCase):
         self.assertTrue(problems)
 
 
+class QuantityTests(unittest.TestCase):
+    def test_quantity_changes_only_when_asked(self):
+        problems = []
+        new = apply_change(to_payload(OBJECT_TAG), {"Change_to_Quantity": "3"}, TAGS, problems)
+        self.assertEqual(problems, [])
+        self.assertEqual(new["quantity"], 3)
+        unchanged = apply_change(to_payload(OBJECT_TAG), {"Change_To_OLMKey": "other/paper"}, TAGS, [])
+        self.assertEqual(unchanged["quantity"], 2)
+
+    def test_quantity_read_back_from_excel_as_a_decimal(self):
+        problems = []
+        new = apply_change(to_payload(OBJECT_TAG), {"Change_to_Quantity": "10.0"}, TAGS, problems)
+        self.assertEqual(problems, [])
+        self.assertEqual(new["quantity"], 10)
+
+    def test_quantity_must_be_a_whole_number_of_one_or_more(self):
+        for bad in ("0", "-1", "2.5", "two"):
+            problems = []
+            apply_change(to_payload(OBJECT_TAG), {"Change_to_Quantity": bad}, TAGS, problems)
+            self.assertTrue(problems, bad)
+
+
 if __name__ == "__main__":
     unittest.main()
