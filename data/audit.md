@@ -2,17 +2,17 @@
 
 Written by `scripts/sync_data.py` on every sync, following the README's "Audit counts". Items are quantities (the map counts items); objects are tagged objects; photos are OLM photos.
 
-- Photos: 2835
-- Newest photo: 2026-09-28
-- Tagged objects: 3522 (5025 items)
-- Shown on the map: 3485 objects (4987 items) in 68 layers
+- Photos: 2836
+- Newest photo: 2026-09-29
+- Tagged objects: 3526 (5029 items)
+- Shown on the map: 3489 objects (4991 items) in 68 layers
 
 ## Status counts
 
 | Status | Meaning | Objects | Items | Healthy value |
 |---|---|---:|---:|---|
-| OK | Matched a map layer | 1820 | 2870 | Most objects |
-| REVIEW | Matched a map layer whose crosswalk row has an "OLM data needs fixes" note (shown on the map) | 1665 | 2117 | Falls as the legacy review is done |
+| OK | Matched a map layer | 1822 | 2872 | Most objects |
+| REVIEW | Matched a map layer whose crosswalk row has an "OLM data needs fixes" note (shown on the map) | 1667 | 2119 | Falls as the legacy review is done |
 | Not used | Matched a row with `include on map = no` (kept off the map) | 37 | 38 | 0 |
 | UNCLASS | Household dumping with no size chosen | 0 | 0 | 0 |
 | Orphan tags | Custom tag attached to no object (kept off the map) | 0 | 0 | 0 |
@@ -25,9 +25,9 @@ Written by `scripts/sync_data.py` on every sync, following the README's "Audit c
 |---|---:|---:|---|
 | other/plastic | 561 | 713 | OLM tag review to parse out industrial debris AND other/balloon[Party Litter] objects |
 | other/paper | 550 | 804 | OLM tag review parse out [Party Litter] objects |
-| food/wrapper | 266 | 296 | OLM tag review of legacy entries; retag food/packaging items |
+| food/wrapper | 267 | 297 | OLM tag review of legacy entries; retag food/packaging items |
 | food/packaging | 87 | 96 | OLM tag review of legacy entries |
-| other/other | 67 | 69 | OLM legacy objects need reclassing |
+| other/other | 68 | 70 | OLM legacy objects need reclassing |
 | industrial/tape | 28 | 29 | OLM legacy objects need reclassing |
 | food/bag | 26 | 27 | OLM tag review of legacy entries move take-out bags to food/packaging |
 | other/metal | 24 | 24 | OLM tag review to parse out industrial debris objects |
@@ -93,7 +93,7 @@ None.
 | Household |  | Latex / Nitrile Glove | 11 | 10 | 10 | 0 |
 | Household |  | Party Litter | 36 | 25 | 25 | 0 |
 | Household |  | Abandoned Textile Apparel | 33 | 24 | 24 | 0 |
-| Household |  | Household misc | 67 | 65 | 65 | 5 |
+| Household |  | Household misc | 68 | 66 | 66 | 5 |
 | Household |  | E-waste Piece | 2 | 2 | 2 | 0 |
 | Household |  | Household Plastic Bag | 14 | 13 | 13 | 1 |
 | Household |  | Pet Supplies | 2 | 2 | 2 | 0 |
@@ -118,9 +118,9 @@ None.
 | Convenient Food Drink | Drink | Pull-tabs | 2 | 2 | 2 | 1 |
 | Convenient Food Drink | Drink | Paper Drink Straws | 72 | 69 | 69 | 0 |
 | Convenient Food Drink | Drink | Drink Straw Wrapper | 64 | 63 | 63 | 0 |
-| Convenient Food Drink | Snack | Metalized Chip Bags | 8 | 8 | 8 | 0 |
+| Convenient Food Drink | Snack | Metalized Chip Bags | 9 | 9 | 9 | 0 |
 | Convenient Food Drink | Snack | Chewed Gum | 8 | 8 | 8 | 0 |
-| Convenient Food Drink | Snack | Foil / Plastic Film Snack Wrapper | 296 | 266 | 265 | 0 |
+| Convenient Food Drink | Snack | Foil / Plastic Film Snack Wrapper | 297 | 267 | 266 | 0 |
 | Convenient Food Drink | Take-out | Cutlery | 4 | 3 | 3 | 0 |
 | Convenient Food Drink | Take-out | Napkins | 84 | 70 | 70 | 0 |
 | Convenient Food Drink | Take-out | Food Packaging | 96 | 87 | 87 | 0 |
@@ -130,7 +130,7 @@ None.
 | Dumping |  | Med | 7 | 4 | 4 | 7 |
 | Dumping |  | Lrg | 0 | 0 | 0 | 0 |
 | Dumping |  | Commercial Dumping | 0 | 0 | 0 | 0 |
-| Piece |  | Foil Piece | 30 | 23 | 23 | 0 |
+| Piece |  | Foil Piece | 31 | 24 | 24 | 0 |
 | Piece |  | Styrofoam Piece | 38 | 32 | 32 | 0 |
 | Piece |  | Styrofoam Whole | 6 | 6 | 6 | 1 |
 | Piece |  | Household or Unknown Metal Piece | 24 | 24 | 24 | 1 |

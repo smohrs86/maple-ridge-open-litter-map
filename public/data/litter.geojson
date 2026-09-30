@@ -383,6 +383,107 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
+          -122.56142425537,
+          49.207096099854
+        ]
+      },
+      "properties": {
+        "id": 555413,
+        "datetime": "2026-09-29T18:40:01.000000Z",
+        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/09/29/c7H0y3LJvRQH5QrX6GH0xWNvK9xJXFuV9XTUrqne.jpg",
+        "tags": [
+          {
+            "type": "standard",
+            "category": "food",
+            "item": "crisp_packet",
+            "quantity": 1
+          },
+          {
+            "type": "standard",
+            "category": "food",
+            "item": "wrapper",
+            "quantity": 1
+          },
+          {
+            "type": "material",
+            "category": "material",
+            "item": "plastic",
+            "quantity": 1,
+            "parent_category": "food",
+            "parent_item": "wrapper"
+          },
+          {
+            "type": "standard",
+            "category": "food",
+            "item": "tinfoil",
+            "quantity": 1
+          },
+          {
+            "type": "standard",
+            "category": "other",
+            "item": "other",
+            "quantity": 1
+          }
+        ],
+        "objects": [
+          {
+            "status": "OK",
+            "on_map": true,
+            "group": "Convenient Food Drink",
+            "subgroup": "Snack",
+            "layer": "Metalized Chip Bags",
+            "full_name": "Convenient Food Drink \u2013 Snack \u2013 Metalized Chip Bags",
+            "olm_key": "food/crisp_packet",
+            "quantity": 1,
+            "picked_up": true
+          },
+          {
+            "status": "REVIEW",
+            "on_map": true,
+            "group": "Convenient Food Drink",
+            "subgroup": "Snack",
+            "layer": "Foil / Plastic Film Snack Wrapper",
+            "full_name": "Convenient Food Drink \u2013 Snack \u2013 Foil / Plastic Film Snack Wrapper",
+            "olm_key": "food/wrapper",
+            "quantity": 1,
+            "picked_up": true
+          },
+          {
+            "status": "OK",
+            "on_map": true,
+            "group": "Piece",
+            "subgroup": "",
+            "layer": "Foil Piece",
+            "full_name": "Piece \u2013 Foil Piece",
+            "olm_key": "food/tinfoil",
+            "quantity": 1,
+            "picked_up": true
+          },
+          {
+            "status": "REVIEW",
+            "on_map": true,
+            "group": "Household",
+            "subgroup": "",
+            "layer": "Household misc",
+            "full_name": "Household \u2013 Household misc",
+            "olm_key": "other/other",
+            "quantity": 1,
+            "picked_up": true
+          }
+        ],
+        "groups": [
+          "litter"
+        ],
+        "has_litter": true,
+        "has_pet_waste": false,
+        "has_substances": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
           -122.56120300293,
           49.210113525391
         ]
