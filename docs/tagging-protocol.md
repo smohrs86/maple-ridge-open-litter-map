@@ -6,7 +6,13 @@ These are the tagging conventions used when collecting data for this project. Th
 
 **What is picked up.** Sharps are picked up with tongs and gloves into a biohazard container. Litter soiled with human waste or body fluids (for example a soiled diaper or wipes) and dangerous or toxic items (for example a damaged car battery) are not picked up; they are photographed and tagged as left in place.
 
-**Photos.** Following OLM's upload tips ("close-up, object fills frame" and "no people, no personal info"): one item, or a tight group of the same item, per photo, with no wide shots. Litter is photographed as it is found, because moving or rearranging it would change what the record shows. Instead, the photo is cropped, angled, or framed to keep faces, licence plates, house numbers, addresses, and anything showing a name or account number (mail, receipts, IDs) out of the shot. Items that carry a person's contact details or address, such as business cards and garage sale signs, are only photographed if the text is unreadable in the frame; if the text can't be hidden, the photo is skipped or deleted. Every effort is made to keep personal information out of frame; if some still gets through, email the project at the contact address in the README. Some older photos are wide shots from before this rule.
+**Photos.** Following OLM's upload tips ("close-up, object fills frame" and "no people, no personal info"): one item, or a tight group of the same item, per photo, with no wide shots. Litter is photographed as it is found, because moving or rearranging it would change what the record shows. The order of preference is:
+1. Photograph it as it is found, in a tight frame.
+2. If personal information would show, crop, angle, or frame the photo to keep faces, licence plates, house numbers, addresses, and anything showing a name or account number (mail, receipts, IDs) out of the shot.
+3. If the litter is buried in vegetation (plants, brambles, grass) and can't be identified as it lies, uncover it and photograph it where it was found.
+4. Only if it still can't be identified in place, dig it out and arrange it as one tight group for the photo. This is the only case where litter is moved.
+
+Items that carry a person's contact details or address, such as business cards and garage sale signs, are only photographed if the text is unreadable in the frame; if the text can't be hidden, the photo is skipped or deleted. Every effort is made to keep personal information out of frame; if some still gets through, email the project at the contact address in the README. Some older photos are wide shots from before this rule.
 
 | Situation | How it's tagged |
 |---|---|
