@@ -2,6 +2,12 @@
 
 These are the tagging conventions used when collecting data for this project. They matter because the crosswalk can only be as consistent as the tagging.
 
+**Where litter is collected.** Public ground (streets and sidewalks) and, on Adopt-a-Block routes, up to one arm's length into residential frontage. Nothing is collected from frontage that is fenced off or posted with a sign, or from places that are hard or unsafe to reach. Places where litter accumulates on public ground, such as culverts, are recorded, because where litter collects matters as much as what it is.
+
+**What is picked up.** Sharps are picked up with tongs and gloves into a biohazard container. Litter soiled with human waste or body fluids (for example a soiled diaper or wipes) and dangerous or toxic items (for example a damaged car battery) are not picked up; they are photographed and tagged as left in place.
+
+**Photos.** Following OLM's upload tips ("close-up, object fills frame" and "no people, no personal info"): one item, or a tight group of the same item, per photo, with no wide shots. Litter is photographed as it is found, because moving or rearranging it would change what the record shows. Instead, the photo is cropped, angled, or framed to keep faces, licence plates, house numbers, addresses, and anything showing a name or account number (mail, receipts, IDs) out of the shot. Every effort is made to keep personal information out of frame; if some still gets through, email the project at the contact address in the README. Some older photos are wide shots from before this rule.
+
 | Situation | How it's tagged |
 |---|---|
 | Household dumping | `dumping/dumping` with a size, measured by the item's longest dimension. **Small:** can be carried away by hand, under 30 cm (e.g. a ladle). **Medium:** can't be carried away but smaller than a fridge or couch, 30–90 cm (e.g. a printer). **Large:** bigger than a full garbage bag, over 90 cm (e.g. an ironing board). Always choose a size; unsized photos land in UNCLASS. |
@@ -21,7 +27,7 @@ These are the tagging conventions used when collecting data for this project. Th
 | Lighters | `smoking/lighters` for a whole lighter only. A lighter piece is tagged by what it is: `other/plastic` or `other/metal` by main material, `other/other` + `E-waste` for an electronic part, or `other/other` if neither fits. |
 | Foil pieces | `food/tinfoil`, for any foil piece, whether from household foil, wrappers, or bags. |
 | Vehicle parts | `vehicles/car_part`, without a material tag, since materials can't be verified in the field. |
-| Out of scope | Civic fixtures and signage (reported to the City instead) and posters, which often name people and could imply wrongdoing unfairly. |
+| Out of scope | Civic fixtures and signage, and litter problems on private property such as accumulation behind a fence: not photographed, and reported to the City when that is reasonable. Posters, which often name people and could imply wrongdoing unfairly. Waterways, which need their own monitoring method. |
 
 **Retired OLM keys** (not used for new photos; older photos are being reclassified): `civic/bags_litter`, `civic/other`, `coffee/straw`, `industrial/pipe`, `other/bags_litter`, `other/poster`, `smoking/box`.
 

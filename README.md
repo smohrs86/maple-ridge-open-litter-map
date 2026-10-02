@@ -50,6 +50,7 @@ Not part of the proof of concept: GIS features, municipal streams, a license, an
 
 Newest first, one line per change. Claude updates this whenever it updates the README.
 
+- **2026-10-02:** Tagging protocol: where litter is collected, what is picked up, a close-up photo method with no personal details in frame, and private-property problems and waterways out of scope.
 - **2026-09-28:** Review page: a "New quantity" field per object, merged into the workbook's `Change_to_Quantity` column.
 - **2026-09-28:** Second batch of legacy tags fixed in OLM: 82 photos (92 objects), from the maintainer's review page edits, each read back exactly as sent. Legacy review check after a fresh export (2,835 photos, 3,522 tagged objects): REVIEW 1,665, RECLASS 37, orphan tags 0, UNMAPPED 0, UNCLASS 0.
 - **2026-09-28:** Batch quantity changes: the review workbook has a `Change_to_Quantity` column, and the dry run allows a quantity change only when that column asks for one. Added because quantity edits on OLM's website often didn't save.
