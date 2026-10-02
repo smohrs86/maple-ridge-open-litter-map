@@ -49236,14 +49236,6 @@
             "quantity": 1
           },
           {
-            "type": "material",
-            "category": "material",
-            "item": "paper",
-            "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "bag"
-          },
-          {
             "type": "standard",
             "category": "food",
             "item": "packaging",
@@ -49262,12 +49254,6 @@
             "quantity": 1,
             "parent_category": "other",
             "parent_item": "paper"
-          },
-          {
-            "type": "standard",
-            "category": "other",
-            "item": "bags_litter",
-            "quantity": 1
           }
         ],
         "objects": [
@@ -49313,17 +49299,6 @@
             "full_name": "Piece \u2013 Paper Piece",
             "olm_key": "other/paper",
             "quantity": 2,
-            "picked_up": true
-          },
-          {
-            "status": "RECLASS",
-            "on_map": false,
-            "group": "",
-            "subgroup": "",
-            "layer": "other/bags_litter",
-            "full_name": "other/bags_litter",
-            "olm_key": "other/bags_litter",
-            "quantity": 1,
             "picked_up": true
           }
         ],
@@ -62562,36 +62537,20 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
-            "item": "wrapper",
+            "category": "other",
+            "item": "paper",
             "quantity": 1
-          },
-          {
-            "type": "material",
-            "category": "material",
-            "item": "foil",
-            "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "wrapper"
-          },
-          {
-            "type": "material",
-            "category": "material",
-            "item": "plastic",
-            "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "wrapper"
           }
         ],
         "objects": [
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Convenient Food Drink",
-            "subgroup": "Snack",
-            "layer": "Foil / Plastic Film Snack Wrapper",
-            "full_name": "Convenient Food Drink \u2013 Snack \u2013 Foil / Plastic Film Snack Wrapper",
-            "olm_key": "food/wrapper",
+            "group": "Piece",
+            "subgroup": "",
+            "layer": "Paper Piece",
+            "full_name": "Piece \u2013 Paper Piece",
+            "olm_key": "other/paper",
             "quantity": 1,
             "picked_up": true
           }
@@ -71125,14 +71084,14 @@
           {
             "type": "standard",
             "category": "food",
-            "item": "straw",
-            "quantity": 1
+            "item": "packaging",
+            "quantity": 3
           },
           {
             "type": "standard",
             "category": "food",
-            "item": "packaging",
-            "quantity": 3
+            "item": "packet",
+            "quantity": 1
           },
           {
             "type": "standard",
@@ -71210,17 +71169,6 @@
             "picked_up": true
           },
           {
-            "status": "OK",
-            "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Plastic Straws",
-            "full_name": "Household \u2013 Plastic Straws",
-            "olm_key": "food/straw",
-            "quantity": 1,
-            "picked_up": true
-          },
-          {
             "status": "REVIEW",
             "on_map": true,
             "group": "Convenient Food Drink",
@@ -71229,6 +71177,17 @@
             "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Food Packaging",
             "olm_key": "food/packaging",
             "quantity": 3,
+            "picked_up": true
+          },
+          {
+            "status": "OK",
+            "on_map": true,
+            "group": "Convenient Food Drink",
+            "subgroup": "Take-out",
+            "layer": "Condiment Packets",
+            "full_name": "Convenient Food Drink \u2013 Take-out \u2013 Condiment Packets",
+            "olm_key": "food/packet",
+            "quantity": 1,
             "picked_up": true
           },
           {
@@ -75778,12 +75737,6 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
-            "item": "straw",
-            "quantity": 1
-          },
-          {
-            "type": "standard",
             "category": "other",
             "item": "paper",
             "quantity": 1
@@ -75810,17 +75763,6 @@
           }
         ],
         "objects": [
-          {
-            "status": "OK",
-            "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Plastic Straws",
-            "full_name": "Household \u2013 Plastic Straws",
-            "olm_key": "food/straw",
-            "quantity": 1,
-            "picked_up": true
-          },
           {
             "status": "REVIEW",
             "on_map": true,
@@ -89857,8 +89799,8 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
-            "item": "wrapper",
+            "category": "other",
+            "item": "other",
             "quantity": 1
           }
         ],
@@ -89866,11 +89808,11 @@
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Convenient Food Drink",
-            "subgroup": "Snack",
-            "layer": "Foil / Plastic Film Snack Wrapper",
-            "full_name": "Convenient Food Drink \u2013 Snack \u2013 Foil / Plastic Film Snack Wrapper",
-            "olm_key": "food/wrapper",
+            "group": "Household",
+            "subgroup": "",
+            "layer": "Household misc",
+            "full_name": "Household \u2013 Household misc",
+            "olm_key": "other/other",
             "quantity": 1,
             "picked_up": true
           }
@@ -123455,23 +123397,9 @@
         "tags": [
           {
             "type": "standard",
-            "category": "food",
-            "item": "wrapper",
-            "quantity": 1
-          },
-          {
-            "type": "custom_tag",
-            "category": "custom_tag",
-            "item": "Piece",
-            "quantity": 1,
-            "parent_category": "food",
-            "parent_item": "wrapper"
-          },
-          {
-            "type": "standard",
             "category": "other",
             "item": "plastic",
-            "quantity": 1
+            "quantity": 2
           },
           {
             "type": "standard",
@@ -123484,23 +123412,12 @@
           {
             "status": "REVIEW",
             "on_map": true,
-            "group": "Convenient Food Drink",
-            "subgroup": "Snack",
-            "layer": "Foil / Plastic Film Snack Wrapper",
-            "full_name": "Convenient Food Drink \u2013 Snack \u2013 Foil / Plastic Film Snack Wrapper",
-            "olm_key": "food/wrapper",
-            "quantity": 1,
-            "picked_up": true
-          },
-          {
-            "status": "REVIEW",
-            "on_map": true,
             "group": "Piece",
             "subgroup": "",
             "layer": "Plastic Piece",
             "full_name": "Piece \u2013 Plastic Piece",
             "olm_key": "other/plastic",
-            "quantity": 1,
+            "quantity": 2,
             "picked_up": true
           },
           {
