@@ -33,6 +33,7 @@ OBJECT_COLUMNS = [
     "MROLM local key", "Status", "Notes", "OLM data needs fixes",
     "Change_To_OLMKey", "Change_to_OLM_secondary", "Change_to_OLM_Material", "Change_to_OLM_Custom",
     "Change_to_Picked_Up", "Change_to_Quantity", "Batch_Status", "OLM_Tag_ID", "Review notes",
+    "Reviewed",
 ]
 CHANGE_COLUMNS = ["Change_To_OLMKey", "Change_to_OLM_secondary", "Change_to_OLM_Material",
                   "Change_to_OLM_Custom", "Change_to_Picked_Up", "Change_to_Quantity", "Batch_Status",
@@ -96,24 +97,30 @@ def build_object_rows(photos, crosswalk_rows):
     return rows, ties, unmapped
 
 
+def row_key(values, col):
+    """Match key for one workbook row: OLM's tag ID, or the object's position if the ID is missing."""
+    photo_id = values[col["PhotoID"]]
+    if "OLM_Tag_ID" in col and values[col["OLM_Tag_ID"]] is not None:
+        return (photo_id, "tag", values[col["OLM_Tag_ID"]])
+    return (photo_id, "no", values[col["Object_No"]])
+
+
 def load_carried_edits(path):
-    """Change_*/Batch_Status entries from a previous workbook, keyed to the tag they were made on."""
+    """Change_*/Batch_Status entries from a previous workbook, keyed to the tag they were made on.
+    Also returns the Reviewed dates, which are carried separately (they are not edits)."""
     wb = openpyxl.load_workbook(path, data_only=True)
     ws = wb["Objects"]
     header = [c.value for c in ws[1]]
     col = {name: i for i, name in enumerate(header)}
-    carried = {}
+    carried, reviewed = {}, {}
     for values in ws.iter_rows(min_row=2, values_only=True):
+        if "Reviewed" in col and values[col["Reviewed"]] not in (None, ""):
+            reviewed[row_key(values, col)] = values[col["Reviewed"]]
         edits = {name: values[col[name]] for name in CHANGE_COLUMNS
                  if name in col and values[col[name]] not in (None, "")}
-        if not edits:
-            continue
-        photo_id = values[col["PhotoID"]]
-        if "OLM_Tag_ID" in col and values[col["OLM_Tag_ID"]] is not None:
-            carried[(photo_id, "tag", values[col["OLM_Tag_ID"]])] = edits
-        else:
-            carried[(photo_id, "no", values[col["Object_No"]])] = edits
-    return carried
+        if edits:
+            carried[row_key(values, col)] = edits
+    return carried, reviewed
 
 
 def apply_carried_edits(rows, carried):
@@ -125,6 +132,22 @@ def apply_carried_edits(rows, carried):
                 used.add(key)
                 break
     return [k for k in carried if k not in used]
+
+
+def apply_reviewed(rows, photos, reviewed, through):
+    """Fill the Reviewed column: keep carried dates; with --reviewed-through, stamp that date on every
+    object that has an edit or note, or whose photo was uploaded before that date."""
+    uploaded = {p["id"]: str(p.get("created_at") or "")[:10] for p in photos}
+    for record in rows:
+        for key in ((record["PhotoID"], "tag", record["OLM_Tag_ID"]), (record["PhotoID"], "no", record["Object_No"])):
+            if key in reviewed:
+                record["Reviewed"] = reviewed[key]
+                break
+        if record.get("Reviewed") or not through:
+            continue
+        edited = any(record.get(name) not in (None, "") for name in CHANGE_COLUMNS)
+        if edited or (uploaded.get(record["PhotoID"]) and uploaded[record["PhotoID"]] < through):
+            record["Reviewed"] = through
 
 
 def option_lists(tags_all):
@@ -212,6 +235,7 @@ def write_workbook(path, rows, photos, keys, types, materials):
         ("Objects", "One row per tagged object. Filter OLM_key (and OLM_Custom) to isolate one group. Object_No is the object's position within its photo. Multiple materials or customs on one object are joined with '; '. Quantity and Picked_Up are shown for reference. OLM_Tag_ID is OLM's ID for that exact tag row, used to match your edits when this workbook is rebuilt."),
         ("Change columns", "Change_To_OLMKey, Change_to_OLM_secondary, Change_to_OLM_Material, Change_to_OLM_Custom: leave blank to keep the current value; type [remove] to remove it; otherwise type the new value. For materials or customs, whatever you type replaces the whole list (write several as 'a; b'). Change_to_Picked_Up: yes or no to correct whether the object was picked up; blank keeps it. Change_to_Quantity: the object's new total quantity (a whole number, 1 or more); blank keeps it. Nothing is sent to OLM by editing this sheet."),
         ("Review notes", "Free-text notes on an object, carried into each rebuild. Never sent to OLM."),
+        ("Reviewed", "The date the maintainer reviewed this object in OLM (blank = not yet reviewed). Set by the build script with --reviewed-through: objects with an edit or note, or on a photo uploaded before that date, get the date. Carried into each rebuild. Separate from Status, which comes from the crosswalk."),
         ("Photo_Batch", "One row per photo, filled by the batch script, not by hand. Current_Tags_JSON is a copy of the photo's tags as exported; the raw export file in review/raw/ is the real backup."),
         ("Lists", "Values for the dropdowns, from OLM's tag list."),
         ("", ""),
@@ -268,6 +292,8 @@ def print_report(rows, ties, unmapped, unmatched_edits, carried_count, crosswalk
     if problems:
         print("\n[REPORT] Crosswalk rows where local key = OLM key but include is not 'no':",
               [p["_sheet_row"] for p in problems])
+    reviewed_count = sum(1 for r in rows if r.get("Reviewed"))
+    print(f"\n[REPORT] Reviewed {reviewed_count} of {len(rows)} objects; {len(rows) - reviewed_count} not yet reviewed.")
     if carried_count:
         print(f"\n[REPORT] Carried over {carried_count - len(unmatched_edits)} of {carried_count} edited rows.")
     if unmatched_edits:
@@ -282,6 +308,8 @@ def main():
     parser.add_argument("--crosswalk", default=os.path.join("config", "crosswalk.csv"))
     parser.add_argument("--out", default=os.path.join("review", f"legacy_tag_review_{date.today():%Y%m%d}.xlsx"))
     parser.add_argument("--carry-from", help="previous workbook whose Change_*/Batch_Status entries to keep")
+    parser.add_argument("--reviewed-through", metavar="YYYY-MM-DD",
+                        help="mark every object with an edit or note, or on a photo uploaded before this date, as reviewed on this date")
     args = parser.parse_args()
 
     if os.path.exists(args.out):
@@ -294,8 +322,9 @@ def main():
     crosswalk_rows = cw.load_crosswalk(args.crosswalk)
 
     rows, ties, unmapped = build_object_rows(photos, crosswalk_rows)
-    carried = load_carried_edits(args.carry_from) if args.carry_from else {}
+    carried, reviewed = load_carried_edits(args.carry_from) if args.carry_from else ({}, {})
     unmatched_edits = apply_carried_edits(rows, carried) if carried else []
+    apply_reviewed(rows, photos, reviewed, args.reviewed_through)
 
     keys, types, materials = option_lists(tags_all)
     os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)

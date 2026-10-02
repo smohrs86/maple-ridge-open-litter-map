@@ -60,6 +60,8 @@ Change-column rules:
 
 `Batch_Status` values: pending, dry-run ok, sent, verified ok, failed, skipped.
 
+`Reviewed` (last column of `Objects`): the date the maintainer reviewed the object in OLM; blank means not yet reviewed. It is separate from `Status`, which comes from the crosswalk (REVIEW only means the key carries a fix note). Build with `--reviewed-through YYYY-MM-DD` to stamp that date on every object with an edit or note, or on a photo uploaded before that date (upload time is `created_at` in the raw export, not the `Date` column, which is capture time). Dates are carried into each rebuild, and the build report prints "Reviewed X of Y objects". The first full pass was 2026-10-02: every photo was checked in OLM, those needing changes were edited or noted, photos with personal information were deleted, and unchanged photos were left unmarked, so the rule above counts them as reviewed. Edits made directly in OLM do not appear as Change_* entries, because the next export already contains them.
+
 ## Guardrails
 
 - Never send a photo without a saved backup of its current tags.
