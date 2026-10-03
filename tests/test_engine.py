@@ -124,7 +124,7 @@ class AuditTests(unittest.TestCase):
             self.feature(3, ("other/other", {"mat": ["Wood"], "cus": ["broken glass"]})),
             self.feature(4, ("food/wrapper", {"qty": 2})),
         ]
-        return sd.build_audit(features, self.ROWS, skipped_photos=1)
+        return sd.build_audit(features, self.ROWS, dropped=[(90, "no coordinates")])
 
     def test_summary_and_status_counts(self):
         text = self.audit()
@@ -150,6 +150,11 @@ class AuditTests(unittest.TestCase):
         self.assertIn("| Household | Liquor | Liquor Bottle | 3 | 1 | 1 | 3 |", text)
         self.assertIn("| Dumping |  | Sml | 0 | 0 | 0 | 0 |", text)
         self.assertNotIn("civic/other | 0", text)
+
+    def test_dropped_photos_listed_only_when_there_are_some(self):
+        self.assertIn("## Dropped photos", self.audit())
+        self.assertIn("| 90 | no coordinates |", self.audit())
+        self.assertNotIn("## Dropped photos", sd.build_audit([], self.ROWS))
 
     def test_no_timestamp_so_unchanged_data_gives_unchanged_file(self):
         self.assertEqual(self.audit(), self.audit())

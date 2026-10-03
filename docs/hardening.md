@@ -7,7 +7,7 @@
 - ✅ **Workflow push race.** Done 2026-09-25: the workflow rebases onto `main` before pushing its data commit.
 - ✅ **Atomic writes.** Done 2026-10-03: the GeoJSON copies and the audit are written to a temporary file and swapped in with `os.replace`, so an interrupted run can't leave a half-written file (`write_atomically` in `scripts/sync_data.py`, tested in `tests/test_atomic_write.py`).
 - ✅ **Automated tests for crosswalk matching and the engine.** Done 2026-09-26: `tests/` covers the matching rules, object extraction from both OLM tag formats, picked-up states, map visibility, the audit report, and crosswalk loading. The older Stage 1 tag flattening (`tags`) is not yet tested.
-- Validate coordinates and the GeoJSON structure before publishing, and report anything dropped in the audit.
+- ✅ **Validate coordinates and GeoJSON structure.** Done 2026-10-03: a photo whose coordinates are missing, not numbers, off the globe or exactly 0, 0 is left off the map and listed (ID and reason) in the audit's "Dropped photos" section, which appears only when something was dropped. Before writing, `geojson_problems` checks the finished GeoJSON; if it fails, the run stops with no files written, so the map keeps its last good data. Tested in `tests/test_validation.py`. Not checked: whether a point is inside Maple Ridge.
 - Record which crosswalk version (for example its file hash) produced each audit report, so any number on the map can be traced back.
 - Improve map accessibility: keyboard support, screen reader labels, and a text summary of the data.
 - Show clear messages if the basemap or data fails to load.

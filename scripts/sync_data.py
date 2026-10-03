@@ -308,8 +308,10 @@ def _cell(text):
     return str(text).replace("|", "\\|")
 
 
-def build_audit(features, crosswalk_rows, skipped_photos=0):
+def build_audit(features, crosswalk_rows, dropped=()):
     """The audit report (README "Audit counts") as Markdown.
+
+    `dropped` is a list of (photo id, reason) for photos left out because of their coordinates.
 
     No timestamp: an unchanged dataset gives an unchanged file, so the workflow makes no commit.
     """
@@ -331,7 +333,8 @@ def build_audit(features, crosswalk_rows, skipped_photos=0):
         "Written by `scripts/sync_data.py` on every sync, following the README's \"Audit counts\". "
         "Items are quantities (the map counts items); objects are tagged objects; photos are OLM photos.",
         "",
-        f"- Photos: {len(features)}" + (f" ({skipped_photos} more skipped: no coordinates)" if skipped_photos else ""),
+        f"- Photos: {len(features)}" + (f" ({len(dropped)} more skipped: "
+                                      f"{' and '.join(sorted({reason for _, reason in dropped}))})" if dropped else ""),
         f"- Newest photo: {newest[:10] or 'none'}",
         f"- Tagged objects: {len(objects)} ({items(objects)} items)",
         f"- Shown on the map: {len(on_map)} objects ({items(on_map)} items) in "
@@ -405,6 +408,10 @@ def build_audit(features, crosswalk_rows, skipped_photos=0):
                      for pid, o in sorted(ties, key=lambda e: e[0]))
     else:
         lines.append("None.")
+
+    if dropped:
+        lines.extend(["", "## Dropped photos", "", "| Photo ID | Reason |", "|---|---|"])
+        lines.extend(f"| {pid} | {reason} |" for pid, reason in sorted(dropped, key=lambda d: str(d[0])))
 
     included = [r for r in crosswalk_rows if cw.norm(r["include on map"]) == "yes"]
     standalone = sorted({r["MROLM local key"].strip() for r in included if not r["MROLM Group"].strip()})
@@ -591,6 +598,52 @@ def fetch_all_photos(token, get_new_token=None, max_relogins=3):
     return all_photos, complete
 
 
+NO_COORDINATES = "no coordinates"
+INVALID_COORDINATES = "invalid coordinates"
+
+
+def read_coordinates(photo):
+    """Return (lon, lat, problem) for a raw photo; problem is None when the point is usable.
+
+    A point is unusable if it is missing, not a finite number, outside the globe (longitude
+    -180 to 180, latitude -90 to 90) or exactly 0, 0 (the "null island" a failed GPS fix gives).
+    """
+    geometry = photo.get("geometry") or {}
+    coords = geometry.get("coordinates") or [photo.get("lon"), photo.get("lat")]
+    if len(coords) < 2 or coords[0] is None or coords[1] is None:
+        return None, None, NO_COORDINATES
+    try:
+        lon, lat = float(coords[0]), float(coords[1])
+    except (TypeError, ValueError):
+        return None, None, INVALID_COORDINATES
+    if not (math.isfinite(lon) and math.isfinite(lat)) or abs(lon) > 180 or abs(lat) > 90 or (lon == 0 and lat == 0):
+        return None, None, INVALID_COORDINATES
+    return lon, lat, None
+
+
+def geojson_problems(geojson):
+    """Structural problems in the finished GeoJSON, as a list of readable strings (empty = fine)."""
+    if geojson.get("type") != "FeatureCollection" or not isinstance(geojson.get("features"), list):
+        return ["not a FeatureCollection with a features list"]
+    problems = []
+    for index, feature in enumerate(geojson["features"]):
+        props = feature.get("properties")
+        pid = props.get("id") if isinstance(props, dict) else None
+        label = f"feature {index} (photo {pid})"
+        geometry = feature.get("geometry") or {}
+        coords = geometry.get("coordinates")
+        if feature.get("type") != "Feature":
+            problems.append(f"{label}: type is not Feature")
+        elif geometry.get("type") != "Point" or not isinstance(coords, list) or len(coords) != 2:
+            problems.append(f"{label}: geometry is not a two-number Point")
+        elif not all(isinstance(c, (int, float)) and math.isfinite(c) for c in coords) \
+                or abs(coords[0]) > 180 or abs(coords[1]) > 90:
+            problems.append(f"{label}: coordinates {coords} are not on the globe")
+        elif not isinstance(props, dict) or pid is None or not isinstance(props.get("objects"), list):
+            problems.append(f"{label}: properties lack an id or an objects list")
+    return problems
+
+
 def write_atomically(path, text):
     """Write text to path so the file is either the old version or the new one, never half-written.
 
@@ -643,13 +696,14 @@ def fetch_and_build_geojson(from_raw=None):
         sys.exit(1)
 
     features = []
+    dropped = []
     for photo in raw_photos:
-        coords = photo.get("geometry", {}).get("coordinates") or [photo.get("lon"), photo.get("lat")]
-        if not coords or coords[0] is None or coords[1] is None:
+        lon, lat, problem = read_coordinates(photo)
+        if problem:
+            dropped.append((photo.get("id"), problem))
             continue
 
         properties = build_photo_properties(photo, crosswalk_rows)
-        lat, lon = float(coords[1]), float(coords[0])
         zone = assign_zone(lat, lon, zones)
         zone_edge_m, nbhd_edge_m = zone_edge_distances(lat, lon, zone, zones)
         properties["zone"] = zone["id"] if zone else None
@@ -659,7 +713,7 @@ def fetch_and_build_geojson(from_raw=None):
             "type": "Feature",
             "geometry": {
                 "type": "Point",
-                "coordinates": [float(coords[0]), float(coords[1])]
+                "coordinates": [lon, lat]
             },
             "properties": properties
         })
@@ -688,7 +742,15 @@ def fetch_and_build_geojson(from_raw=None):
     print(f"[DIAGNOSTIC] Tagged objects by crosswalk status: {dict(sorted(statuses.items()))}")
 
     # Built before any file is written, so a failure here leaves the last good data live.
-    audit = build_audit(features, crosswalk_rows, skipped_photos=len(raw_photos) - len(features))
+    problems = geojson_problems(geojson)
+    if problems:
+        print(f"[CRITICAL ERROR] The GeoJSON failed its structure check ({len(problems)} problem(s)). No files were written.")
+        for problem in problems[:20]:
+            print(f"  - {problem}")
+        sys.exit(1)
+    for pid, reason in dropped:
+        print(f"[WARNING] Photo {pid} left off the map: {reason}.")
+    audit = build_audit(features, crosswalk_rows, dropped=dropped)
 
     target_paths = ["data/litter.geojson", "public/data/litter.geojson"]
 
