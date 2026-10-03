@@ -17,7 +17,7 @@ OLM v3 API → `scripts/sync_data.py` on GitHub Actions (`.github/workflows/sync
 - Stage 2 (the crosswalk engine and layer tree map) is specified in README.md. The README's matching rules, `docs/tagging-protocol.md`, and `docs/decision-log.md` are the spec. Follow them, and flag any conflict.
 
 ## Current task
-Priority order: (a) the engine and layer tree map, then (b) the legacy review and reclass (done 2026-10-02), then (c) GIS features on the map, then (d) municipal streams (COMR and COV). Until (d), don't bring municipal policy, bylaws, or the COV street audit into the work.
+Priority order: (a) the engine and layer tree map, then (b) the legacy review and reclass (done 2026-10-02), then (c) GIS features on the map, then (d) a COMR municipal stream, only if COMR publishes or uses litter categories and takes part (no stream for any other city; the COV stream was dropped 2026-10-02). Until (d), don't bring municipal policy, bylaws, or any other city's street audit into the work. Stage 3 zone summaries use the City's neighbourhoods, per `docs/maple-ridge-community-areas.md`: cite what COMR publishes, and never describe how it decides names or boundaries.
 
 Stage 2, in three steps. Do them in order, and don't start step 3 until I say so.
 1. **Crosswalk: done.** Exported to `config/crosswalk.csv` (re-exported 2026-09-25 after a public-exposure review, with the municipal stream columns and "In my sample" removed, and `alcohol/packaging` now included as Liquor Packaging). Re-exported 2026-09-26 with Foil Piece, E-waste Piece, and Notes tidied for publication. The Google Sheet is the source of truth for Notes too: after an edit I re-export the whole sheet, so don't tidy Notes only in the repo copy.

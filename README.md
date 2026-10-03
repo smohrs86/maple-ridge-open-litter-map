@@ -22,7 +22,7 @@ Litter is photographed and tagged in the field using [OpenLitterMap](https://ope
 | Crosswalk engine (code that applies the crosswalk) | ✅ Built | Reads `config/crosswalk.csv` on every sync and writes an audit report, `data/audit.md` |
 | Layer tree map interface | ✅ Built | Group → Subgroup → Layer checkboxes, picked-up rings, date filter, popups |
 | GIS features on the map | 🟡 Started | Heatmap view built early; the legacy review is complete, so the rest of Stage 3 can start |
-| Municipal waste streams | ⬜ Later | Communicating the data in municipal terms, built last (Stage 4) |
+| Municipal waste stream | ⬜ Only if COMR takes part | A view in the City of Maple Ridge's own litter categories, built only if the City publishes or uses them (Stage 4) |
 | Cleanup of older tags in OLM | ✅ Done | The maintainer reviewed every photo and reclassed legacy tags in OLM (roadmap step 4), completed 2026-10-02 |
 
 ---
@@ -50,6 +50,7 @@ Not part of the proof of concept: GIS features, municipal streams, a license, an
 
 Newest first, one line per change. Claude updates this whenever it updates the README.
 
+- **2026-10-02:** Roadmap changed. Stage 3 zone summaries will use the City of Maple Ridge's neighbourhoods (source notes in [docs/maple-ridge-community-areas.md](docs/maple-ridge-community-areas.md)). Stage 4 now happens only if COMR publishes or uses litter categories and takes part, and there is no stream for any other city.
 - **2026-10-02:** Legacy review complete. 166 photos retagged in OLM from the maintainer's review page edits (one test photo, a batch of 10, then 155), each read back exactly as sent; the fresh export matches the plan for all 166. Check after the export (2,814 photos, 3,488 tagged objects): OK 1,835, REVIEW 1,653 (keys that carry a fix note, all reviewed), RECLASS 0, orphan tags 0, UNMAPPED 0, UNCLASS 0. The merge step now rejects unrecognised `[bracket]` words.
 - **2026-10-02:** Review workbook has a `Reviewed` date column (`--reviewed-through`); full photo review pass done, with personal-information photos deleted in OLM. Tagging protocol adds the photo order of preference and contact-detail items (business cards, garage sale signs).
 - **2026-10-02:** Tagging protocol: where litter is collected, what is picked up, a close-up photo method with no personal details in frame, and private-property problems and waterways out of scope.
@@ -259,13 +260,13 @@ Priority order: the code that applies the crosswalk and displays the points (ste
 Once the layer tree works and the legacy data is conformed, add features that make the spatial data easier to read:
 
 - ✅ Heatmap view (built early, 2026-09-26). Clustering for dense collection routes is still open
-- Zone summaries (zonal statistics): divide the collection area into zones such as blocks, add up every dot inside each zone, and show the totals on a card per zone (items, top layers, items left in place) or shade each zone by its total. Zone totals also smooth out GPS drift
+- Neighbourhood zone summaries (zonal statistics): divide the collection area into the City of Maple Ridge's neighbourhoods, add up every dot inside each one, and show the totals on a card per neighbourhood (items, top layers, items left in place) or shade each by its total. Neighbourhood totals also smooth out GPS drift. The neighbourhoods come from the Planning Department's map: see [docs/maple-ridge-community-areas.md](docs/maple-ridge-community-areas.md)
 - A date slider to show how litter changes over time (a simple From/To date filter already exists)
 - Richer popups with photo previews and brand information
 
-### Stage 4 — Municipal waste streams (later)
+### Stage 4 — Municipal waste stream (only if COMR takes part)
 
-Communicate the data in municipal terms, built one stream at a time on top of the finished MROLM layer tree. The two systems already used as guides for the crosswalk are the City of Maple Ridge's waste classifications (COMR) and the City of Vancouver litter audit categories (COV). The map could then offer a "view as" switch between these lenses.
+Stage 3's neighbourhood summaries already describe the data in the City's own geography. Stage 4 would go further and show the objects in the City of Maple Ridge's own litter categories, as a "view as" switch on top of the MROLM layer tree. It needs the City to publish or use a litter-count scheme and to take an interest, because MROLM's groups are a volunteer's logic and a stream is only meaningful if it follows the City's own categories. If that happens, each object class is matched to the City's scheme, one stream at a time. There is no stream for any other city, because the map shows Maple Ridge and a second city's categories would confuse readers. The project is complete without Stage 4.
 
 Ongoing reliability work is listed in [docs/hardening.md](docs/hardening.md).
 
