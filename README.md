@@ -21,7 +21,7 @@ Litter is photographed and tagged in the field using [OpenLitterMap](https://ope
 | Crosswalk logic and layer tree design | ✅ Designed | Exported to `config/crosswalk.csv`. Structure reviewed and clean |
 | Crosswalk engine (code that applies the crosswalk) | ✅ Built | Reads `config/crosswalk.csv` on every sync and writes an audit report, `data/audit.md` |
 | Layer tree map interface | ✅ Built | Group → Subgroup → Layer checkboxes, picked-up rings, date filter, popups |
-| GIS features on the map | 🟡 Started | Heatmap view built early; the legacy review is complete, so the rest of Stage 3 can start |
+| GIS features on the map | 🟡 Mostly built | Heatmap, neighbourhood and zone views with hover cards, and date selection are built (2026-10-02). Richer popups, clustering and a design polish pass are open |
 | Municipal waste stream | ⬜ Only if COMR takes part | A view in the City of Maple Ridge's own litter categories, built only if the City publishes or uses them (Stage 4) |
 | Cleanup of older tags in OLM | ✅ Done | The maintainer reviewed every photo and reclassed legacy tags in OLM (roadmap step 4), completed 2026-10-02 |
 
