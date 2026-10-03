@@ -21,7 +21,7 @@ Litter is photographed and tagged in the field using [OpenLitterMap](https://ope
 | Crosswalk logic and layer tree design | ✅ Designed | Exported to `config/crosswalk.csv`. Structure reviewed and clean |
 | Crosswalk engine (code that applies the crosswalk) | ✅ Built | Reads `config/crosswalk.csv` on every sync and writes an audit report, `data/audit.md` |
 | Layer tree map interface | ✅ Built | Group → Subgroup → Layer checkboxes, picked-up rings, date filter, popups |
-| GIS features on the map | 🟡 Mostly built | A neighbourhood total, then numbered clusters, then dots by zoom level, neighbourhood and zone views with hover cards, and date selection are built (2026-10-02). A design polish pass is open |
+| GIS features on the map | ✅ Built | Stage 3 complete 2026-10-03: a neighbourhood total, then numbered clusters, then dots by zoom level, neighbourhood and zone views with hover cards, date selection, and a Reset filters button |
 | Municipal waste stream | ⬜ Only if COMR takes part | A view in the City of Maple Ridge's own litter categories, built only if the City publishes or uses them (Stage 4) |
 | Cleanup of older tags in OLM | ✅ Done | The maintainer reviewed every photo and reclassed legacy tags in OLM (roadmap step 4), completed 2026-10-02 |
 
@@ -50,6 +50,7 @@ Not part of the proof of concept: GIS features, municipal streams, a license, an
 
 Newest first, one line per change. Claude updates this whenever it updates the README.
 
+- **2026-10-03:** Stage 3 declared complete. Richer popups were confirmed achieved; the design review leftovers (colour, footer wording, contrast) were set aside on purpose.
 - **2026-10-03:** Map areas ticks now filter the data (dots, clusters, counts, neighbourhood totals), not just the shaded overlay. The neighbourhood hover tag waits for the clusters, so it no longer doubles the bubble's name.
 - **2026-10-03:** Heatmap and the Dots | Heatmap switch removed. Zoom decides the view: a total per neighbourhood when zoomed out, numbered clusters (items, following every filter) in the middle, and the dots when zoomed in. Tapping a bubble or cluster zooms in.
 - **2026-10-02:** iPhone improvements, tested on the maintainer's phone: bigger tap targets and 16 px date inputs on touch screens (so Safari no longer zooms on focus), and a "Reset filters" button at the top of the panel that puts layers, dates, areas, "Left in place only" and the Dots view back to how the page loads.
@@ -268,7 +269,7 @@ Once the layer tree works and the legacy data is conformed, add features that ma
 - ✅ Clustering with a neighbourhood total, clusters, dots zoom sequence (2026-10-03). A heatmap was built early (2026-09-26) and removed
 - ✅ Neighbourhood and zone views (built 2026-10-02): the City of Maple Ridge's neighbourhoods when zoomed out and lettered zones inside them when zoomed in (A at the top), with a checkbox tree in the panel (a neighbourhood and its zones) to show or hide each. Pointing at an area, or its row in the key, shows its label and one card (items, items left in place, photos, collection days, most common layers, and how many photos sit within the assumed GPS error of an edge; a neighbourhood card ranks its zones). Zones sit where there are photos and edges go where collecting is sparse, so GPS drift matters little. A density score was considered and dropped. How and why: [docs/zones-method.md](docs/zones-method.md). The neighbourhoods come from the Planning Department's map: see [docs/maple-ridge-community-areas.md](docs/maple-ridge-community-areas.md)
 - ✅ Date selection (built 2026-10-02): the panel picks a set of collection days with a tick list of the days (with items per day), month chips, weekday and weekend chips, presets (All, None, Last 7 days, Last 30 days) and the From/To boxes. A chip ticks or unticks its days, so months can be mixed. Time of day, comparing two groups side by side, and a click-and-drag strip of photos per day are still open
-- Richer popups with photo previews and brand information
+- ✅ Richer popups (achieved; confirmed by the maintainer 2026-10-03): a dot's popup shows the layer's full name, items, picked-up status, local time, the other items in the same photo, and a link to the photo. It links to the photo rather than embedding a preview.
 
 ### Stage 4 — Municipal waste stream (only if COMR takes part)
 
