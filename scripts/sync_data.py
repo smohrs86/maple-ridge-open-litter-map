@@ -591,6 +591,27 @@ def fetch_all_photos(token, get_new_token=None, max_relogins=3):
     return all_photos, complete
 
 
+def write_atomically(path, text):
+    """Write text to path so the file is either the old version or the new one, never half-written.
+
+    The text goes to a temporary file in the same folder first; os.replace then swaps it in
+    as a single step. If anything fails, the temporary file is removed and the old file stays.
+    """
+    folder = os.path.dirname(path) or "."
+    os.makedirs(folder, exist_ok=True)
+    tmp_path = f"{path}.tmp"
+    try:
+        with open(tmp_path, "w", encoding="utf-8") as f:
+            f.write(text)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp_path, path)
+    except BaseException:
+        if os.path.exists(tmp_path):
+            os.remove(tmp_path)
+        raise
+
+
 def fetch_and_build_geojson(from_raw=None):
     # Read the crosswalk first: if it can't be used, stop before logging in or writing anything.
     crosswalk_rows = load_crosswalk()
@@ -671,14 +692,14 @@ def fetch_and_build_geojson(from_raw=None):
 
     target_paths = ["data/litter.geojson", "public/data/litter.geojson"]
 
+    # Turned into text first, so a serialising error can't touch any file.
+    geojson_text = json.dumps(geojson, indent=2)
+
     for path in target_paths:
-        os.makedirs(os.path.dirname(path), exist_ok=True)
-        with open(path, "w", encoding="utf-8") as f:
-            json.dump(geojson, f, indent=2)
+        write_atomically(path, geojson_text)
         print(f"[SUCCESS] Exported canonical dataset -> {path}")
 
-    with open(AUDIT_PATH, "w", encoding="utf-8") as f:
-        f.write(audit)
+    write_atomically(AUDIT_PATH, audit)
     print(f"[SUCCESS] Wrote audit report -> {AUDIT_PATH}")
 
 
