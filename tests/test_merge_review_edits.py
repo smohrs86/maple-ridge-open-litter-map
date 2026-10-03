@@ -51,6 +51,13 @@ class PlanMergeTests(unittest.TestCase):
     def test_custom_tags_and_notes_are_free_text(self):
         self.assertEqual(self.outcome({(1, 10): row()}, edit("Change_to_OLM_Custom", "", "Piece; anything")), ["apply"])
 
+    def test_unrecognised_bracket_word_is_invalid_but_remove_and_notes_are_fine(self):
+        for field in ("Change_to_OLM_Custom", "Change_to_OLM_Material", "Change_to_OLM_secondary"):
+            self.assertEqual(self.outcome({(1, 10): row()}, edit(field, "", "[delete]")), ["invalid"])
+        self.assertEqual(self.outcome({(1, 10): row()}, edit("Change_to_OLM_Custom", "", "THC; [delete]")), ["invalid"])
+        self.assertEqual(self.outcome({(1, 10): row()}, edit("Change_to_OLM_Custom", "", "[remove]")), ["apply"])
+        self.assertEqual(self.outcome({(1, 10): row()}, edit("Review notes", "", "[deleted in OLM]")), ["apply"])
+
     def test_picked_up_must_be_yes_or_no(self):
         self.assertEqual(self.outcome({(1, 10): row()}, edit("Change_to_Picked_Up", "", "yes")), ["apply"])
         self.assertEqual(self.outcome({(1, 10): row()}, edit("Change_to_Picked_Up", "", "maybe")), ["invalid"])

@@ -36,10 +36,21 @@ def text(value):
     return "" if value is None else str(value).strip()
 
 
+def stray_bracket_word(value):
+    """A [word] other than [remove], which would otherwise be sent to OLM as if it were a tag name."""
+    for part in value.split(";"):
+        part = part.strip()
+        if part.startswith("[") and part.endswith("]") and part != REMOVE:
+            return part
+    return None
+
+
 def invalid_reason(field, value, lists):
     """Why a new value can't be used, or None. Blank always clears the cell."""
     if value == "":
         return None
+    if field != "Review notes" and stray_bracket_word(value):
+        return f"'{stray_bracket_word(value)}' is not a recognised word; use {REMOVE} to remove"
     if field == "Change_To_OLMKey":
         return None if value in lists["keys"] else f"'{value}' is not an OLM key"
     if field == "Change_to_OLM_secondary":
