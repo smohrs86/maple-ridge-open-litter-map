@@ -69,14 +69,34 @@
     .dot.ring { border: 2px solid #777; width: 7px; height: 7px; }
     .note { font-size: 11px; color: #666; margin: 0 0 8px; }
     .tree-actions { display: flex; gap: 6px; margin-bottom: 6px; }
-    .dates { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 0 0 8px; padding-bottom: 8px; border-bottom: 1px solid #eee; }
-    .dates label { display: flex; align-items: center; gap: 4px; font-size: 12px; color: #555; }
-    .dates input { font: inherit; font-size: 12px; padding: 1px 2px; }
-    .dates button {
-      font: inherit; font-size: 12px; background: none; border: 1px solid #ccc; border-radius: 4px;
-      padding: 2px 8px; cursor: pointer; color: #333;
-    }
-
+    .sec { border-top: 1px solid #eee; padding: 6px 0; }
+    .sec > summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: 1px 8px; cursor: pointer; list-style: none; font-size: 13px; font-weight: 600; padding: 2px 0; }
+    .sec > summary::-webkit-details-marker { display: none; }
+    .sec > summary::before { content: '▸'; width: 12px; font-size: 11px; font-weight: 400; color: #555; }
+    .sec[open] > summary::before { content: '▾'; }
+    .sec > summary:focus-visible { outline: 2px solid #1c1c1a; outline-offset: 2px; }
+    .sec-status { margin-left: auto; font-size: 11px; font-weight: 400; color: #666; }
+    .sec-status.active { font-weight: 600; color: #1c1c1a; }
+    .sec-sub { flex-basis: 100%; padding-left: 20px; font-size: 11px; font-weight: 400; color: #666; }
+    .sec-title .sw { width: 12px; height: 12px; margin-right: 5px; vertical-align: -1px; }
+    .sec-body { padding: 6px 0 2px; }
+    .when-row, .chips { display: flex; flex-wrap: wrap; gap: 4px; margin: 0 0 6px; }
+    .when-row button, .day-list summary { font: inherit; font-size: 12px; background: none; border: 1px solid #ccc; border-radius: 4px; padding: 2px 8px; cursor: pointer; color: #333; }
+    .chip { position: relative; }
+    .chip span { display: inline-block; padding: 2px 10px; border: 1px solid #ccc; border-radius: 999px; font-size: 12px; color: #444; background: #fff; cursor: pointer; user-select: none; }
+    .chip input:checked + span { background: #333; border-color: #333; color: #fff; }
+    .chip input:indeterminate + span { background: #e6e6e3; border-color: #333; color: #222; }
+    .chip input:focus-visible + span { outline: 2px solid #1c1c1a; outline-offset: 1px; }
+    .range { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 0 0 6px; }
+    .range label { display: flex; align-items: center; gap: 4px; font-size: 12px; color: #555; }
+    .range input { font: inherit; font-size: 12px; padding: 1px 2px; }
+    .day-list summary { display: inline-block; list-style: none; }
+    .day-list[open] summary { margin-bottom: 4px; }
+    #day-rows { max-height: 170px; overflow-y: auto; }
+    .day-row { display: flex; align-items: center; gap: 6px; padding: 1px 2px; font-size: 12px; cursor: pointer; }
+    .day-row .d { flex: 1; }
+    .day-row .count { color: #666; font-variant-numeric: tabular-nums; }
+    .day-row.zero .d, .day-row.zero .count { color: #999; }
     .view-switch { display: inline-flex; border: 1px solid #ccc; border-radius: 6px; overflow: hidden; margin: 0 0 8px; }
     .view-switch button { font: inherit; font-size: 12px; border: none; background: #fff; padding: 3px 12px; cursor: pointer; color: #333; }
     .view-switch button[aria-pressed="true"] { background: #333; color: #fff; }
@@ -99,9 +119,6 @@
     .children[hidden] { display: none; }
     .group-row > label .name { font-weight: 600; }
 
-    .where { margin: 0 0 8px; padding-bottom: 8px; border-bottom: 1px solid #eee; }
-    .where[hidden] { display: none; }
-    .where-title { margin: 0 0 4px; font-size: 13px; font-weight: 600; }
     .key-head, .key-row { display: flex; align-items: center; gap: 6px; box-sizing: border-box; padding: 2px 4px; border: 1px solid transparent;
       border-radius: 5px; font-size: 12px; color: #333; cursor: pointer; }
     .key-head { font-weight: 600; margin: 4px 0 2px; }
@@ -173,23 +190,53 @@
         <span><i class="dot ring"></i>Left in place</span>
       </div>
       <p class="note">Counts are items. Tick one layer on its own to see just that kind of litter; click a dot for details.</p>
-      <div class="dates" id="dates">
-        <label>From <input type="date" id="date-from"></label>
-        <label>To <input type="date" id="date-to"></label>
-        <button type="button" id="date-clear">All dates</button>
-      </div>
       <label class="left-only" id="left-only-row"><input type="checkbox" id="left-only"> Left in place only</label>
-      <!-- Colour key for the map's neighbourhoods (zoomed out) or zones (zoomed in); hidden until the data carries them -->
-      <section class="where" id="where" hidden>
-        <h2 class="where-title">Neighbourhoods and zones</h2>
-        <p class="note" id="where-note"></p>
-        <div id="where-key"></div>
-      </section>
-      <div class="tree-actions">
-        <button type="button" id="all-on">All</button>
-        <button type="button" id="all-off">None</button>
-      </div>
-      <div id="tree"></div>
+
+      <!-- Folding sections. Layers come first and stay open; Dates and Neighbourhoods and zones start folded, with their status on the summary line. -->
+      <details class="sec" id="sec-layers" open>
+        <summary><span class="sec-title">Litter layers</span></summary>
+        <div class="sec-body">
+          <div class="tree-actions">
+            <button type="button" id="all-on">All</button>
+            <button type="button" id="all-off">None</button>
+          </div>
+          <div id="tree"></div>
+        </div>
+      </details>
+
+      <details class="sec dates" id="dates">
+        <summary><span class="sec-title">Dates</span><span class="sec-status" id="when-count"></span></summary>
+        <div class="sec-body">
+          <div class="when-row" id="when-presets">
+            <button type="button" data-preset="all">All</button>
+            <button type="button" data-preset="none">None</button>
+            <button type="button" data-preset="7" title="The 7 days up to the latest collection day">Last 7 days</button>
+            <button type="button" data-preset="30" title="The 30 days up to the latest collection day">Last 30 days</button>
+          </div>
+          <div class="chips" id="chips-month" role="group" aria-label="Months"></div>
+          <div class="chips" id="chips-type" role="group" aria-label="Weekdays and weekends"></div>
+          <div class="range">
+            <label>From <input type="date" id="date-from"></label>
+            <label>To <input type="date" id="date-to"></label>
+          </div>
+          <details class="day-list" id="day-list">
+            <summary>Collection days <span id="day-total"></span></summary>
+            <div id="day-rows"></div>
+          </details>
+        </div>
+      </details>
+
+      <!-- Neighbourhoods (zoomed out) or zones (zoomed in) as a colour key; hidden until the data carries them -->
+      <details class="sec where" id="where" hidden>
+        <summary>
+          <span class="sec-title" id="where-title">Map areas</span><span class="sec-status" id="where-status"></span>
+          <span class="sec-sub">Neighbourhoods and zones, shaded on the map. Point at one to see its card.</span>
+        </summary>
+        <div class="sec-body">
+          <p class="note" id="where-note"></p>
+          <div id="where-key"></div>
+        </div>
+      </details>
       <div id="feature-count" class="status-counter">Loading points...</div>
       <!-- Plain-text summary: read by people and by search engines -->
       <p class="note about">Citizen-science litter records from Maple Ridge, BC, tagged on OpenLitterMap and sorted into local categories. <a href="https://github.com/smohrs86/maple-ridge-open-litter-map">About this map and its data</a></p>
@@ -667,6 +714,10 @@
         [['zone', zoneIds], ['nb', nbKeys]].forEach(([kind, ids]) => ['fill', 'line'].forEach(part =>
           map.setFilter(`${kind}-${part}`, ['in', ['get', 'id'], ['literal', ids]])));
         zones.forEach(z => { const r = rows.get(z.id); r.box.checked = zoneOn.has(z.id); r.label.classList.toggle('off', !zoneOn.has(z.id)); });
+        const shownZones = zones.filter(z => zoneOn.has(z.id)).length;
+        const status = document.getElementById('where-status');
+        status.textContent = shownZones === zones.length ? `${zones.length} zone${zones.length === 1 ? '' : 's'}` : `${shownZones} of ${zones.length} zones`;
+        status.classList.toggle('active', shownZones !== zones.length);
         nbs.forEach(n => {
           const mine = zones.filter(z => z.neighbourhood === n.key), on = mine.filter(z => zoneOn.has(z.id)).length;
           const r = rows.get(n.key);
@@ -677,7 +728,7 @@
       }
       function renderNote() {
         document.getElementById('where-note').textContent =
-          'Tick or untick to show or hide an area. Zoom in for zones, out for neighbourhoods. Point at an area or its row to see its label and card.' +
+          "Neighbourhood names come from the City of Maple Ridge's neighbourhoods map. Zones are lettered parts of a neighbourhood, drawn where litter was collected. Zoom in for zones, out for neighbourhoods." +
           (lastAcc && lastAcc.outside ? ` ${fmt(lastAcc.outside)} items fall outside the mapped zones.` : '');
       }
 
@@ -716,6 +767,9 @@
       window.addEventListener('resize', () => { if (!card.hidden) placeCard(); });
 
       document.getElementById('where').hidden = false;
+      // The folded section still says what it is: a swatch per neighbourhood colour beside its name
+      document.getElementById('where-title').innerHTML =
+        nbs.slice(0, 3).map(n => `<i class="sw sq" style="--c:${n.colour}"></i>`).join('') + 'Map areas';
       renderKey();
       applyAreaFilters();
       setMode(mode);
@@ -726,9 +780,136 @@
         bindMap(dotAt) {
           isDotAt = dotAt;
           ['nb', 'zone'].forEach(kind => {
-            map.on('mousemove', `${kind}-fill`, e => setHover(e.features[0].properties.id));
-            map.on('mouseleave', `${kind}-fill`, () => setHover(null));
+            // A pointer cursor says the area can be pointed at, unless a dot (with its own popup) is under it
+            map.on('mousemove', `${kind}-fill`, e => {
+              setHover(e.features[0].properties.id);
+              if (!isDotAt(e)) map.getCanvas().style.cursor = 'pointer';
+            });
+            map.on('mouseleave', `${kind}-fill`, () => { setHover(null); map.getCanvas().style.cursor = ''; });
             map.on('click', `${kind}-fill`, e => { if (!isDotAt(e)) togglePin(e.features[0].properties.id); });
+          });
+        },
+      };
+    }
+
+    // ---------- choosing dates ----------
+    // One set of selected collection days (local days). Every control only adds days to it or removes days
+    // from it, so they all work together: a list of the days, month chips, weekday and weekend chips,
+    // presets, and the From/To boxes (which set the selection to the days in that range).
+    function setupDates(dots, onChange) {
+      const allDays = [...new Set(dots.map(d => d.properties.day))].sort((a, b) => a - b);
+      const known = allDays.filter(Boolean);
+      if (!known.length) return null;
+      const selected = new Set(allDays);
+      const dateOf = d => new Date(Math.floor(d / 10000), Math.floor(d / 100) % 100 - 1, d % 100);
+      const multiYear = Math.floor(known[0] / 10000) !== Math.floor(known[known.length - 1] / 10000);
+      const fmt = n => n.toLocaleString('en-CA');
+      const fromInput = document.getElementById('date-from'), toInput = document.getElementById('date-to');
+      fromInput.min = toInput.min = dayToInput(known[0]);
+      fromInput.max = toInput.max = dayToInput(known[known.length - 1]);
+
+      // Which days each chip stands for
+      const chips = [];
+      const months = new Map();
+      const types = new Map([['Weekdays', []], ['Weekends', []]]);
+      known.forEach(d => {
+        const key = Math.floor(d / 100);
+        if (!months.has(key)) months.set(key, []);
+        months.get(key).push(d);
+        types.get([0, 6].includes(dateOf(d).getDay()) ? 'Weekends' : 'Weekdays').push(d);
+      });
+      function addChip(container, text, days) {
+        if (!days.length) return;
+        const label = document.createElement('label');
+        label.className = 'chip';
+        label.title = `${days.length} collection day${days.length === 1 ? '' : 's'}`;
+        label.innerHTML = `<input type="checkbox" class="vh"><span>${escapeHtml(text)}</span>`;
+        const box = label.querySelector('input');
+        box.addEventListener('change', () => {
+          days.forEach(d => { if (box.checked) selected.add(d); else selected.delete(d); });
+          changed();
+        });
+        container.appendChild(label);
+        chips.push({ box, days });
+      }
+      months.forEach((days, key) => {
+        const d = dateOf(days[0]);
+        addChip(document.getElementById('chips-month'),
+          d.toLocaleString('en-CA', multiYear ? { month: 'short', year: 'numeric' } : { month: 'short' }), days);
+      });
+      types.forEach((days, text) => addChip(document.getElementById('chips-type'), text, days));
+
+      // One row per collection day
+      const rows = new Map();
+      const rowsBox = document.getElementById('day-rows');
+      allDays.forEach(d => {
+        const label = document.createElement('label');
+        label.className = 'day-row';
+        const text = d ? dateOf(d).toLocaleDateString('en-CA', { weekday: 'short', month: 'short', day: 'numeric', ...(multiYear ? { year: 'numeric' } : {}) }) : 'Date unknown';
+        label.innerHTML = `<input type="checkbox"><span class="d">${escapeHtml(text)}</span><span class="count">0</span>`;
+        const box = label.querySelector('input');
+        box.addEventListener('change', () => { if (box.checked) selected.add(d); else selected.delete(d); changed(); });
+        rowsBox.appendChild(label);
+        rows.set(d, { label, box, count: label.querySelector('.count') });
+      });
+      document.getElementById('day-total').textContent = `(${known.length})`;
+
+      function sync() {
+        chips.forEach(c => {
+          const on = c.days.filter(d => selected.has(d)).length;
+          c.box.checked = on === c.days.length;
+          c.box.indeterminate = on > 0 && on < c.days.length;
+        });
+        rows.forEach((r, d) => { r.box.checked = selected.has(d); });
+        const on = known.filter(d => selected.has(d)).length;
+        const status = document.getElementById('when-count');
+        status.textContent = `${fmt(on)} of ${fmt(known.length)} days`;
+        status.classList.toggle('active', on !== known.length);   // bold when dates are filtering the map
+      }
+      // Any change other than typing a range clears the From/To boxes, so they never disagree with the selection
+      function changed() { fromInput.value = ''; toInput.value = ''; sync(); onChange(); }
+      function set(days, includeUnknown) {
+        selected.clear();
+        days.forEach(d => selected.add(d));
+        if (includeUnknown && allDays.includes(0)) selected.add(0);
+        changed();
+      }
+
+      document.getElementById('when-presets').addEventListener('click', e => {
+        const preset = e.target.closest('button') && e.target.closest('button').dataset.preset;
+        if (!preset) return;
+        if (preset === 'all') set(allDays, true);
+        else if (preset === 'none') set([], false);
+        else {
+          const last = dateOf(known[known.length - 1]);
+          const cutoff = new Date(last.getFullYear(), last.getMonth(), last.getDate() - (Number(preset) - 1));
+          set(known.filter(d => dateOf(d) >= cutoff), false);
+        }
+      });
+      function fromRange() {
+        const lo = fromInput.value ? Number(fromInput.value.replace(/-/g, '')) : null;
+        const hi = toInput.value ? Number(toInput.value.replace(/-/g, '')) : null;
+        selected.clear();
+        allDays.forEach(d => {
+          if (d ? (lo === null || d >= lo) && (hi === null || d <= hi) : lo === null && hi === null) selected.add(d);
+        });
+        sync();
+        onChange();
+      }
+      fromInput.addEventListener('change', fromRange);
+      toInput.addEventListener('change', fromRange);
+      sync();
+
+      return {
+        has: d => selected.has(d),
+        isAll: () => selected.size === allDays.length,
+        list: () => [...selected],
+        // Items per day under the other filters, shown beside each day in the list
+        setCounts(byDay) {
+          rows.forEach((r, d) => {
+            const n = byDay.get(d) || 0;
+            r.count.textContent = fmt(n);
+            r.label.classList.toggle('zero', n === 0);
           });
         },
       };
@@ -813,43 +994,36 @@
         const areas = setupAreas(data, layers);
         const tree = buildTree(layers, updateMapFilter);
 
-        // Date range (local days). Empty boxes mean no limit on that side.
-        const fromInput = document.getElementById('date-from');
-        const toInput = document.getElementById('date-to');
-        const days = dots.map(d => d.properties.day).filter(Boolean);
-        if (days.length) {
-          const first = dayToInput(Math.min(...days)), last = dayToInput(Math.max(...days));
-          [fromInput, toInput].forEach(input => { input.min = first; input.max = last; });
-        }
-        const inputDay = input => input.value ? Number(input.value.replace(/-/g, '')) : null;
+        const dates = setupDates(dots, () => updateMapFilter());
+        if (!dates) document.getElementById('dates').hidden = true;
+        const hasDay = day => !dates || dates.has(day);
         const leftOnlyBox = document.getElementById('left-only');
 
         function updateMapFilter() {
           tree.refresh();
           const checked = tree.checkedLids();
           const shown = new Set(checked);
-          const from = inputDay(fromInput), to = inputDay(toInput);
-          const inRange = day => (from === null || day >= from) && (to === null || day <= to);
-
+          const inRange = hasDay;
           const leftOnly = leftOnlyBox.checked;
 
           const conditions = [['in', ['get', 'lid'], ['literal', checked]]];
-          if (from !== null) conditions.push(['>=', ['get', 'day'], from]);
-          if (to !== null) conditions.push(['<=', ['get', 'day'], to]);
+          if (dates && !dates.isAll()) conditions.push(['in', ['get', 'day'], ['literal', dates.list()]]);
           if (leftOnly) conditions.push(['>', ['get', 'left'], 0]);
           slotLayerIds.forEach((id, s) => map.setFilter(id, ['all', ['==', ['get', 'slot'], s], ...conditions]));
           map.setFilter('litter-heat', ['all', ...conditions]);
           map.setPaintProperty('litter-heat', 'heatmap-weight', ['get', leftOnly ? 'left' : 'items']);
 
-          // Tree counts follow the date range (and "left in place only");
+          // Tree counts follow the selected days (and "left in place only");
           // the summary also follows the ticked layers.
           const itemsByLid = new Map();
           let items = 0, count = 0;
           const shownPhotos = new Set();
           const acc = areas ? areas.accumulator() : null;
+          const byDay = new Map();   // items per day under the other filters, for the day list
           dots.forEach(d => {
             const p = d.properties;
             const n = leftOnly ? p.left : p.items;
+            if (n && shown.has(p.lid)) byDay.set(p.day, (byDay.get(p.day) || 0) + n);
             if (!inRange(p.day) || !n) return;
             itemsByLid.set(p.lid, (itemsByLid.get(p.lid) || 0) + n);
             if (shown.has(p.lid)) {
@@ -858,6 +1032,7 @@
             }
           });
           tree.setCounts(itemsByLid);
+          if (dates) dates.setCounts(byDay);
           if (areas) areas.update(acc);
           document.getElementById('feature-count').innerText =
             `Showing ${items.toLocaleString('en-CA')} items${leftOnly ? ' left in place' : ''} ` +
@@ -882,14 +1057,9 @@
 
         document.getElementById('all-on').addEventListener('click', () => { tree.setAll(true); updateMapFilter(); });
         document.getElementById('all-off').addEventListener('click', () => { tree.setAll(false); updateMapFilter(); });
-        [fromInput, toInput, leftOnlyBox].forEach(input => input.addEventListener('change', updateMapFilter));
+        leftOnlyBox.addEventListener('change', updateMapFilter);
         document.getElementById('view-dots').addEventListener('click', () => setView(false));
         document.getElementById('view-heat').addEventListener('click', () => setView(true));
-        document.getElementById('date-clear').addEventListener('click', () => {
-          fromInput.value = '';
-          toInput.value = '';
-          updateMapFilter();
-        });
         updateMapFilter();
 
         map.on('click', slotLayerIds, e => {

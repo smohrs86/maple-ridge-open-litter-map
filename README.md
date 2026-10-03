@@ -50,6 +50,8 @@ Not part of the proof of concept: GIS features, municipal streams, a license, an
 
 Newest first, one line per change. Claude updates this whenever it updates the README.
 
+- **2026-10-02:** Panel folds into sections (Litter layers open; Dates and Map areas folded, with a status on each summary line), the shaded areas get a one-line explanation and a pointer cursor.
+- **2026-10-02:** Date selection: a tick list of collection days, month and weekday/weekend chips, presets, and From/To all edit one set of selected days; the map, the layer counts and the area cards follow it.
 - **2026-10-02:** Map gets neighbourhood and zone views: a checkbox tree in the panel, zoom chooses which shows, zones lettered A at the top, and a label and one card that appear only on hover or tap (method in [docs/zones-method.md](docs/zones-method.md)). The sync adds `zone`, `zone_edge_m` and `nbhd_edge_m` to each photo from `config/neighbourhoods.csv` and `config/zones.csv`; dots are not moved. Zone tests added. A density score was considered and dropped.
 - **2026-10-02:** Roadmap changed. Stage 3 zone summaries will use the City of Maple Ridge's neighbourhoods (source notes in [docs/maple-ridge-community-areas.md](docs/maple-ridge-community-areas.md)). Stage 4 now happens only if COMR publishes or uses litter categories and takes part, and there is no stream for any other city.
 - **2026-10-02:** Legacy review complete. 166 photos retagged in OLM from the maintainer's review page edits (one test photo, a batch of 10, then 155), each read back exactly as sent; the fresh export matches the plan for all 166. Check after the export (2,814 photos, 3,488 tagged objects): OK 1,835, REVIEW 1,653 (keys that carry a fix note, all reviewed), RECLASS 0, orphan tags 0, UNMAPPED 0, UNCLASS 0. The merge step now rejects unrecognised `[bracket]` words.
@@ -262,7 +264,7 @@ Once the layer tree works and the legacy data is conformed, add features that ma
 
 - ✅ Heatmap view (built early, 2026-09-26). Clustering for dense collection routes is still open
 - ✅ Neighbourhood and zone views (built 2026-10-02): the City of Maple Ridge's neighbourhoods when zoomed out and lettered zones inside them when zoomed in (A at the top), with a checkbox tree in the panel (a neighbourhood and its zones) to show or hide each. Pointing at an area, or its row in the key, shows its label and one card (items, items left in place, photos, collection days, most common layers, and how many photos sit within the assumed GPS error of an edge; a neighbourhood card ranks its zones). Zones sit where there are photos and edges go where collecting is sparse, so GPS drift matters little. A density score was considered and dropped. How and why: [docs/zones-method.md](docs/zones-method.md). The neighbourhoods come from the Planning Department's map: see [docs/maple-ridge-community-areas.md](docs/maple-ridge-community-areas.md)
-- A date slider to show how litter changes over time (a simple From/To date filter already exists)
+- ✅ Date selection (built 2026-10-02): the panel picks a set of collection days with a tick list of the days (with items per day), month chips, weekday and weekend chips, presets (All, None, Last 7 days, Last 30 days) and the From/To boxes. A chip ticks or unticks its days, so months can be mixed. Time of day, comparing two groups side by side, and a click-and-drag strip of photos per day are still open
 - Richer popups with photo previews and brand information
 
 ### Stage 4 — Municipal waste stream (only if COMR takes part)
