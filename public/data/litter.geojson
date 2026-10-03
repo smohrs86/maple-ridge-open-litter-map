@@ -55370,48 +55370,6 @@
         ]
       },
       "properties": {
-        "id": 550747,
-        "datetime": "2026-08-02T19:35:20.000000Z",
-        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/08/02/3tOhwWPv6TqtmLWC1a8OAdP0KkHdrTZw9VF2zHkU.jpg",
-        "tags": [
-          {
-            "type": "standard",
-            "category": "other",
-            "item": "plastic_bag",
-            "quantity": 1
-          }
-        ],
-        "objects": [
-          {
-            "status": "REVIEW",
-            "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Household Plastic Bag",
-            "full_name": "Household \u2013 Household Plastic Bag",
-            "olm_key": "other/plastic_bag",
-            "quantity": 1,
-            "picked_up": false
-          }
-        ],
-        "groups": [
-          "litter"
-        ],
-        "has_litter": true,
-        "has_pet_waste": false,
-        "has_substances": false
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -122.55696105957,
-          49.210441589355
-        ]
-      },
-      "properties": {
         "id": 550746,
         "datetime": "2026-08-02T19:35:31.000000Z",
         "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/08/02/hKAAShLBCLFniom6QBoHzbzHVSJBaiCI7I8MPwsM.jpg",
@@ -60856,48 +60814,6 @@
         "id": 550636,
         "datetime": "2026-08-02T20:11:14.000000Z",
         "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/08/02/UauGLwlITqcgRXKrgakm19HSRkjcoYCCWNzZ3rEH.jpg",
-        "tags": [
-          {
-            "type": "standard",
-            "category": "other",
-            "item": "other",
-            "quantity": 1
-          }
-        ],
-        "objects": [
-          {
-            "status": "REVIEW",
-            "on_map": true,
-            "group": "Household",
-            "subgroup": "",
-            "layer": "Household misc",
-            "full_name": "Household \u2013 Household misc",
-            "olm_key": "other/other",
-            "quantity": 1,
-            "picked_up": false
-          }
-        ],
-        "groups": [
-          "litter"
-        ],
-        "has_litter": true,
-        "has_pet_waste": false,
-        "has_substances": false
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -122.55713653564,
-          49.219596862793
-        ]
-      },
-      "properties": {
-        "id": 550635,
-        "datetime": "2026-08-02T20:11:19.000000Z",
-        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/08/02/uzFCCmiMAd5YzurPW0nJtRl6Uyjr8uPZ2ABvLae1.jpg",
         "tags": [
           {
             "type": "standard",
@@ -72125,49 +72041,6 @@
         ]
       },
       "properties": {
-        "id": 550417,
-        "datetime": "2026-07-28T23:35:30.000000Z",
-        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/07/28/2HDKMh5841TkqPv2odKoWJkBDbaaXiapU44ycKvJ.jpg",
-        "tags": [
-          {
-            "type": "standard",
-            "category": "dumping",
-            "item": "dumping",
-            "quantity": 2,
-            "object_type": "small"
-          }
-        ],
-        "objects": [
-          {
-            "status": "OK",
-            "on_map": true,
-            "group": "Dumping",
-            "subgroup": "",
-            "layer": "Sml",
-            "full_name": "Dumping \u2013 Sml",
-            "olm_key": "dumping/dumping",
-            "quantity": 2,
-            "picked_up": false
-          }
-        ],
-        "groups": [
-          "litter"
-        ],
-        "has_litter": true,
-        "has_pet_waste": false,
-        "has_substances": false
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -122.55721282959,
-          49.219188690186
-        ]
-      },
-      "properties": {
         "id": 550416,
         "datetime": "2026-07-28T23:35:34.000000Z",
         "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/07/28/Lase4hRIWoaASLkmAJumH64r3jr6kOlC9md08kBh.jpg",
@@ -73247,56 +73120,6 @@
             "olm_key": "food/packaging",
             "quantity": 1,
             "picked_up": true
-          }
-        ],
-        "groups": [
-          "litter"
-        ],
-        "has_litter": true,
-        "has_pet_waste": false,
-        "has_substances": false
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -122.55651092529,
-          49.206809997559
-        ]
-      },
-      "properties": {
-        "id": 547901,
-        "datetime": "2026-07-13T03:18:56.000000Z",
-        "filename": "https://olm-s3.s3.eu-west-1.amazonaws.com/2026/07/13/pLCQl9x1rfpOk4PccVhhfE2RcNvIYQTo4yJP21fM.jpg",
-        "tags": [
-          {
-            "type": "standard",
-            "category": "industrial",
-            "item": "other",
-            "quantity": 1
-          },
-          {
-            "type": "custom_tag",
-            "category": "custom_tag",
-            "item": "Nail spike",
-            "quantity": 1,
-            "parent_category": "industrial",
-            "parent_item": "other"
-          }
-        ],
-        "objects": [
-          {
-            "status": "REVIEW",
-            "on_map": true,
-            "group": "Industrial",
-            "subgroup": "",
-            "layer": "Industrial Debris",
-            "full_name": "Industrial \u2013 Industrial Debris",
-            "olm_key": "industrial/other",
-            "quantity": 1,
-            "picked_up": false
           }
         ],
         "groups": [

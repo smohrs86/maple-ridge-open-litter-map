@@ -2,17 +2,17 @@
 
 Written by `scripts/sync_data.py` on every sync, following the README's "Audit counts". Items are quantities (the map counts items); objects are tagged objects; photos are OLM photos.
 
-- Photos: 2814
+- Photos: 2810
 - Newest photo: 2026-09-29
-- Tagged objects: 3488 (4966 items)
-- Shown on the map: 3488 objects (4966 items) in 66 layers
+- Tagged objects: 3484 (4961 items)
+- Shown on the map: 3484 objects (4961 items) in 66 layers
 
 ## Status counts
 
 | Status | Meaning | Objects | Items | Healthy value |
 |---|---|---:|---:|---|
-| OK | Matched a map layer | 1835 | 2865 | Most objects |
-| REVIEW | Matched a map layer whose crosswalk row has an "OLM data needs fixes" note (shown on the map) | 1653 | 2101 | Falls as the legacy review is done |
+| OK | Matched a map layer | 1834 | 2863 | Most objects |
+| REVIEW | Matched a map layer whose crosswalk row has an "OLM data needs fixes" note (shown on the map) | 1650 | 2098 | Falls as the legacy review is done |
 | Not used | Matched a row with `include on map = no` (kept off the map) | 0 | 0 | 0 |
 | UNCLASS | Household dumping with no size chosen | 0 | 0 | 0 |
 | Orphan tags | Custom tag attached to no object (kept off the map) | 0 | 0 | 0 |
@@ -27,12 +27,12 @@ Written by `scripts/sync_data.py` on every sync, following the README's "Audit c
 | other/paper | 550 | 799 | OLM tag review parse out [Party Litter] objects |
 | food/wrapper | 202 | 228 | OLM tag review of legacy entries; retag food/packaging items |
 | food/packaging | 115 | 126 | OLM tag review of legacy entries |
-| other/other | 71 | 76 | OLM legacy objects need reclassing |
-| industrial/other | 46 | 47 | OLM tag review of legacy entries in OLM key other/metal and other/plastic and other/other industrial/pipe |
+| other/other | 70 | 75 | OLM legacy objects need reclassing |
+| industrial/other | 45 | 46 | OLM tag review of legacy entries in OLM key other/metal and other/plastic and other/other industrial/pipe |
 | food/bag | 36 | 37 | OLM tag review of legacy entries move take-out bags to food/packaging |
 | food/container | 13 | 13 | OLM tag review of legacy entries move take-out containers to food/packaging |
-| other/plastic_bag | 13 | 14 | OLM tag review |
 | other/metal | 12 | 12 | OLM tag review to parse out industrial debris objects |
+| other/plastic_bag | 12 | 13 | OLM tag review |
 | industrial/tape | 9 | 10 | OLM legacy objects need reclassing |
 | marine/styrofoam | 8 | 8 | OLM tag review |
 | coffee/sleeve | 7 | 8 | OLM review of OLM key coffee/cup and softdrinks/cup and tag any untagged sleeves |
@@ -83,9 +83,9 @@ None.
 | Household |  | Latex / Nitrile Glove | 11 | 10 | 10 | 0 |
 | Household |  | Party Litter | 42 | 28 | 28 | 0 |
 | Household |  | Abandoned Textile Apparel | 33 | 24 | 24 | 0 |
-| Household |  | Household misc | 72 | 67 | 66 | 3 |
+| Household |  | Household misc | 71 | 66 | 65 | 2 |
 | Household |  | E-waste Piece | 2 | 2 | 2 | 0 |
-| Household |  | Household Plastic Bag | 14 | 13 | 13 | 1 |
+| Household |  | Household Plastic Bag | 13 | 12 | 12 | 0 |
 | Household |  | Pet Supplies | 2 | 2 | 2 | 0 |
 | Household |  | Dental Waste | 7 | 7 | 7 | 0 |
 | Household |  | Cotton Swabs | 3 | 3 | 3 | 0 |
@@ -116,7 +116,7 @@ None.
 | Convenient Food Drink | Take-out | Food Packaging | 126 | 115 | 115 | 0 |
 | Convenient Food Drink | Take-out | Condiment Packets | 22 | 16 | 16 | 0 |
 | Dumping |  | UNCLASS | 0 | 0 | 0 | 0 |
-| Dumping |  | Sml | 6 | 5 | 5 | 5 |
+| Dumping |  | Sml | 4 | 4 | 4 | 3 |
 | Dumping |  | Med | 7 | 4 | 4 | 7 |
 | Dumping |  | Lrg | 0 | 0 | 0 | 0 |
 | Dumping |  | Commercial Dumping | 0 | 0 | 0 | 0 |
@@ -130,7 +130,7 @@ None.
 | Piece |  | Plastic Piece | 718 | 566 | 565 | 0 |
 | Piece |  | Motor Vehicle Part Piece | 32 | 18 | 18 | 0 |
 | Piece |  | Motor Vehicle Spill | 0 | 0 | 0 | 0 |
-| Industrial |  | Industrial Debris | 47 | 46 | 46 | 1 |
+| Industrial |  | Industrial Debris | 46 | 45 | 45 | 0 |
 | Industrial |  | Flagging Tape | 10 | 9 | 9 | 0 |
 | Fecal |  | Pet Waste Unbagged | 47 | 41 | 41 | 47 |
 | Fecal |  | Pet Waste Bagged | 44 | 40 | 40 | 40 |
