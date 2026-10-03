@@ -99,6 +99,42 @@
     .children[hidden] { display: none; }
     .group-row > label .name { font-weight: 600; }
 
+    .where { margin: 0 0 8px; padding-bottom: 8px; border-bottom: 1px solid #eee; }
+    .where[hidden] { display: none; }
+    .where-title { margin: 0 0 4px; font-size: 13px; font-weight: 600; }
+    .key-head, .key-row { display: flex; align-items: center; gap: 6px; box-sizing: border-box; padding: 2px 4px; border: 1px solid transparent;
+      border-radius: 5px; font-size: 12px; color: #333; cursor: pointer; }
+    .key-head { font-weight: 600; margin: 4px 0 2px; }
+    .key-row.sub { margin-left: 14px; }
+    .key-head.active, .key-row.active { border-color: #1c1c1a; background: #f4f4f2; }
+    .key-head:focus-within, .key-row:focus-within { outline: 2px solid #1c1c1a; }
+    .vh { position: absolute; opacity: 0; width: 1px; height: 1px; }
+    .sw { flex: none; width: 16px; height: 16px; border-radius: 50%; background: var(--c); color: #fff; font-size: 10px; font-weight: 700;
+      display: inline-flex; align-items: center; justify-content: center; }
+    .sw.sq { border-radius: 4px; }
+    .off .sw { background: #fff; color: var(--c); border: 2px solid var(--c); box-sizing: border-box; }
+    .key-desc { color: #666; font-size: 11px; }
+
+    .map-card { position: absolute; z-index: 9; width: 250px; background: #fff; border-radius: 8px; border-left: 6px solid var(--c);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.25); padding: 8px 10px; font-size: 12px; color: #333; }
+    .map-card[hidden] { display: none; }
+    .mc-head { display: flex; align-items: center; gap: 8px; }
+    .mc-name { flex: 1; font-weight: 600; font-size: 13px; min-width: 0; }
+    .mc-n { font-variant-numeric: tabular-nums; font-weight: 600; }
+    .mc-sub { color: #666; font-size: 11px; margin-top: 1px; }
+    .mc-line { color: #444; margin-top: 4px; }
+    .mc-block { margin-top: 6px; color: #444; }
+    .mc-block ol { margin: 2px 0; padding-left: 18px; }
+    .mc-edge, .mc-note { color: #666; font-size: 11px; margin-top: 6px; }
+    .area-tag, .area-tag > div { pointer-events: none; }
+    .area-tag > div { display: flex; align-items: center; justify-content: center; box-sizing: border-box; color: #fff; background: var(--c);
+      border: 2px solid #fff; box-shadow: 0 0 0 2px #1c1c1a, 0 1px 4px rgba(0,0,0,0.4); font-weight: 800; white-space: nowrap; }
+    .area-tag.zone > div { width: 30px; height: 30px; border-radius: 50%; font-size: 16px; }
+    .area-tag.nb > div { height: 30px; padding: 0 14px; border-radius: 999px; font-size: 14px; }
+    @media (max-width: 640px) {
+      .map-card { left: 12px !important; right: 12px; top: auto !important; bottom: 34px; width: auto; }
+    }
+
     .status-counter { font-size: 11px; color: #666; margin-top: 8px; border-top: 1px solid #eee; padding-top: 6px; }
     .about { margin: 6px 0 0; }
     .about a { color: inherit; }
@@ -143,6 +179,12 @@
         <button type="button" id="date-clear">All dates</button>
       </div>
       <label class="left-only" id="left-only-row"><input type="checkbox" id="left-only"> Left in place only</label>
+      <!-- Colour key for the map's neighbourhoods (zoomed out) or zones (zoomed in); hidden until the data carries them -->
+      <section class="where" id="where" hidden>
+        <h2 class="where-title">Neighbourhoods and zones</h2>
+        <p class="note" id="where-note"></p>
+        <div id="where-key"></div>
+      </section>
       <div class="tree-actions">
         <button type="button" id="all-on">All</button>
         <button type="button" id="all-off">None</button>
@@ -153,6 +195,9 @@
       <p class="note about">Citizen-science litter records from Maple Ridge, BC, tagged on OpenLitterMap and sorted into local categories. <a href="https://github.com/smohrs86/maple-ridge-open-litter-map">About this map and its data</a></p>
     </div>
   </div>
+
+  <!-- One summary card on the map, shown while a neighbourhood or zone is hovered or selected -->
+  <div class="map-card" id="map-card" role="region" aria-live="polite" aria-label="Neighbourhood or zone summary" hidden></div>
 
   <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 
@@ -285,7 +330,7 @@
           dots.push({
             type: 'Feature',
             geometry: feature.geometry,
-            properties: { lid: e.lid, slot, pi, day, items: e.items, left: e.left, hollow: e.left > 0 }
+            properties: { lid: e.lid, slot, pi, day, items: e.items, left: e.left, hollow: e.left > 0, zone: p.zone || '', zedge: p.zone_edge_m ?? -1, nedge: p.nbhd_edge_m ?? -1 }
           });
         });
       });
@@ -426,6 +471,269 @@
         <div class="muted">${link}OLM photo ${escapeHtml(photo.id)}</div>`;
     }
 
+    // ---------- neighbourhoods and zones ----------
+    // Neighbourhoods and zones come from the data (mrolm_neighbourhoods, mrolm_zones). Zoomed in past
+    // ZONE_ZOOM the map can show zones, zoomed out neighbourhoods (a first guess, to adjust), and a
+    // checkbox for each kind turns it on or off. Returns null when the data has none (older data), and
+    // the panel section stays hidden.
+    const ZONE_ZOOM = 14;
+    function setupAreas(data, layers) {
+      const nbs = data.mrolm_neighbourhoods || [], zones = data.mrolm_zones || [];
+      if (!nbs.length || !zones.length) return null;
+      const edgeM = data.mrolm_gps_error_m || 15;
+      const fmt = n => n.toLocaleString('en-CA');
+      const nbByKey = new Map(nbs.map(n => [n.key, n]));
+      const zoneById = new Map(zones.map(z => [z.id, z]));
+      const colourOf = z => nbByKey.get(z.neighbourhood).colour;
+      const units = {
+        nb: nbs.map(n => ({ id: n.key, kind: 'nb', name: n.name, sub: '', letter: '', colour: n.colour })),
+        zone: zones.map(z => ({ id: z.id, kind: 'zone', name: `${nbByKey.get(z.neighbourhood).name} · Zone ${z.letter}`,
+          sub: z.description, letter: z.letter, colour: colourOf(z), nb: z.neighbourhood })),
+      };
+
+      const unitById = new Map([...units.nb, ...units.zone].map(u => [u.id, u]));
+
+      // Zones are rectangles. A neighbourhood's shape is its zones joined where they share a full edge.
+      const rect = z => [[z.west_lon, z.south_lat], [z.east_lon, z.south_lat], [z.east_lon, z.north_lat], [z.west_lon, z.north_lat], [z.west_lon, z.south_lat]];
+      const bounds = new Map();   // id -> [west, south, east, north]
+      zones.forEach(z => bounds.set(z.id, [z.west_lon, z.south_lat, z.east_lon, z.north_lat]));
+      const zoneFeatures = zones.map(z => ({ type: 'Feature', properties: { id: z.id, colour: colourOf(z) }, geometry: { type: 'Polygon', coordinates: [rect(z)] } }));
+      const nbFeatures = nbs.map(n => {
+        const parts = [];
+        zones.filter(z => z.neighbourhood === n.key).sort((a, b) => a.south_lat - b.south_lat).forEach(z => {
+          const last = parts[parts.length - 1];
+          if (last && last.west_lon === z.west_lon && last.east_lon === z.east_lon && last.north_lat === z.south_lat) last.north_lat = z.north_lat;
+          else parts.push({ ...z });
+        });
+        bounds.set(n.key, [Math.min(...parts.map(z => z.west_lon)), Math.min(...parts.map(z => z.south_lat)),
+                           Math.max(...parts.map(z => z.east_lon)), Math.max(...parts.map(z => z.north_lat))]);
+        const polys = parts.map(z => [rect(z)]);
+        return { type: 'Feature', properties: { id: n.key, colour: n.colour },
+          geometry: polys.length === 1 ? { type: 'Polygon', coordinates: polys[0] } : { type: 'MultiPolygon', coordinates: polys } };
+      });
+      const area = [Math.min(...zones.map(z => z.west_lon)), Math.min(...zones.map(z => z.south_lat)),
+                    Math.max(...zones.map(z => z.east_lon)), Math.max(...zones.map(z => z.north_lat))];
+
+      // Drawn under the heatmap and dots, so they stay clickable. One flat fill per kind, no gradients.
+      const collection = features => ({ type: 'FeatureCollection', features });
+      map.addSource('areas-nb', { type: 'geojson', data: collection(nbFeatures),
+        attribution: 'Zone edges follow roads, from © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' });
+      map.addSource('areas-zone', { type: 'geojson', data: collection(zoneFeatures) });
+      const none = ['==', ['get', 'id'], ''];
+      const add = layer => map.addLayer(layer, 'litter-heat');
+      add({ id: 'nb-fill', type: 'fill', source: 'areas-nb', paint: { 'fill-color': ['get', 'colour'], 'fill-opacity': 0.2, 'fill-outline-color': ['get', 'colour'] } });
+      add({ id: 'nb-line', type: 'line', source: 'areas-nb', paint: { 'line-color': ['get', 'colour'], 'line-width': 2.5 } });
+      add({ id: 'zone-fill', type: 'fill', source: 'areas-zone', paint: { 'fill-color': ['get', 'colour'], 'fill-opacity': 0.2 } });
+      add({ id: 'zone-line', type: 'line', source: 'areas-zone', paint: { 'line-color': ['get', 'colour'], 'line-width': 2 } });
+      ['nb', 'zone'].forEach(kind => {
+        add({ id: `${kind}-hl-fill`, type: 'fill', source: `areas-${kind}`, filter: none, paint: { 'fill-color': '#000000', 'fill-opacity': 0.12 } });
+        add({ id: `${kind}-hl-line`, type: 'line', source: `areas-${kind}`, filter: none, paint: { 'line-color': '#1c1c1a', 'line-width': 3.5 } });
+      });
+
+      let mode = map.getZoom() >= ZONE_ZOOM ? 'zone' : 'nb', zoneOn = new Set(zones.map(z => z.id)), hovered = null, pinned = null, lastAcc = null, isDotAt = () => false, clearTimer = null;
+      const card = document.getElementById('map-card');
+      const keyBox = document.getElementById('where-key');
+
+      // A tag at each area's centre: the zone letter, or the neighbourhood name. Shown only while the area is
+      // hovered or selected. HTML markers, so they need no map fonts; the outer element is moved by MapLibre
+      // (never restyle its position), the inner one is styled.
+      const tags = new Map();
+      const makeTag = (kind, u) => {
+        const outer = document.createElement('div');
+        outer.className = `area-tag ${kind}`;
+        const inner = document.createElement('div');
+        inner.textContent = kind === 'zone' ? u.letter : u.name;
+        outer.style.setProperty('--c', u.colour);
+        outer.style.display = 'none';
+        outer.appendChild(inner);
+        const b = bounds.get(u.id);
+        const marker = new maplibregl.Marker({ element: outer }).setLngLat([(b[0] + b[2]) / 2, (b[1] + b[3]) / 2]).addTo(map);
+        tags.set(u.id, { kind, outer, marker });
+      };
+      units.nb.forEach(u => makeTag('nb', u));
+      units.zone.forEach(u => makeTag('zone', u));
+
+      const accumulator = () => {
+        const acc = { nb: new Map(), zone: new Map(), outside: 0 };
+        acc.add = (p, n) => {
+          const z = zoneById.get(p.zone);
+          if (!z) { acc.outside += n; return; }
+          [['zone', z.id], ['nb', z.neighbourhood]].forEach(([kind, id]) => {
+            let e = acc[kind].get(id);
+            if (!e) {
+              e = { items: 0, left: 0, photos: new Set(), days: new Set(), byLid: new Map(), nearZone: new Set(), nearNb: new Set() };
+              acc[kind].set(id, e);
+            }
+            e.items += n; e.left += p.left; e.photos.add(p.pi);
+            if (p.day) e.days.add(p.day);
+            e.byLid.set(p.lid, (e.byLid.get(p.lid) || 0) + n);
+            if (p.zedge >= 0 && p.zedge <= edgeM) e.nearZone.add(p.pi);
+            if (p.nedge >= 0 && p.nedge <= edgeM) e.nearNb.add(p.pi);
+          });
+        };
+        return acc;
+      };
+
+      // The card: plain counts only. Counts show where collecting happened, which is not the same as where litter is.
+      function cardHtml(u) {
+        const e = lastAcc && lastAcc[u.kind].get(u.id);
+        const head = `<div class="mc-head"><span class="mc-name">${escapeHtml(u.name)}</span><span class="mc-n">${e ? fmt(e.items) : 0} items</span></div>` +
+          (u.sub ? `<div class="mc-sub">${escapeHtml(u.sub)}</div>` : '');
+        if (!e) return `${head}<div class="mc-line">No photos in this selection</div>`;
+        const days = [...e.days].sort();
+        const when = !days.length ? '' : days.length === 1 ? `1 collection day (${dayToInput(days[0])})`
+          : `${days.length} collection days (${dayToInput(days[0])} to ${dayToInput(days[days.length - 1])})`;
+        const top = [...e.byLid].sort((a, b) => b[1] - a[1]).slice(0, 3)
+          .map(([lid, n]) => `<li>${escapeHtml(layers[lid].layer || layers[lid].fullName)} (${fmt(n)})</li>`).join('');
+        let body = `<div class="mc-line">${fmt(e.left)} left in place · ${fmt(e.photos.size)} photos</div>` +
+          (when ? `<div class="mc-line">${when}</div>` : '') +
+          (top ? `<div class="mc-block">Most common:<ol>${top}</ol></div>` : '');
+        if (u.kind === 'nb') {
+          // Zones ranked by items found
+          const ranked = zones.filter(z => z.neighbourhood === u.id)
+            .map(z => ({ z, items: (lastAcc && lastAcc.zone.get(z.id) || { items: 0 }).items }))
+            .sort((a, b) => b.items - a.items || a.z.letter.localeCompare(b.z.letter));
+          body += `<div class="mc-block">Zones by items found:<ol>${ranked.map(r =>
+            `<li>Zone ${escapeHtml(r.z.letter)} (${escapeHtml(r.z.description)}): ${fmt(r.items)}</li>`).join('')}</ol></div>` +
+            `<div class="mc-note">Counts show where collecting happened, not necessarily where litter is.</div>`;
+        }
+        if (u.kind === 'zone' || nbs.length > 1) {
+          const near = u.kind === 'zone' ? e.nearZone.size : e.nearNb.size;
+          body += `<div class="mc-edge">${fmt(near)} of ${fmt(e.photos.size)} photos are within ${edgeM} m of a ${u.kind === 'zone' ? 'zone' : 'neighbourhood'} edge, where phone GPS can put them on either side.</div>`;
+        }
+        return head + body;
+      }
+
+      // Put the card in the free space beside the zones: between the panel and the zones if it fits,
+      // otherwise on the east side, centred in that gap, and level with the area being pointed at.
+      function placeCard() {
+        const id = hovered ?? pinned;
+        const u = id && unitById.get(id);
+        if (!u) { card.hidden = true; return; }
+        card.style.setProperty('--c', u.colour);
+        card.innerHTML = cardHtml(u);
+        card.hidden = false;
+        if (window.innerWidth <= 640) { card.style.left = ''; card.style.top = ''; return; }   // phones: CSS puts it at the bottom
+        const box = map.getContainer().getBoundingClientRect();
+        const panelRight = document.getElementById('panel').getBoundingClientRect().right;
+        const b = bounds.get(id), mid = (area[1] + area[3]) / 2;
+        const westPx = map.project([area[0], mid]).x, eastPx = map.project([area[2], mid]).x;
+        const W = card.offsetWidth, H = card.offsetHeight, pad = 16;
+        const leftGap = westPx - panelRight, rightGap = box.width - eastPx - 56;   // 56 leaves room for the zoom buttons
+        let x;
+        if (leftGap >= W + 2 * pad) x = panelRight + (leftGap - W) / 2;
+        else if (rightGap >= W + 2 * pad) x = eastPx + (rightGap - W) / 2;
+        else x = leftGap >= rightGap ? Math.max(panelRight + pad, westPx - W - pad) : Math.min(box.width - W - 12, eastPx + pad);
+        const cy = map.project([(b[0] + b[2]) / 2, (b[1] + b[3]) / 2]).y;
+        card.style.left = `${Math.round(x)}px`;
+        card.style.top = `${Math.round(Math.max(12, Math.min(box.height - H - 12, cy - H / 2)))}px`;
+      }
+
+      // The key is a checkbox tree like the litter layers: a neighbourhood and its zones. A ticked zone is drawn
+      // on the map (filled swatch); unticked it is not (empty swatch, letter still shown). Ticking a neighbourhood
+      // ticks all its zones. The neighbourhood's own shape is drawn while any of its zones is ticked.
+      const rows = new Map();   // id -> { label, box }
+      function keyRow(u, text, sub) {
+        const label = document.createElement('label');
+        label.className = u.kind === 'nb' ? 'key-head' : 'key-row sub';
+        label.dataset.id = u.id;
+        label.innerHTML = `<input type="checkbox" class="vh" checked><i class="sw ${u.letter ? '' : 'sq'}" style="--c:${u.colour}">${escapeHtml(u.letter)}</i><span>${escapeHtml(text)}</span>`;
+        const box = label.querySelector('input');
+        label.addEventListener('mouseenter', () => setHover(u.id));
+        label.addEventListener('mouseleave', () => setHover(null));
+        label.addEventListener('focusin', () => setHover(u.id));
+        label.addEventListener('focusout', () => setHover(null));
+        box.addEventListener('change', () => {
+          const ids = u.kind === 'nb' ? zones.filter(z => z.neighbourhood === u.id).map(z => z.id) : [u.id];
+          ids.forEach(id => { if (box.checked) zoneOn.add(id); else zoneOn.delete(id); });
+          pinned = null;
+          applyAreaFilters();
+          refresh();
+        });
+        rows.set(u.id, { label, box });
+        return label;
+      }
+      function renderKey() {
+        keyBox.innerHTML = '';
+        nbs.forEach(n => {
+          keyBox.appendChild(keyRow(unitById.get(n.key), n.name));
+          units.zone.filter(u => u.nb === n.key).forEach(u => keyBox.appendChild(keyRow(u, u.sub)));
+        });
+      }
+      // Draw only the ticked areas, and bring the key's boxes and swatches in line
+      function applyAreaFilters() {
+        const zoneIds = zones.filter(z => zoneOn.has(z.id)).map(z => z.id);
+        const nbKeys = nbs.filter(n => zones.some(z => z.neighbourhood === n.key && zoneOn.has(z.id))).map(n => n.key);
+        [['zone', zoneIds], ['nb', nbKeys]].forEach(([kind, ids]) => ['fill', 'line'].forEach(part =>
+          map.setFilter(`${kind}-${part}`, ['in', ['get', 'id'], ['literal', ids]])));
+        zones.forEach(z => { const r = rows.get(z.id); r.box.checked = zoneOn.has(z.id); r.label.classList.toggle('off', !zoneOn.has(z.id)); });
+        nbs.forEach(n => {
+          const mine = zones.filter(z => z.neighbourhood === n.key), on = mine.filter(z => zoneOn.has(z.id)).length;
+          const r = rows.get(n.key);
+          r.box.checked = on === mine.length;
+          r.box.indeterminate = on > 0 && on < mine.length;
+          r.label.classList.toggle('off', on === 0);
+        });
+      }
+      function renderNote() {
+        document.getElementById('where-note').textContent =
+          'Tick or untick to show or hide an area. Zoom in for zones, out for neighbourhoods. Point at an area or its row to see its label and card.' +
+          (lastAcc && lastAcc.outside ? ` ${fmt(lastAcc.outside)} items fall outside the mapped zones.` : '');
+      }
+
+      function refresh() {
+        const id = hovered ?? pinned;
+        const u = id && unitById.get(id);
+        ['nb', 'zone'].forEach(kind => {
+          const f = ['==', ['get', 'id'], u && u.kind === kind ? id : ''];
+          map.setFilter(`${kind}-hl-fill`, f);
+          map.setFilter(`${kind}-hl-line`, f);
+        });
+        rows.forEach((r, rid) => r.label.classList.toggle('active', !!id && rid === id));
+        tags.forEach((t, tid) => { t.outer.style.display = id && tid === id ? '' : 'none'; });
+        placeCard();
+      }
+      function setHover(id, fromMap) {
+        clearTimeout(clearTimer);
+        if (id) { hovered = id; refresh(); return; }
+        // A short delay lets the pointer travel from an area to its card without the card vanishing
+        clearTimer = setTimeout(() => { hovered = null; refresh(); }, 120);
+      }
+      function togglePin(id) { pinned = pinned === id ? null : id; refresh(); }
+
+      function setMode(next) {
+        mode = next;
+        hovered = pinned = null;
+        ['nb', 'zone'].forEach(kind => ['fill', 'line'].forEach(part =>
+          map.setLayoutProperty(`${kind}-${part}`, 'visibility', kind === mode ? 'visible' : 'none')));
+        refresh();
+      }
+
+      card.addEventListener('mouseenter', () => clearTimeout(clearTimer));
+      card.addEventListener('mouseleave', () => setHover(null));
+      map.on('zoom', () => { const next = map.getZoom() >= ZONE_ZOOM ? 'zone' : 'nb'; if (next !== mode) setMode(next); });
+      map.on('move', () => { if (!card.hidden) placeCard(); });
+      window.addEventListener('resize', () => { if (!card.hidden) placeCard(); });
+
+      document.getElementById('where').hidden = false;
+      renderKey();
+      applyAreaFilters();
+      setMode(mode);
+      return {
+        accumulator,
+        update(acc) { lastAcc = acc; renderNote(); if (!card.hidden) placeCard(); },
+        // Called once the dot layers exist: wires hover and tap on the map itself
+        bindMap(dotAt) {
+          isDotAt = dotAt;
+          ['nb', 'zone'].forEach(kind => {
+            map.on('mousemove', `${kind}-fill`, e => setHover(e.features[0].properties.id));
+            map.on('mouseleave', `${kind}-fill`, () => setHover(null));
+            map.on('click', `${kind}-fill`, e => { if (!isDotAt(e)) togglePin(e.features[0].properties.id); });
+          });
+        },
+      };
+    }
+
     // Old data (before the crosswalk engine's first sync): plain dots, so the map never breaks.
     function showWithoutLayers(data) {
       map.addSource('litter-data', { type: 'geojson', data, attribution: OLM_ATTRIBUTION });
@@ -502,6 +810,7 @@
           });
         }
 
+        const areas = setupAreas(data, layers);
         const tree = buildTree(layers, updateMapFilter);
 
         // Date range (local days). Empty boxes mean no limit on that side.
@@ -537,14 +846,19 @@
           const itemsByLid = new Map();
           let items = 0, count = 0;
           const shownPhotos = new Set();
+          const acc = areas ? areas.accumulator() : null;
           dots.forEach(d => {
             const p = d.properties;
             const n = leftOnly ? p.left : p.items;
             if (!inRange(p.day) || !n) return;
             itemsByLid.set(p.lid, (itemsByLid.get(p.lid) || 0) + n);
-            if (shown.has(p.lid)) { items += n; count++; shownPhotos.add(p.pi); }
+            if (shown.has(p.lid)) {
+              items += n; count++; shownPhotos.add(p.pi);
+              if (acc) acc.add(p, n);
+            }
           });
           tree.setCounts(itemsByLid);
+          if (areas) areas.update(acc);
           document.getElementById('feature-count').innerText =
             `Showing ${items.toLocaleString('en-CA')} items${leftOnly ? ' left in place' : ''} ` +
             `as ${count.toLocaleString('en-CA')} dots from ${shownPhotos.size.toLocaleString('en-CA')} photos`;
@@ -585,6 +899,8 @@
             .setHTML(popupHtml(e.features[0].properties, layers, photos))
             .addTo(map);
         });
+        // A tap on a neighbourhood or zone (not on a dot) pins its card; dots keep their own popup
+        if (areas) areas.bindMap(e => !dotsFaded() && map.queryRenderedFeatures(e.point, { layers: slotLayerIds }).length > 0);
         map.on('mouseenter', slotLayerIds, () => { if (!dotsFaded()) map.getCanvas().style.cursor = 'pointer'; });
         map.on('mouseleave', slotLayerIds, () => { map.getCanvas().style.cursor = ''; });
 

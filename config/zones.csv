@@ -1,0 +1,7 @@
+zone_id,neighbourhood,letter,description,south_lat,north_lat,west_lon,east_lon
+cottonwood_zone_A,cottonwood,A,around Dewdney Trunk Rd,49.21711,49.22100,-122.56450,-122.55600
+cottonwood_zone_B,cottonwood,B,116 to 118 Ave,49.21262,49.21711,-122.56450,-122.55600
+cottonwood_zone_C,cottonwood,C,around 114A Ave,49.20978,49.21262,-122.56450,-122.55600
+cottonwood_zone_D,cottonwood,D,around 113A Ave,49.20827,49.20978,-122.56450,-122.55600
+cottonwood_zone_E,cottonwood,E,around 112 Ave,49.20541,49.20827,-122.56450,-122.55600
+cottonwood_zone_F,cottonwood,F,110 Ave and south,49.19950,49.20541,-122.56450,-122.55600

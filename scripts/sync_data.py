@@ -4,6 +4,8 @@ import os
 import sys
 import time
 import json
+import math
+import re
 from collections import defaultdict
 import requests
 
@@ -22,6 +24,14 @@ CROSSWALK_COLUMNS = ("OLM key",) + cw.NARROWING_COLUMNS + (
 # RECLASS, UNMAPPED and ORPHAN TAG stay off the map and are counted in the audit.
 MAP_STATUSES = ("OK", "REVIEW", "UNCLASS")
 AUDIT_PATH = "data/audit.md"
+# Neighbourhoods and their zones: the map's summary areas (decision log, 2026-10-02). Optional:
+# if either file is missing or unusable, photos simply get no zone and the sync carries on.
+NEIGHBOURHOODS_PATH = "config/neighbourhoods.csv"
+ZONES_PATH = "config/zones.csv"
+# Phone GPS can be off by roughly this much (README: 5 to 15 m). OLM sends no per-photo accuracy,
+# so one assumed value is used. A photo closer than this to a zone edge is flagged on the map's cards.
+GPS_ERROR_M = 15
+M_PER_DEG_LAT = 111320
 
 
 def classify_tag_group(tag):  
@@ -139,6 +149,78 @@ def load_crosswalk(path=CROSSWALK_PATH):
         sys.exit(1)
     print(f"[INFO] Loaded {len(rows)} crosswalk rows from {path}.")
     return rows
+
+
+def load_zones(neighbourhoods_path=NEIGHBOURHOODS_PATH, zones_path=ZONES_PATH):
+    """Read the neighbourhoods and their zones (rectangles). Returns ([], []) with a warning if they can't be used."""
+    try:
+        with open(neighbourhoods_path, newline="", encoding="utf-8") as f:
+            neighbourhoods = [{"key": r["key"].strip(), "name": r["name"].strip(), "colour": r["colour"].strip()}
+                              for r in csv.DictReader(f)]
+        with open(zones_path, newline="", encoding="utf-8") as f:
+            zones = [{
+                "id": r["zone_id"].strip(),
+                "neighbourhood": r["neighbourhood"].strip(),
+                "letter": r["letter"].strip(),
+                "description": r["description"].strip(),
+                "south_lat": float(r["south_lat"]), "north_lat": float(r["north_lat"]),
+                "west_lon": float(r["west_lon"]), "east_lon": float(r["east_lon"]),
+            } for r in csv.DictReader(f)]
+    except (OSError, UnicodeDecodeError, csv.Error, KeyError, ValueError) as exc:
+        print(f"[WARNING] Could not use the neighbourhood and zone files: {exc}. Photos will have no zone.")
+        return [], []
+
+    problem = None
+    keys = {n["key"] for n in neighbourhoods}
+    if len(keys) != len(neighbourhoods):
+        problem = "a neighbourhood key is used twice"
+    elif any(not re.fullmatch(r"#[0-9a-fA-F]{6}", n["colour"]) for n in neighbourhoods):
+        problem = "a neighbourhood colour is not like #0f7b8a"
+    elif len({z["id"] for z in zones}) != len(zones):
+        problem = "a zone_id is used twice"
+    elif any(z["neighbourhood"] not in keys for z in zones):
+        problem = "a zone names a neighbourhood that is not in neighbourhoods.csv"
+    elif any(z["south_lat"] >= z["north_lat"] or z["west_lon"] >= z["east_lon"] for z in zones):
+        problem = "a zone's south or west edge is not south or west of its north or east edge"
+    else:
+        for i, a in enumerate(zones):
+            for b in zones[i + 1:]:
+                if (a["south_lat"] < b["north_lat"] and b["south_lat"] < a["north_lat"]
+                        and a["west_lon"] < b["east_lon"] and b["west_lon"] < a["east_lon"]):
+                    problem = f"zones {a['id']} and {b['id']} overlap"
+    if problem:
+        print(f"[WARNING] {zones_path}: {problem}. Photos will have no zone.")
+        return [], []
+    used = {z["neighbourhood"] for z in zones}
+    neighbourhoods = [n for n in neighbourhoods if n["key"] in used]   # only neighbourhoods that have zones
+    print(f"[INFO] Loaded {len(zones)} zones in {len(neighbourhoods)} neighbourhood(s).")
+    return neighbourhoods, zones
+
+
+def assign_zone(lat, lon, zones):
+    """The zone holding this point, or None. A zone includes its south and west edges, so no point is in two zones."""
+    for z in zones:
+        if z["south_lat"] <= lat < z["north_lat"] and z["west_lon"] <= lon < z["east_lon"]:
+            return z
+    return None
+
+
+def zone_edge_distances(lat, lon, zone, zones):
+    """Metres from a point to the nearest edge of its own zone, and to the nearest zone of a different
+    neighbourhood (None if there is none). Flat-earth maths, accurate to centimetres at this scale."""
+    if zone is None:
+        return None, None
+    m_per_deg_lon = M_PER_DEG_LAT * math.cos(math.radians(lat))
+    to_edge = min((lat - zone["south_lat"]) * M_PER_DEG_LAT, (zone["north_lat"] - lat) * M_PER_DEG_LAT,
+                  (lon - zone["west_lon"]) * m_per_deg_lon, (zone["east_lon"] - lon) * m_per_deg_lon)
+    others = [z for z in zones if z["neighbourhood"] != zone["neighbourhood"]]
+    to_other = None
+    for z in others:
+        dy = max(z["south_lat"] - lat, 0, lat - z["north_lat"]) * M_PER_DEG_LAT
+        dx = max(z["west_lon"] - lon, 0, lon - z["east_lon"]) * m_per_deg_lon
+        d = math.hypot(dx, dy)
+        to_other = d if to_other is None else min(to_other, d)
+    return round(to_edge, 1), None if to_other is None else round(to_other, 1)
 
 
 def picked_up_state(value):
@@ -512,6 +594,7 @@ def fetch_all_photos(token, get_new_token=None, max_relogins=3):
 def fetch_and_build_geojson(from_raw=None):
     # Read the crosswalk first: if it can't be used, stop before logging in or writing anything.
     crosswalk_rows = load_crosswalk()
+    neighbourhoods, zones = load_zones()
 
     if from_raw:
         # Local testing only: build from a saved export (scripts/export_raw_olm.py), no login.
@@ -545,6 +628,12 @@ def fetch_and_build_geojson(from_raw=None):
             continue
 
         properties = build_photo_properties(photo, crosswalk_rows)
+        lat, lon = float(coords[1]), float(coords[0])
+        zone = assign_zone(lat, lon, zones)
+        zone_edge_m, nbhd_edge_m = zone_edge_distances(lat, lon, zone, zones)
+        properties["zone"] = zone["id"] if zone else None
+        properties["zone_edge_m"] = zone_edge_m
+        properties["nbhd_edge_m"] = nbhd_edge_m
         features.append({
             "type": "Feature",
             "geometry": {
@@ -558,10 +647,19 @@ def fetch_and_build_geojson(from_raw=None):
         "type": "FeatureCollection",
         # The map's layer tree, in tree order (a GeoJSON "foreign member"; other readers ignore it)
         "mrolm_layers": [{"group": g, "subgroup": s, "layer": l} for g, s, l in tree_layers(crosswalk_rows)],
+        # The map's neighbourhoods and their zones (more foreign members), so the map can draw and summarise them
+        "mrolm_neighbourhoods": neighbourhoods,
+        "mrolm_zones": zones,
+        "mrolm_gps_error_m": GPS_ERROR_M,
         "features": features
     }
 
     print(f"[DIAGNOSTIC] Total valid georeferenced features compiled: {len(features)}")
+    if zones:
+        in_zone = defaultdict(int)
+        for feature in features:
+            in_zone[feature["properties"]["zone"]] += 1
+        print(f"[DIAGNOSTIC] Photos per zone: {dict(sorted((k or 'outside all zones', v) for k, v in in_zone.items()))}")
     statuses = {}
     for feature in features:
         for obj in feature["properties"]["objects"]:

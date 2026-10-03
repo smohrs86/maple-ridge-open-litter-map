@@ -82,8 +82,8 @@ The map shows where the lines are, but MROLM needs them as data to count photos 
 
 Before any polygons go in the repo, confirm reuse permission. MROLM's own data licence is ODbL.
 
-## Open questions
+## How MROLM uses these
 
-1. Several neighbourhoods are mostly park or forest (Golden Ears, Allco, Blue Mountain, Alouette). Show empty ones, or only those with at least one photo?
-2. Port Haney, Port Hammond and Albion/Kanaka appear on the web pages but not as map polygons. Ignore them, or add them as notes on the nearest neighbourhood?
-3. Which route in "Getting exact boundaries" do we try first? Route 1 (ask Planning) costs nothing and can run while we work on route 4.
+The map's neighbourhood names come from the 24 on the Planning Department's map. Only neighbourhoods with photos appear, and today that is Cottonwood. Port Haney, Port Hammond and Albion/Kanaka (web pages only) are not used as areas. The zones inside each neighbourhood, how their edges are chosen, and how GPS drift is handled are in [zones-method.md](zones-method.md). The zone rectangles are our own, drawn along road lines from OpenStreetMap, and are not the City's boundaries.
+
+Still open: which route in "Getting exact boundaries" to try first. Route 1 (ask Planning) costs nothing and can run in parallel.

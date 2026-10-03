@@ -192,5 +192,101 @@ class LoadCrosswalkTests(unittest.TestCase):
         self.assertTrue(len(sd.load_crosswalk(path)) > 0)
 
 
+class ZoneTests(unittest.TestCase):
+    ZONES = [
+        {"id": "a_zone_A", "neighbourhood": "a", "letter": "A", "description": "",
+         "south_lat": 49.20, "north_lat": 49.21, "west_lon": -122.57, "east_lon": -122.56},
+        {"id": "b_zone_A", "neighbourhood": "b", "letter": "A", "description": "",
+         "south_lat": 49.20, "north_lat": 49.21, "west_lon": -122.56, "east_lon": -122.55},
+    ]
+    NB_HEADER = "key,name,colour\n"
+    Z_HEADER = "zone_id,neighbourhood,letter,description,south_lat,north_lat,west_lon,east_lon\n"
+
+    def write(self, text):
+        handle = tempfile.NamedTemporaryFile("w", suffix=".csv", delete=False, encoding="utf-8")
+        handle.write(text)
+        handle.close()
+        self.addCleanup(os.remove, handle.name)
+        return handle.name
+
+    def load(self, nb_rows, zone_rows):
+        return sd.load_zones(self.write(self.NB_HEADER + nb_rows), self.write(self.Z_HEADER + zone_rows))
+
+    def test_point_goes_to_its_zone(self):
+        self.assertEqual(sd.assign_zone(49.205, -122.565, self.ZONES)["id"], "a_zone_A")
+        self.assertEqual(sd.assign_zone(49.205, -122.555, self.ZONES)["id"], "b_zone_A")
+
+    def test_shared_edge_goes_to_one_zone_only(self):
+        self.assertEqual(sd.assign_zone(49.205, -122.56, self.ZONES)["id"], "b_zone_A")
+
+    def test_outside_all_zones_is_none(self):
+        self.assertIsNone(sd.assign_zone(49.19, -122.565, self.ZONES))
+        self.assertIsNone(sd.assign_zone(49.205, -122.58, self.ZONES))
+        self.assertIsNone(sd.assign_zone(49.205, -122.565, []))
+
+    def test_edge_distance_is_in_metres(self):
+        zone = self.ZONES[0]
+        lat = 49.205
+        to_edge, to_other = sd.zone_edge_distances(lat, -122.5601, zone, self.ZONES)
+        # 0.0001 degrees of longitude at this latitude is about 7.3 m
+        self.assertAlmostEqual(to_edge, 7.3, delta=0.2)
+        self.assertAlmostEqual(to_other, 7.3, delta=0.2)   # the next neighbourhood starts at that same edge
+
+    def test_no_other_neighbourhood_gives_none(self):
+        zone = self.ZONES[0]
+        to_edge, to_other = sd.zone_edge_distances(49.205, -122.565, zone, [zone])
+        self.assertGreater(to_edge, 0)
+        self.assertIsNone(to_other)
+
+    def test_no_zone_gives_no_distances(self):
+        self.assertEqual(sd.zone_edge_distances(49.205, -122.565, None, self.ZONES), (None, None))
+
+    def test_good_files_load(self):
+        nbs, zones = self.load("a,Alpha,#112233\n", "a_zone_A,a,A,north,49.20,49.21,-122.57,-122.56\n")
+        self.assertEqual(len(nbs), 1)
+        self.assertEqual(zones[0]["id"], "a_zone_A")
+
+    def test_neighbourhood_without_zones_is_left_out(self):
+        nbs, zones = self.load("a,Alpha,#112233\nb,Beta,#445566\n", "a_zone_A,a,A,x,49.20,49.21,-122.57,-122.56\n")
+        self.assertEqual([n["key"] for n in nbs], ["a"])
+
+    def test_missing_files_give_nothing_not_a_crash(self):
+        self.assertEqual(sd.load_zones("no/such.csv", "no/such2.csv"), ([], []))
+
+    def test_overlapping_zones_give_nothing(self):
+        rows = ("a_zone_A,a,A,x,49.20,49.21,-122.57,-122.56\n"
+                "a_zone_B,a,B,y,49.205,49.215,-122.565,-122.555\n")
+        self.assertEqual(self.load("a,Alpha,#112233\n", rows), ([], []))
+
+    def test_touching_zones_are_fine(self):
+        rows = ("a_zone_A,a,A,x,49.20,49.21,-122.57,-122.56\n"
+                "a_zone_B,a,B,y,49.21,49.22,-122.57,-122.56\n")
+        self.assertEqual(len(self.load("a,Alpha,#112233\n", rows)[1]), 2)
+
+    def test_unknown_neighbourhood_gives_nothing(self):
+        self.assertEqual(self.load("a,Alpha,#112233\n", "z1,zzz,A,x,49.20,49.21,-122.57,-122.56\n"), ([], []))
+
+    def test_duplicate_zone_id_gives_nothing(self):
+        rows = ("z1,a,A,x,49.20,49.21,-122.57,-122.56\nz1,a,B,y,49.21,49.22,-122.57,-122.56\n")
+        self.assertEqual(self.load("a,Alpha,#112233\n", rows), ([], []))
+
+    def test_bad_colour_gives_nothing(self):
+        self.assertEqual(self.load("a,Alpha,teal\n", "z1,a,A,x,49.20,49.21,-122.57,-122.56\n"), ([], []))
+
+    def test_backwards_zone_gives_nothing(self):
+        self.assertEqual(self.load("a,Alpha,#112233\n", "z1,a,A,x,49.21,49.20,-122.57,-122.56\n"), ([], []))
+
+    def test_bad_number_gives_nothing(self):
+        self.assertEqual(self.load("a,Alpha,#112233\n", "z1,a,A,x,north,49.21,-122.57,-122.56\n"), ([], []))
+
+    def test_real_zones_load_and_ids_match_their_names(self):
+        here = os.path.dirname(__file__)
+        nbs, zones = sd.load_zones(os.path.join(here, "..", "config", "neighbourhoods.csv"),
+                                   os.path.join(here, "..", "config", "zones.csv"))
+        self.assertTrue(len(zones) > 0)
+        for z in zones:
+            self.assertEqual(z["id"], f"{z['neighbourhood']}_zone_{z['letter']}")
+
+
 if __name__ == "__main__":
     unittest.main()
