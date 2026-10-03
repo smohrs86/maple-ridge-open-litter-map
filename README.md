@@ -21,7 +21,7 @@ Litter is photographed and tagged in the field using [OpenLitterMap](https://ope
 | Crosswalk logic and layer tree design | ✅ Designed | Exported to `config/crosswalk.csv`. Structure reviewed and clean |
 | Crosswalk engine (code that applies the crosswalk) | ✅ Built | Reads `config/crosswalk.csv` on every sync and writes an audit report, `data/audit.md` |
 | Layer tree map interface | ✅ Built | Group → Subgroup → Layer checkboxes, picked-up rings, date filter, popups |
-| GIS features on the map | 🟡 Mostly built | Heatmap, neighbourhood and zone views with hover cards, and date selection are built (2026-10-02). Richer popups, clustering and a design polish pass are open |
+| GIS features on the map | 🟡 Mostly built | A neighbourhood total, then numbered clusters, then dots by zoom level, neighbourhood and zone views with hover cards, and date selection are built (2026-10-02). A design polish pass is open |
 | Municipal waste stream | ⬜ Only if COMR takes part | A view in the City of Maple Ridge's own litter categories, built only if the City publishes or uses them (Stage 4) |
 | Cleanup of older tags in OLM | ✅ Done | The maintainer reviewed every photo and reclassed legacy tags in OLM (roadmap step 4), completed 2026-10-02 |
 
@@ -50,6 +50,8 @@ Not part of the proof of concept: GIS features, municipal streams, a license, an
 
 Newest first, one line per change. Claude updates this whenever it updates the README.
 
+- **2026-10-03:** Map areas ticks now filter the data (dots, clusters, counts, neighbourhood totals), not just the shaded overlay. The neighbourhood hover tag waits for the clusters, so it no longer doubles the bubble's name.
+- **2026-10-03:** Heatmap and the Dots | Heatmap switch removed. Zoom decides the view: a total per neighbourhood when zoomed out, numbered clusters (items, following every filter) in the middle, and the dots when zoomed in. Tapping a bubble or cluster zooms in.
 - **2026-10-02:** iPhone improvements, tested on the maintainer's phone: bigger tap targets and 16 px date inputs on touch screens (so Safari no longer zooms on focus), and a "Reset filters" button at the top of the panel that puts layers, dates, areas, "Left in place only" and the Dots view back to how the page loads.
 - **2026-10-02:** Panel folds into sections (Litter layers open; Dates and Map areas folded, with a status on each summary line), the shaded areas get a one-line explanation and a pointer cursor.
 - **2026-10-02:** Date selection: a tick list of collection days, month and weekday/weekend chips, presets, and From/To all edit one set of selected days; the map, the layer counts and the area cards follow it.
@@ -209,7 +211,7 @@ A photo with several kinds of litter appears in every layer that applies to it. 
 - **One dot per layer per photo.** A photo with cans and cigarette butts gets two dots, drawn a few pixels apart in a small cluster. The cluster is a display offset only; the photo's location is never moved.
 - **Colour hints at the group.** Each group has its own colour family (a fixed, colour-blind-tested order that is never recycled), subgroups shift the hue slightly, and layers are lighter or darker shades. With this many layers, colour alone can't identify one, so tick a layer on its own or click a dot: the popup names it in full.
 - **Filled dot = picked up, hollow ring = left in place.** A ring means at least one of those items was left where it was found (for example dog waste). **Left in place only** narrows either view to those items.
-- **Heatmap view.** The Dots | Heatmap switch shows where items concentrate, weighted by items and driven by the same checkboxes and dates. It uses one colour from pale to deep red, and it's relative: the deepest red is the densest place in view, not a fixed number. It fades into the dots at street level so they can be clicked. It also reflects collecting effort: routes walked often glow brighter than routes walked once.
+- **Totals, clusters and dots by zoom.** Zoomed out, each neighbourhood is one bubble with its total items and its name; tap it to zoom in. Zooming in, those fade into numbered clusters (each number is the items the filters count; tap one to zoom into it), and the clusters fade into the individual dots, which can be tapped for details. Every number follows the same checkboxes, dates and "Left in place only" filter. Clusters are one neutral colour and the dots keep the layer colours and the rings for items left in place. The zoom levels are constants at the top of `index.html`. A heatmap was built first (2026-09-26) and removed (2026-10-03): with this data, clusters say more.
 - **Date filter.** From and To dates use Maple Ridge local time. OLM stores times in UTC, so without this, evening collections would land on the next day. The tree's counts follow the chosen dates.
 - **Popups** show the full layer name, the item count, picked up or left in place, the local date and time, other layers in the same photo, and a link to the photo on OLM.
 - **Dot positions come from the phone's GPS**, so they are usually within about 5 to 15 metres of where the photo was taken, and more near buildings and trees. Zoomed in, a dot can appear on a building near where the litter actually was.
@@ -263,7 +265,7 @@ Priority order: the code that applies the crosswalk and displays the points (ste
 
 Once the layer tree works and the legacy data is conformed, add features that make the spatial data easier to read:
 
-- ✅ Heatmap view (built early, 2026-09-26). Clustering for dense collection routes is still open
+- ✅ Clustering with a neighbourhood total, clusters, dots zoom sequence (2026-10-03). A heatmap was built early (2026-09-26) and removed
 - ✅ Neighbourhood and zone views (built 2026-10-02): the City of Maple Ridge's neighbourhoods when zoomed out and lettered zones inside them when zoomed in (A at the top), with a checkbox tree in the panel (a neighbourhood and its zones) to show or hide each. Pointing at an area, or its row in the key, shows its label and one card (items, items left in place, photos, collection days, most common layers, and how many photos sit within the assumed GPS error of an edge; a neighbourhood card ranks its zones). Zones sit where there are photos and edges go where collecting is sparse, so GPS drift matters little. A density score was considered and dropped. How and why: [docs/zones-method.md](docs/zones-method.md). The neighbourhoods come from the Planning Department's map: see [docs/maple-ridge-community-areas.md](docs/maple-ridge-community-areas.md)
 - ✅ Date selection (built 2026-10-02): the panel picks a set of collection days with a tick list of the days (with items per day), month chips, weekday and weekend chips, presets (All, None, Last 7 days, Last 30 days) and the From/To boxes. A chip ticks or unticks its days, so months can be mixed. Time of day, comparing two groups side by side, and a click-and-drag strip of photos per day are still open
 - Richer popups with photo previews and brand information

@@ -97,19 +97,11 @@
     .day-row .d { flex: 1; }
     .day-row .count { color: #666; font-variant-numeric: tabular-nums; }
     .day-row.zero .d, .day-row.zero .count { color: #999; }
-    .top-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 0 0 8px; }
-    .top-row .view-switch { margin: 0; }
+    .top-row { display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin: 0 0 8px; }
+    .top-row[hidden] { display: none; }
     .top-row > button { font: inherit; font-size: 12px; background: none; border: 1px solid #ccc; border-radius: 4px; padding: 3px 10px; cursor: pointer; color: #333; }
-    .view-switch { display: inline-flex; border: 1px solid #ccc; border-radius: 6px; overflow: hidden; margin: 0 0 8px; }
-    .view-switch button { font: inherit; font-size: 12px; border: none; background: #fff; padding: 3px 12px; cursor: pointer; color: #333; }
-    .view-switch button[aria-pressed="true"] { background: #333; color: #fff; }
     .left-only { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #444; margin: 0 0 8px; cursor: pointer; }
-    .heat-legend { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #666; margin: 0 0 6px; }
-    .heat-legend i {
-      flex: 1; height: 8px; border-radius: 4px;
-      background: linear-gradient(to right, #fdd49e, #fdbb84, #fc8d59, #e34a33, #b30000);
-    }
-    .heat-legend[hidden], .key[hidden] { display: none; }
+    .key[hidden] { display: none; }
 
     .row { display: flex; align-items: center; gap: 4px; padding: 2px 0; }
     .row label { display: flex; align-items: center; gap: 6px; flex: 1; cursor: pointer; min-width: 0; }
@@ -160,7 +152,6 @@
     @media (pointer: coarse) {
       .filter-ctrl { max-height: calc(100vh - 24px); max-height: calc(100dvh - 24px); }
       .panel-head button, .tree-actions button, .when-row button, .day-list summary { padding: 9px 12px; font-size: 13px; }
-      .view-switch button { padding: 9px 16px; font-size: 13px; }
       .top-row > button { padding: 9px 12px; font-size: 13px; }
       .chip span { padding: 8px 14px; font-size: 13px; }
       .range input { font-size: 16px; padding: 8px 6px; }
@@ -201,21 +192,13 @@
     </div>
     <div class="panel-body">
       <div class="top-row">
-        <div class="view-switch" id="view-switch" role="group" aria-label="Map view">
-          <button type="button" id="view-dots" aria-pressed="true">Dots</button>
-          <button type="button" id="view-heat" aria-pressed="false">Heatmap</button>
-        </div>
-        <button type="button" id="reset-filters" title="Show everything again: all layers, all dates, all areas, Dots view">Reset filters</button>
+        <button type="button" id="reset-filters" title="Show everything again: all layers, all dates and all areas">Reset filters</button>
       </div>
-      <div class="heat-legend" id="heat-legend" hidden>
-        <span>Fewer items</span><i></i><span>More items</span>
-      </div>
-      <p class="note" id="heat-note" hidden>Heat is relative to the view, and it also reflects where collecting happened most. Zoom in to street level to see the dots.</p>
       <div class="key">
         <span><i class="dot filled"></i>Picked up</span>
         <span><i class="dot ring"></i>Left in place</span>
       </div>
-      <p class="note">Counts are items. Tick one layer on its own to see just that kind of litter; click a dot for details.</p>
+      <p class="note">Counts are items. Zoomed out you see a total per neighbourhood, then numbered clusters, then dots. Tick one layer on its own to see just that kind of litter; click a dot for details.</p>
       <label class="left-only" id="left-only-row"><input type="checkbox" id="left-only"> Left in place only</label>
 
       <!-- Folding sections. Layers come first and stay open; Dates and Neighbourhoods and zones start folded, with their status on the summary line. -->
@@ -256,7 +239,7 @@
       <details class="sec where" id="where" hidden>
         <summary>
           <span class="sec-title" id="where-title">Map areas</span><span class="sec-status" id="where-status"></span>
-          <span class="sec-sub">Neighbourhoods and zones, shaded on the map. Point at one to see its card.</span>
+          <span class="sec-sub">Neighbourhoods and zones, shaded on the map. Point at one to see its card; untick one to leave its photos out.</span>
         </summary>
         <div class="sec-body">
           <p class="note" id="where-note"></p>
@@ -282,9 +265,11 @@
     // Credit required by OpenLitterMap's data license (ODbL); shown in the map's attribution corner
     const OLM_ATTRIBUTION = '© <a href="https://openlittermap.com">OpenLitterMap</a> &amp; Contributors (<a href="https://opendatacommons.org/licenses/odbl/">ODbL</a>)';
     const DOT_SPACING_PX = 7;   // distance between the dots of one photo
-    // Heatmap: one warm hue, light to dark (sequential), fading into the dots at street level
-    const HEAT_COLOURS = ['#fdd49e', '#fdbb84', '#fc8d59', '#e34a33', '#b30000'];
-    const HEAT_FADE_START = 15, HEAT_FADE_END = 16.5;   // zoom levels
+    // Zoom steps: a total per neighbourhood when zoomed out, then numbered clusters, then the individual dots.
+    const CLUSTER_FADE_START = 12.5, CLUSTER_FADE_END = 13.5;   // neighbourhood totals fade out as clusters fade in (zoom levels)
+    const DOTS_FADE_START = 15.5, DOTS_ZOOM = 16;               // clusters fade out as the dots fade in
+    const CLUSTER_MAX_ZOOM = DOTS_ZOOM - 1, CLUSTER_RADIUS_PX = 45;
+    const BUBBLE_FONT = ['Montserrat Medium', 'Open Sans Bold', 'Noto Sans Regular'];   // from the basemap's own font list
     const TIME_ZONE = 'America/Vancouver';  // OLM stores UTC; show local time
 
     const map = new maplibregl.Map({
@@ -550,7 +535,7 @@
     // checkbox for each kind turns it on or off. Returns null when the data has none (older data), and
     // the panel section stays hidden.
     const ZONE_ZOOM = 14;
-    function setupAreas(data, layers) {
+    function setupAreas(data, layers, onTick) {
       const nbs = data.mrolm_neighbourhoods || [], zones = data.mrolm_zones || [];
       if (!nbs.length || !zones.length) return null;
       const edgeM = data.mrolm_gps_error_m || 15;
@@ -587,13 +572,13 @@
       const area = [Math.min(...zones.map(z => z.west_lon)), Math.min(...zones.map(z => z.south_lat)),
                     Math.max(...zones.map(z => z.east_lon)), Math.max(...zones.map(z => z.north_lat))];
 
-      // Drawn under the heatmap and dots, so they stay clickable. One flat fill per kind, no gradients.
+      // Drawn under the clusters and dots, so they stay clickable. One flat fill per kind, no gradients.
       const collection = features => ({ type: 'FeatureCollection', features });
       map.addSource('areas-nb', { type: 'geojson', data: collection(nbFeatures),
         attribution: 'Zone edges follow roads, from © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' });
       map.addSource('areas-zone', { type: 'geojson', data: collection(zoneFeatures) });
       const none = ['==', ['get', 'id'], ''];
-      const add = layer => map.addLayer(layer, 'litter-heat');
+      const add = layer => map.addLayer(layer, 'cluster-bubbles');
       add({ id: 'nb-fill', type: 'fill', source: 'areas-nb', paint: { 'fill-color': ['get', 'colour'], 'fill-opacity': 0.2, 'fill-outline-color': ['get', 'colour'] } });
       add({ id: 'nb-line', type: 'line', source: 'areas-nb', paint: { 'line-color': ['get', 'colour'], 'line-width': 2.5 } });
       add({ id: 'zone-fill', type: 'fill', source: 'areas-zone', paint: { 'fill-color': ['get', 'colour'], 'fill-opacity': 0.2 } });
@@ -625,6 +610,41 @@
       };
       units.nb.forEach(u => makeTag('nb', u));
       units.zone.forEach(u => makeTag('zone', u));
+
+      // Zoomed out, each neighbourhood is one bubble with its total items (it follows every filter, like the
+      // cards) and its name. They fade out as the clusters fade in; a tap zooms in on the neighbourhood.
+      map.addSource('nb-totals', { type: 'geojson', data: collection([]) });
+      const outFade = value => ['interpolate', ['linear'], ['zoom'], CLUSTER_FADE_START, value, CLUSTER_FADE_END, 0];
+      map.addLayer({
+        id: 'nb-bubble', type: 'circle', source: 'nb-totals', maxzoom: CLUSTER_FADE_END,
+        paint: {
+          'circle-color': ['get', 'colour'],
+          'circle-radius': ['interpolate', ['linear'], ['get', 'n'], 1, 20, 100, 25, 1000, 32, 5000, 40],
+          'circle-opacity': outFade(0.92),
+          'circle-stroke-color': '#ffffff', 'circle-stroke-width': 3, 'circle-stroke-opacity': outFade(1),
+        }
+      });
+      map.addLayer({
+        id: 'nb-count', type: 'symbol', source: 'nb-totals', maxzoom: CLUSTER_FADE_END,
+        layout: { 'text-field': ['number-format', ['get', 'n'], {}], 'text-font': BUBBLE_FONT, 'text-size': 14, 'text-allow-overlap': true, 'text-ignore-placement': true },
+        paint: { 'text-color': '#ffffff', 'text-opacity': outFade(1) }
+      });
+      map.addLayer({
+        id: 'nb-name', type: 'symbol', source: 'nb-totals', maxzoom: CLUSTER_FADE_END,
+        layout: { 'text-field': ['get', 'name'], 'text-font': BUBBLE_FONT, 'text-size': 12, 'text-anchor': 'top', 'text-offset': [0, 2.4], 'text-allow-overlap': true, 'text-ignore-placement': true },
+        paint: { 'text-color': '#1c1c1a', 'text-halo-color': '#ffffff', 'text-halo-width': 2, 'text-opacity': outFade(1) }
+      });
+      // Shown for neighbourhoods that have a zone ticked and at least one item under the filters
+      function syncNbBubbles() {
+        const features = nbs.map(n => {
+          const b = bounds.get(n.key), e = lastAcc && lastAcc.nb.get(n.key);
+          return { type: 'Feature', geometry: { type: 'Point', coordinates: [(b[0] + b[2]) / 2, (b[1] + b[3]) / 2] },
+            properties: { id: n.key, name: n.name, colour: n.colour, n: e ? e.items : 0,
+              on: zones.some(z => z.neighbourhood === n.key && zoneOn.has(z.id)) } };
+        });
+        map.getSource('nb-totals').setData(collection(features));
+      }
+      ['nb-bubble', 'nb-count', 'nb-name'].forEach(id => map.setFilter(id, ['all', ['get', 'on'], ['>', ['get', 'n'], 0]]));
 
       const accumulator = () => {
         const acc = { nb: new Map(), zone: new Map(), outside: 0 };
@@ -722,6 +742,7 @@
           pinned = null;
           applyAreaFilters();
           refresh();
+          onTick();   // the ticks filter the dots, clusters and counts too
         });
         rows.set(u.id, { label, box });
         return label;
@@ -739,6 +760,7 @@
         const nbKeys = nbs.filter(n => zones.some(z => z.neighbourhood === n.key && zoneOn.has(z.id))).map(n => n.key);
         [['zone', zoneIds], ['nb', nbKeys]].forEach(([kind, ids]) => ['fill', 'line'].forEach(part =>
           map.setFilter(`${kind}-${part}`, ['in', ['get', 'id'], ['literal', ids]])));
+        syncNbBubbles();
         zones.forEach(z => { const r = rows.get(z.id); r.box.checked = zoneOn.has(z.id); r.label.classList.toggle('off', !zoneOn.has(z.id)); });
         const shownZones = zones.filter(z => zoneOn.has(z.id)).length;
         const status = document.getElementById('where-status');
@@ -767,7 +789,9 @@
           map.setFilter(`${kind}-hl-line`, f);
         });
         rows.forEach((r, rid) => r.label.classList.toggle('active', !!id && rid === id));
-        tags.forEach((t, tid) => { t.outer.style.display = id && tid === id ? '' : 'none'; });
+        // The neighbourhood bubble already carries the name while zoomed out, so its hover tag waits for the clusters
+        const bubbleShown = map.getZoom() < CLUSTER_FADE_END;
+        tags.forEach((t, tid) => { t.outer.style.display = id && tid === id && !(t.kind === 'nb' && bubbleShown) ? '' : 'none'; });
         placeCard();
       }
       function setHover(id, fromMap) {
@@ -788,7 +812,7 @@
 
       card.addEventListener('mouseenter', () => clearTimeout(clearTimer));
       card.addEventListener('mouseleave', () => setHover(null));
-      map.on('zoom', () => { const next = map.getZoom() >= ZONE_ZOOM ? 'zone' : 'nb'; if (next !== mode) setMode(next); });
+      map.on('zoom', () => { const next = map.getZoom() >= ZONE_ZOOM ? 'zone' : 'nb'; if (next !== mode) setMode(next); else refresh(); });
       map.on('move', () => { if (!card.hidden) placeCard(); });
       window.addEventListener('resize', () => { if (!card.hidden) placeCard(); });
 
@@ -801,7 +825,11 @@
       setMode(mode);
       return {
         accumulator,
-        update(acc) { lastAcc = acc; renderNote(); if (!card.hidden) placeCard(); },
+        update(acc) { lastAcc = acc; renderNote(); syncNbBubbles(); if (!card.hidden) placeCard(); },
+        // Zoom in on one neighbourhood (a tap on its bubble)
+        // The zones that are ticked, or null when all are (then nothing is left out, not even photos outside every zone)
+        zonesOn: () => zoneOn.size === zones.length ? null : zoneOn,
+        zoomTo(id) { map.fitBounds(bounds.get(id), { padding: 80, maxZoom: 14.5 }); },
         // Tick every zone again and unpin any card (used by Reset filters)
         reset() { zones.forEach(z => zoneOn.add(z.id)); pinned = null; applyAreaFilters(); refresh(); },
         // Called once the dot layers exist: wires hover and tap on the map itself
@@ -957,7 +985,7 @@
       document.querySelector('.key').hidden = true;
       document.querySelector('.tree-actions').hidden = true;
       document.getElementById('dates').hidden = true;
-      document.getElementById('view-switch').hidden = true;
+      document.querySelector('.top-row').hidden = true;
       document.getElementById('left-only-row').hidden = true;
       document.getElementById('feature-count').innerText = `Total Points: ${data.features.length}`;
     }
@@ -981,23 +1009,50 @@
         const { layers, photos, dots } = buildDots(data);
         map.addSource('litter-dots', { type: 'geojson', data: { type: 'FeatureCollection', features: dots }, attribution: OLM_ATTRIBUTION });
 
-        // Heatmap, under the dots and hidden until the Heatmap view is chosen. Weighted by items,
-        // so a photo of 10 butts counts 10. It fades out at street level, where the dots fade in.
+        const DOT_FILL = ['case', ['get', 'hollow'], 0, 0.95];
+        const fadeIn = value => ['interpolate', ['linear'], ['zoom'], DOTS_FADE_START, 0, DOTS_ZOOM, value];
+        // Middle zoom range: fades in as the neighbourhood totals fade out, and out as the dots fade in
+        const midRange = value => ['interpolate', ['linear'], ['zoom'], CLUSTER_FADE_START, 0, CLUSTER_FADE_END, value, DOTS_FADE_START, value, DOTS_ZOOM, 0];
+
+        // Clusters. Their own source holds only the dots that pass the filters (rebuilt on every change in
+        // updateMapFilter), because a layer filter would not change a cluster's count. `n` is the items
+        // the filters count (items, or items left in place), summed per cluster. Lone points between
+        // clusters are drawn like dots; the sunflower dots below take over at DOTS_ZOOM.
+        map.addSource('litter-clusters', {
+          type: 'geojson', data: { type: 'FeatureCollection', features: [] },
+          cluster: true, clusterRadius: CLUSTER_RADIUS_PX, clusterMaxZoom: CLUSTER_MAX_ZOOM,
+          clusterProperties: { n: ['+', ['get', 'n']], left: ['+', ['get', 'left']] },
+        });
         map.addLayer({
-          id: 'litter-heat', type: 'heatmap', source: 'litter-dots',
-          layout: { visibility: 'none' },
+          id: 'cluster-bubbles', type: 'circle', source: 'litter-clusters', filter: ['has', 'point_count'],
+          minzoom: CLUSTER_FADE_START, maxzoom: DOTS_ZOOM,
           paint: {
-            'heatmap-weight': ['get', 'items'],
-            'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 10, 0.4, 15, 1.2],
-            'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 10, 10, 14, 22, 17, 34],
-            'heatmap-color': ['interpolate', ['linear'], ['heatmap-density'],
-              0, 'rgba(253,212,158,0)', 0.1, HEAT_COLOURS[0], 0.3, HEAT_COLOURS[1],
-              0.5, HEAT_COLOURS[2], 0.75, HEAT_COLOURS[3], 1, HEAT_COLOURS[4]],
-            'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], HEAT_FADE_START, 0.85, HEAT_FADE_END, 0],
+            'circle-color': '#3b4252',
+            'circle-radius': ['interpolate', ['linear'], ['get', 'n'], 1, 11, 10, 14, 100, 21, 1000, 30],
+            'circle-opacity': midRange(0.88),
+            'circle-stroke-color': '#ffffff', 'circle-stroke-width': 2, 'circle-stroke-opacity': midRange(1),
           }
         });
-        const DOT_FILL = ['case', ['get', 'hollow'], 0, 0.95];
-        const fadeIn = value => ['interpolate', ['linear'], ['zoom'], HEAT_FADE_START, 0, HEAT_FADE_END, value];
+        map.addLayer({
+          id: 'cluster-count', type: 'symbol', source: 'litter-clusters', filter: ['has', 'point_count'],
+          minzoom: CLUSTER_FADE_START, maxzoom: DOTS_ZOOM,
+          layout: {
+            'text-field': ['number-format', ['get', 'n'], {}],
+            'text-font': BUBBLE_FONT,
+            'text-size': 12, 'text-allow-overlap': true, 'text-ignore-placement': true,
+          },
+          paint: { 'text-color': '#ffffff', 'text-opacity': midRange(1) }
+        });
+        map.addLayer({
+          id: 'cluster-single', type: 'circle', source: 'litter-clusters', filter: ['!', ['has', 'point_count']],
+          minzoom: CLUSTER_FADE_START, maxzoom: DOTS_ZOOM,
+          paint: {
+            'circle-radius': 5, 'circle-color': ['get', 'colour'],
+            'circle-opacity': midRange(DOT_FILL),
+            'circle-stroke-color': ['case', ['get', 'hollow'], ['get', 'colour'], '#ffffff'],
+            'circle-stroke-width': ['case', ['get', 'hollow'], 2.5, 1],
+          }
+        });
 
         // One circle layer per slot: a photo's dots sit in a small sunflower pattern
         // (fixed pixel offsets), so they stay apart at every zoom without moving the point.
@@ -1008,7 +1063,7 @@
           const id = `dots-${s}`;
           slotLayerIds.push(id);
           map.addLayer({
-            id, type: 'circle', source: 'litter-dots',
+            id, type: 'circle', source: 'litter-dots', minzoom: DOTS_FADE_START,
             filter: ['==', ['get', 'slot'], s],
             paint: {
               'circle-radius': 5,
@@ -1021,7 +1076,7 @@
           });
         }
 
-        const areas = setupAreas(data, layers);
+        const areas = setupAreas(data, layers, () => updateMapFilter());
         const tree = buildTree(layers, updateMapFilter);
 
         const dates = setupDates(dots, () => updateMapFilter());
@@ -1036,12 +1091,12 @@
           const inRange = hasDay;
           const leftOnly = leftOnlyBox.checked;
 
+          const zoneSet = areas ? areas.zonesOn() : null;   // null = every zone
           const conditions = [['in', ['get', 'lid'], ['literal', checked]]];
+          if (zoneSet) conditions.push(['in', ['get', 'zone'], ['literal', [...zoneSet]]]);
           if (dates && !dates.isAll()) conditions.push(['in', ['get', 'day'], ['literal', dates.list()]]);
           if (leftOnly) conditions.push(['>', ['get', 'left'], 0]);
           slotLayerIds.forEach((id, s) => map.setFilter(id, ['all', ['==', ['get', 'slot'], s], ...conditions]));
-          map.setFilter('litter-heat', ['all', ...conditions]);
-          map.setPaintProperty('litter-heat', 'heatmap-weight', ['get', leftOnly ? 'left' : 'items']);
 
           // Tree counts follow the selected days (and "left in place only");
           // the summary also follows the ticked layers.
@@ -1050,17 +1105,21 @@
           const shownPhotos = new Set();
           const acc = areas ? areas.accumulator() : null;
           const byDay = new Map();   // items per day under the other filters, for the day list
+          const clusterFeatures = [];
           dots.forEach(d => {
             const p = d.properties;
             const n = leftOnly ? p.left : p.items;
+            if (zoneSet && !zoneSet.has(p.zone)) return;
             if (n && shown.has(p.lid)) byDay.set(p.day, (byDay.get(p.day) || 0) + n);
             if (!inRange(p.day) || !n) return;
             itemsByLid.set(p.lid, (itemsByLid.get(p.lid) || 0) + n);
             if (shown.has(p.lid)) {
               items += n; count++; shownPhotos.add(p.pi);
               if (acc) acc.add(p, n);
+              clusterFeatures.push({ type: 'Feature', geometry: d.geometry, properties: { ...p, n } });
             }
           });
+          map.getSource('litter-clusters').setData({ type: 'FeatureCollection', features: clusterFeatures });
           tree.setCounts(itemsByLid);
           if (dates) dates.setCounts(byDay);
           if (areas) areas.update(acc);
@@ -1068,22 +1127,6 @@
             `Showing ${items.toLocaleString('en-CA')} items${leftOnly ? ' left in place' : ''} ` +
             `as ${count.toLocaleString('en-CA')} dots from ${shownPhotos.size.toLocaleString('en-CA')} photos`;
         }
-
-        // Dots or Heatmap. In the heatmap view the dots fade in at street level, so they can still be clicked there.
-        let heatView = false;
-        function setView(heat) {
-          heatView = heat;
-          map.setLayoutProperty('litter-heat', 'visibility', heat ? 'visible' : 'none');
-          slotLayerIds.forEach(id => {
-            map.setPaintProperty(id, 'circle-opacity', heat ? fadeIn(DOT_FILL) : DOT_FILL);
-            map.setPaintProperty(id, 'circle-stroke-opacity', heat ? fadeIn(1) : 1);
-          });
-          document.getElementById('view-dots').setAttribute('aria-pressed', String(!heat));
-          document.getElementById('view-heat').setAttribute('aria-pressed', String(heat));
-          document.getElementById('heat-legend').hidden = !heat;
-          document.getElementById('heat-note').hidden = !heat;
-        }
-        const dotsFaded = () => heatView && map.getZoom() < (HEAT_FADE_START + HEAT_FADE_END) / 2;
 
         document.getElementById('all-on').addEventListener('click', () => { tree.setAll(true); updateMapFilter(); });
         document.getElementById('all-off').addEventListener('click', () => { tree.setAll(false); updateMapFilter(); });
@@ -1094,24 +1137,30 @@
           leftOnlyBox.checked = false;
           if (dates) dates.reset();
           if (areas) areas.reset();
-          setView(false);
           updateMapFilter();
         });
-        document.getElementById('view-dots').addEventListener('click', () => setView(false));
-        document.getElementById('view-heat').addEventListener('click', () => setView(true));
         updateMapFilter();
 
-        map.on('click', slotLayerIds, e => {
-          if (dotsFaded()) return;   // dots aren't visible yet in the heatmap view
+        // What can be tapped: the dots, the clusters, and the lone points drawn between clusters
+        const tapLayerIds = [...slotLayerIds, 'cluster-bubbles', 'cluster-single', ...(areas ? ['nb-bubble'] : [])];
+        map.on('click', tapLayerIds, e => {
+          const f = e.features[0];
+          if (f.layer.id === 'nb-bubble') { areas.zoomTo(f.properties.id); return; }
+          if (f.layer.id === 'cluster-bubbles') {
+            // A cluster zooms in on itself until it splits
+            map.getSource('litter-clusters').getClusterExpansionZoom(f.properties.cluster_id).then(zoom =>
+              map.easeTo({ center: f.geometry.coordinates, zoom: Math.min(zoom + 0.5, 18) }));
+            return;
+          }
           new maplibregl.Popup({ maxWidth: '280px' })
             .setLngLat(e.lngLat)
-            .setHTML(popupHtml(e.features[0].properties, layers, photos))
+            .setHTML(popupHtml(f.properties, layers, photos))
             .addTo(map);
         });
-        // A tap on a neighbourhood or zone (not on a dot) pins its card; dots keep their own popup
-        if (areas) areas.bindMap(e => !dotsFaded() && map.queryRenderedFeatures(e.point, { layers: slotLayerIds }).length > 0);
-        map.on('mouseenter', slotLayerIds, () => { if (!dotsFaded()) map.getCanvas().style.cursor = 'pointer'; });
-        map.on('mouseleave', slotLayerIds, () => { map.getCanvas().style.cursor = ''; });
+        // A tap on a neighbourhood or zone (not on a dot or cluster) pins its card; dots keep their own popup
+        if (areas) areas.bindMap(e => map.queryRenderedFeatures(e.point, { layers: tapLayerIds }).length > 0);
+        map.on('mouseenter', tapLayerIds, () => { map.getCanvas().style.cursor = 'pointer'; });
+        map.on('mouseleave', tapLayerIds, () => { map.getCanvas().style.cursor = ''; });
 
       } catch (err) {
         console.error('Failed to load GeoJSON dataset:', err);
