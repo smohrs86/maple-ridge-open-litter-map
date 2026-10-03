@@ -50,6 +50,7 @@ Not part of the proof of concept: GIS features, municipal streams, a license, an
 
 Newest first, one line per change. Claude updates this whenever it updates the README.
 
+- **2026-10-02:** iPhone improvements, tested on the maintainer's phone: bigger tap targets and 16 px date inputs on touch screens (so Safari no longer zooms on focus), and a "Reset filters" button at the top of the panel that puts layers, dates, areas, "Left in place only" and the Dots view back to how the page loads.
 - **2026-10-02:** Panel folds into sections (Litter layers open; Dates and Map areas folded, with a status on each summary line), the shaded areas get a one-line explanation and a pointer cursor.
 - **2026-10-02:** Date selection: a tick list of collection days, month and weekday/weekend chips, presets, and From/To all edit one set of selected days; the map, the layer counts and the area cards follow it.
 - **2026-10-02:** Map gets neighbourhood and zone views: a checkbox tree in the panel, zoom chooses which shows, zones lettered A at the top, and a label and one card that appear only on hover or tap (method in [docs/zones-method.md](docs/zones-method.md)). The sync adds `zone`, `zone_edge_m` and `nbhd_edge_m` to each photo from `config/neighbourhoods.csv` and `config/zones.csv`; dots are not moved. Zone tests added. A density score was considered and dropped.

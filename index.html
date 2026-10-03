@@ -97,6 +97,9 @@
     .day-row .d { flex: 1; }
     .day-row .count { color: #666; font-variant-numeric: tabular-nums; }
     .day-row.zero .d, .day-row.zero .count { color: #999; }
+    .top-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 0 0 8px; }
+    .top-row .view-switch { margin: 0; }
+    .top-row > button { font: inherit; font-size: 12px; background: none; border: 1px solid #ccc; border-radius: 4px; padding: 3px 10px; cursor: pointer; color: #333; }
     .view-switch { display: inline-flex; border: 1px solid #ccc; border-radius: 6px; overflow: hidden; margin: 0 0 8px; }
     .view-switch button { font: inherit; font-size: 12px; border: none; background: #fff; padding: 3px 12px; cursor: pointer; color: #333; }
     .view-switch button[aria-pressed="true"] { background: #333; color: #fff; }
@@ -158,6 +161,7 @@
       .filter-ctrl { max-height: calc(100vh - 24px); max-height: calc(100dvh - 24px); }
       .panel-head button, .tree-actions button, .when-row button, .day-list summary { padding: 9px 12px; font-size: 13px; }
       .view-switch button { padding: 9px 16px; font-size: 13px; }
+      .top-row > button { padding: 9px 12px; font-size: 13px; }
       .chip span { padding: 8px 14px; font-size: 13px; }
       .range input { font-size: 16px; padding: 8px 6px; }
       .range label { font-size: 13px; }
@@ -196,9 +200,12 @@
       <button type="button" id="panel-toggle" aria-expanded="true">Hide</button>
     </div>
     <div class="panel-body">
-      <div class="view-switch" id="view-switch" role="group" aria-label="Map view">
-        <button type="button" id="view-dots" aria-pressed="true">Dots</button>
-        <button type="button" id="view-heat" aria-pressed="false">Heatmap</button>
+      <div class="top-row">
+        <div class="view-switch" id="view-switch" role="group" aria-label="Map view">
+          <button type="button" id="view-dots" aria-pressed="true">Dots</button>
+          <button type="button" id="view-heat" aria-pressed="false">Heatmap</button>
+        </div>
+        <button type="button" id="reset-filters" title="Show everything again: all layers, all dates, all areas, Dots view">Reset filters</button>
       </div>
       <div class="heat-legend" id="heat-legend" hidden>
         <span>Fewer items</span><i></i><span>More items</span>
@@ -795,6 +802,8 @@
       return {
         accumulator,
         update(acc) { lastAcc = acc; renderNote(); if (!card.hidden) placeCard(); },
+        // Tick every zone again and unpin any card (used by Reset filters)
+        reset() { zones.forEach(z => zoneOn.add(z.id)); pinned = null; applyAreaFilters(); refresh(); },
         // Called once the dot layers exist: wires hover and tap on the map itself
         bindMap(dotAt) {
           isDotAt = dotAt;
@@ -921,6 +930,8 @@
 
       return {
         has: d => selected.has(d),
+        // Select every day and clear From/To; the caller redraws the map (used by Reset filters)
+        reset() { allDays.forEach(d => selected.add(d)); fromInput.value = ''; toInput.value = ''; sync(); },
         isAll: () => selected.size === allDays.length,
         list: () => [...selected],
         // Items per day under the other filters, shown beside each day in the list
@@ -1077,6 +1088,15 @@
         document.getElementById('all-on').addEventListener('click', () => { tree.setAll(true); updateMapFilter(); });
         document.getElementById('all-off').addEventListener('click', () => { tree.setAll(false); updateMapFilter(); });
         leftOnlyBox.addEventListener('change', updateMapFilter);
+        // Back to how the page first loaded (the map's position and zoom are left alone)
+        document.getElementById('reset-filters').addEventListener('click', () => {
+          tree.setAll(true);
+          leftOnlyBox.checked = false;
+          if (dates) dates.reset();
+          if (areas) areas.reset();
+          setView(false);
+          updateMapFilter();
+        });
         document.getElementById('view-dots').addEventListener('click', () => setView(false));
         document.getElementById('view-heat').addEventListener('click', () => setView(true));
         updateMapFilter();
