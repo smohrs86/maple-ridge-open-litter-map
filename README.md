@@ -21,9 +21,9 @@ Litter is photographed and tagged in the field using [OpenLitterMap](https://ope
 | Crosswalk logic and layer tree design | ✅ Designed | Exported to `config/crosswalk.csv`. Structure reviewed and clean |
 | Crosswalk engine (code that applies the crosswalk) | ✅ Built | Reads `config/crosswalk.csv` on every sync and writes an audit report, `data/audit.md` |
 | Layer tree map interface | ✅ Built | Group → Subgroup → Layer checkboxes, picked-up rings, date filter, popups |
-| GIS features on the map | 🟡 Started | Heatmap view built early; the rest of Stage 3 follows the legacy review |
+| GIS features on the map | 🟡 Started | Heatmap view built early; the legacy review is complete, so the rest of Stage 3 can start |
 | Municipal waste streams | ⬜ Later | Communicating the data in municipal terms, built last (Stage 4) |
-| Cleanup of older tags in OLM | 🟡 In progress | The maintainer is reclassing legacy tags in OLM by hand (roadmap step 4) |
+| Cleanup of older tags in OLM | ✅ Done | The maintainer reviewed every photo and reclassed legacy tags in OLM (roadmap step 4), completed 2026-10-02 |
 
 ---
 
@@ -31,13 +31,13 @@ Litter is photographed and tagged in the field using [OpenLitterMap](https://ope
 
 The proof of concept asked one question: can litter records made with OpenLitterMap's global tagging schema be translated into local terms, with a crosswalk the maintainer controls as the tool that manages the local schema? It can. The live map shows every tagged item in local categories, and changing a category means editing the crosswalk, not the code.
 
-The original criteria, with 5 and 8 moved to ongoing refinements because they improve quality rather than test the idea:
+The original criteria, with 5 and 8 moved to refinements because they improve quality rather than test the idea (5 was completed 2026-10-02):
 
 1. ✅ **The engine applies the crosswalk.** Every run reads `config/crosswalk.csv` and puts each tag into exactly one layer, following the matching rules below. Unmapped = 0.
 2. ✅ **The audit report is published on every run**, with the counts in the audit table below. Tie-breaks are reviewed and either fixed in the crosswalk or accepted.
 3. ✅ **The layer tree works on the live map:** Group → Subgroup → Layer checkboxes that cascade, item counts that roll up, empty layers hidden, and full layer names in popups.
 4. ✅ **Counts are spot-checked.** For about five layers, the map count matches a manual count of the same tags in OLM.
-5. ➡️ *Refinement:* **Legacy data is conformed enough to trust.** Not used = 0 and UNCLASS = 0. Orphan tags are tracked in the audit with their photo IDs and fixed in OLM, or accepted as a known gap. The REVIEW backlog is tracked by Claude, which rebuilds the review workbook after the maintainer's OLM edits, and its remaining count is recorded in the progress log at each check.
+5. ✅ **Legacy data is conformed enough to trust** (completed 2026-10-02, after a full photo review and 166 photos retagged in OLM). Not used = 0 and UNCLASS = 0. Orphan tags are tracked in the audit with their photo IDs and fixed in OLM, or accepted as a known gap. The REVIEW backlog is tracked by Claude, which rebuilds the review workbook after the maintainer's OLM edits, and its remaining count is recorded in the progress log at each check.
 6. ✅ **The pipeline stays safe.** An incomplete fetch leaves the last good data live, and the tree map data is produced by the workflow without manual fixes.
 7. ✅ **A basic test exists** for crosswalk matching: a specific row beats the plain row, blank falls back, capitals and spacing are ignored, and the first match wins.
 8. ➡️ *Refinement:* **A newcomer can understand it in five minutes.** The README opens with what the map shows, and the live link works.
@@ -50,6 +50,7 @@ Not part of the proof of concept: GIS features, municipal streams, a license, an
 
 Newest first, one line per change. Claude updates this whenever it updates the README.
 
+- **2026-10-02:** Legacy review complete. 166 photos retagged in OLM from the maintainer's review page edits (one test photo, a batch of 10, then 155), each read back exactly as sent; the fresh export matches the plan for all 166. Check after the export (2,814 photos, 3,488 tagged objects): OK 1,835, REVIEW 1,653 (keys that carry a fix note, all reviewed), RECLASS 0, orphan tags 0, UNMAPPED 0, UNCLASS 0. The merge step now rejects unrecognised `[bracket]` words.
 - **2026-10-02:** Review workbook has a `Reviewed` date column (`--reviewed-through`); full photo review pass done, with personal-information photos deleted in OLM. Tagging protocol adds the photo order of preference and contact-detail items (business cards, garage sale signs).
 - **2026-10-02:** Tagging protocol: where litter is collected, what is picked up, a close-up photo method with no personal details in frame, and private-property problems and waterways out of scope.
 - **2026-09-28:** Review page: a "New quantity" field per object, merged into the workbook's `Change_to_Quantity` column.
