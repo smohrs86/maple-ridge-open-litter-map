@@ -169,6 +169,16 @@
     #words-body p { font-size: 12px; margin: 0 0 6px; }
     #words-body h2 { font-size: 12px; margin: 8px 0 2px; }
     #words-body ul { font-size: 12px; margin: 0 0 6px; padding-left: 18px; }
+    /* Load problems: one message at a time, over the map */
+    .load-notice { position: absolute; z-index: 11; right: 12px; bottom: 34px; width: max-content;
+      max-width: min(480px, calc(100vw - 24px)); box-sizing: border-box; display: flex; align-items: flex-start; gap: 10px;
+      background: #fff; color: #333; font-size: 13px; line-height: 1.4; padding: 10px 12px; border-radius: 8px;
+      border-left: 6px solid #b45309; box-shadow: 0 2px 10px rgba(0,0,0,0.25); }
+    .load-notice[hidden] { display: none; }
+    @media (max-width: 640px) { .load-notice { left: 12px; width: auto; max-width: none; } }
+    .load-notice .notice-text { flex: 1; }
+    .load-notice button { flex: none; font: inherit; font-size: 12px; background: none; border: 1px solid #ccc; border-radius: 4px;
+      padding: 2px 8px; cursor: pointer; color: #333; }
     .status-counter { font-size: 11px; color: #666; margin-top: 8px; border-top: 1px solid #eee; padding-top: 6px; }
     .about { margin: 6px 0 0; }
     .about a { color: inherit; }
@@ -264,7 +274,40 @@
   <!-- One summary card on the map, shown while a neighbourhood or zone is hovered or selected -->
   <div class="map-card" id="map-card" role="region" aria-live="polite" aria-label="Neighbourhood or zone summary" hidden></div>
 
+  <!-- Load problems (basemap, data, blocked scripts): shown by showLoadNotice below -->
+  <div class="load-notice" id="load-notice" role="alert" hidden>
+    <span class="notice-text" id="load-notice-text"></span>
+    <button type="button" id="load-notice-reload">Reload</button>
+    <button type="button" id="load-notice-close" aria-label="Dismiss this message">Dismiss</button>
+  </div>
+  <noscript><div class="load-notice">This map needs JavaScript. Please turn it on for this page and reload.</div></noscript>
+
+  <script>
+    // One message at a time. `kind` lets a later success clear its own message (clearLoadNotice).
+    // `reload` adds a Reload button, for problems that reloading can fix.
+    function showLoadNotice(text, kind, reload) {
+      const box = document.getElementById('load-notice');
+      document.getElementById('load-notice-text').textContent = text;
+      document.getElementById('load-notice-reload').hidden = !reload;
+      box.dataset.kind = kind;
+      box.hidden = false;
+    }
+    function clearLoadNotice(kind) {
+      const box = document.getElementById('load-notice');
+      if (box.dataset.kind === kind) box.hidden = true;
+    }
+    document.getElementById('load-notice-close').addEventListener('click', () => { document.getElementById('load-notice').hidden = true; });
+    document.getElementById('load-notice-reload').addEventListener('click', () => location.reload());
+  </script>
   <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  <script>
+    // The map library comes from a CDN; if it was blocked or offline, say so (the main script below cannot run).
+    if (typeof maplibregl === 'undefined') {
+      showLoadNotice('The map could not start because its map library did not load. Check your connection or any content blocker, then reload.', 'library', true);
+      document.getElementById('feature-count').textContent = 'Map library did not load';
+      document.getElementById('words-body').innerHTML = '<p>The map library did not load.</p>';
+    }
+  </script>
 
   <script>
     // Group colours: the dataviz reference palette's categorical slots, in fixed order,
@@ -293,15 +336,44 @@
     map.getCanvas().setAttribute('aria-label', 'Map of litter records in Maple Ridge, BC. Use the arrow keys to move and plus or minus to zoom. The same facts are in the summary in words.');
     if (!map.getCanvas().getAttribute('role')) map.getCanvas().setAttribute('role', 'region');
 
+    // Basemap problems. Before the map has loaded, an error that names no source means the style itself failed:
+    // nothing can be drawn (and the data below never loads). The message clears if the map loads after all.
+    // After it has loaded, a failed basemap tile only leaves a patch of background blank; the points are unaffected.
+    const LOAD_SLOW_MS = 20000;
+    let mapLoaded = false, tileNoticeShown = false, styleFailed = false;
+    map.on('error', e => {
+      console.warn('Map error:', e.error || e);
+      if (!mapLoaded && !e.sourceId) {
+        styleFailed = true;
+        showLoadNotice('The basemap could not be loaded, so the map cannot be drawn. Check your connection, then reload.', 'style', true);
+        document.getElementById('feature-count').textContent = 'Basemap did not load';
+      } else if (mapLoaded && e.sourceId && !tileNoticeShown) {
+        tileNoticeShown = true;
+        showLoadNotice('Some basemap tiles did not load, so parts of the background may be blank. The litter points are not affected.', 'tiles', false);
+      }
+    });
+    setTimeout(() => {
+      if (!mapLoaded && !styleFailed) showLoadNotice('The map is taking a long time to load. The basemap may be slow or blocked; if nothing appears soon, reload.', 'slow', true);
+    }, LOAD_SLOW_MS);
+
     async function loadGeoJsonData() {
       // Fetch path attempting primary path with fallback for build targets.
       // 'no-cache' checks with the server before using a stored copy, so a fresh sync shows at once
       // (GitHub Pages otherwise lets browsers reuse an old copy for 10 minutes).
-      let response = await fetch('./data/litter.geojson', { cache: 'no-cache' });
-      if (!response.ok) {
-        response = await fetch('./public/data/litter.geojson', { cache: 'no-cache' });
+      const get = async url => {
+        const response = await fetch(url, { cache: 'no-cache' });
+        if (!response.ok) throw new Error(`the server answered ${response.status}`);
+        return response.json();
+      };
+      try {
+        return await get('./data/litter.geojson');
+      } catch (primaryError) {
+        try {
+          return await get('./public/data/litter.geojson');
+        } catch (fallbackError) {
+          throw primaryError;
+        }
       }
-      return await response.json();
     }
 
     // ---------- colour helpers ----------
@@ -1027,13 +1099,21 @@
       document.querySelector('.top-row').hidden = true;
       document.getElementById('left-only-row').hidden = true;
       document.getElementById('feature-count').innerText = `Total Points: ${data.features.length}`;
-      document.getElementById('words-body').innerHTML =
-        `<p>Showing all ${data.features.length.toLocaleString('en-CA')} photos. Layer detail arrives with the next data sync.</p>`;
+      document.getElementById('words-body').innerHTML = data.features.length
+        ? `<p>Showing all ${data.features.length.toLocaleString('en-CA')} photos. Layer detail arrives with the next data sync.</p>`
+        : '<p>The data file has no points.</p>';
     }
 
     map.on('load', async () => {
+      mapLoaded = true;
+      styleFailed = false;
+      clearLoadNotice('style');
+      clearLoadNotice('slow');
       try {
         const data = await loadGeoJsonData();
+        if (!data.features || !data.features.length) {
+          showLoadNotice('The data file loaded but has no litter points in it. Reload to try again; if it persists, the next data sync may fix it.', 'data', true);
+        }
 
         // Auto-fit bounds to display all loaded features on view load
         if (data.features.length > 0) {
@@ -1215,6 +1295,7 @@
       } catch (err) {
         console.error('Failed to load GeoJSON dataset:', err);
         document.getElementById('feature-count').innerText = 'Error loading dataset';
+        showLoadNotice(`The litter data could not be loaded (${err.message}). The map shows no points until it does. Try reloading.`, 'data', true);
         document.getElementById('words-body').innerHTML = '<p>The data could not be loaded.</p>';
       }
     });

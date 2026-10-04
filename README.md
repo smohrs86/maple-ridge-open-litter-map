@@ -52,6 +52,7 @@ Newest first, one line per change. Claude updates this whenever it updates the R
 
 - **2026-10-03:** Stage 3 declared complete. Richer popups were confirmed achieved; the design review leftovers (colour, footer wording, contrast) were set aside on purpose.
 - **2026-10-03:** Map areas ticks now filter the data (dots, clusters, counts, neighbourhood totals), not just the shaded overlay. The neighbourhood hover tag waits for the clusters, so it no longer doubles the bubble's name.
+- **2026-10-03:** Hardening: the map now says so when something fails to load: a blocked map library, the basemap (or slow loading), the data (failed or empty, with the reason) and missing basemap tiles, each as one dismissible message, with Reload where it helps.
 - **2026-10-03:** Hardening: accessibility first pass. The panel and map have names, the item count is announced when a filter changes, and a folded "Summary in words" section gives the same facts as plain text. Dots are still mouse and touch only.
 - **2026-10-03:** Hardening: tests added for the older Stage 1 tag flattening and group rules (`tests/test_tags.py`). No code change.
 - **2026-10-03:** Hardening: the audit now records a short fingerprint (SHA-256) of `config/crosswalk.csv`, so any number can be traced to the crosswalk that produced it.
