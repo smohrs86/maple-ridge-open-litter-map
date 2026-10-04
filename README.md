@@ -50,6 +50,7 @@ Not part of the proof of concept: GIS features, municipal streams, a license, an
 
 Newest first, one line per change. Claude updates this whenever it updates the README.
 
+- **2026-10-03:** Crosswalk re-exported after the legacy review: the "OLM data needs fixes" notes were cleared and other notes tidied, so every object now shows as OK (REVIEW = 0). No rule changes (group, subgroup, local key and include are unchanged on every row).
 - **2026-10-03:** Stage 3 declared complete. Richer popups were confirmed achieved; the design review leftovers (colour, footer wording, contrast) were set aside on purpose.
 - **2026-10-03:** Map areas ticks now filter the data (dots, clusters, counts, neighbourhood totals), not just the shaded overlay. The neighbourhood hover tag waits for the clusters, so it no longer doubles the bubble's name.
 - **2026-10-03:** Hardening: the map now says so when something fails to load: a blocked map library, the basemap (or slow loading), the data (failed or empty, with the reason) and missing basemap tiles, each as one dismissible message, with Reload where it helps.
