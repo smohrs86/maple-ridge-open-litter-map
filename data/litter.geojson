@@ -14015,19 +14015,19 @@
           {
             "type": "standard",
             "category": "other",
-            "item": "bags_litter",
+            "item": "plastic_bag",
             "quantity": 1
           }
         ],
         "objects": [
           {
-            "status": "RECLASS",
-            "on_map": false,
-            "group": "",
+            "status": "OK",
+            "on_map": true,
+            "group": "Household",
             "subgroup": "",
-            "layer": "other/bags_litter",
-            "full_name": "other/bags_litter",
-            "olm_key": "other/bags_litter",
+            "layer": "Household Plastic Bag",
+            "full_name": "Household \u2013 Household Plastic Bag",
+            "olm_key": "other/plastic_bag",
             "quantity": 1,
             "picked_up": true
           }

@@ -6,15 +6,15 @@ Written by `scripts/sync_data.py` on every sync, following the README's "Audit c
 - Newest photo: 2026-10-04
 - Crosswalk: `config/crosswalk.csv`, SHA-256 starts `cf874a54ce8f`
 - Tagged objects: 3802 (5299 items)
-- Shown on the map: 3801 objects (5298 items) in 67 layers
+- Shown on the map: 3802 objects (5299 items) in 67 layers
 
 ## Status counts
 
 | Status | Meaning | Objects | Items | Healthy value |
 |---|---|---:|---:|---|
-| OK | Matched a map layer | 3801 | 5298 | Most objects |
+| OK | Matched a map layer | 3802 | 5299 | Most objects |
 | REVIEW | Matched a map layer whose crosswalk row has an "OLM data needs fixes" note (shown on the map) | 0 | 0 | Falls as the legacy review is done |
-| Not used | Matched a row with `include on map = no` (kept off the map) | 1 | 1 | 0 |
+| Not used | Matched a row with `include on map = no` (kept off the map) | 0 | 0 | 0 |
 | UNCLASS | Household dumping with no size chosen | 0 | 0 | 0 |
 | Orphan tags | Custom tag attached to no object (kept off the map) | 0 | 0 | 0 |
 | Unmapped | Matched no crosswalk row: a gap in the crosswalk (kept off the map) | 0 | 0 | 0 |
@@ -26,9 +26,7 @@ None.
 
 ## Not used (RECLASS) by OLM key
 
-| OLM key | Objects | Items |
-|---|---:|---:|
-| other/bags_litter | 1 | 1 |
+None.
 
 ## Unmapped
 
@@ -73,7 +71,7 @@ None.
 | Household |  | Abandoned Textile Apparel | 35 | 26 | 26 | 0 |
 | Household |  | Household misc | 87 | 81 | 80 | 2 |
 | Household |  | E-waste Piece | 3 | 3 | 3 | 0 |
-| Household |  | Household Plastic Bag | 13 | 12 | 12 | 0 |
+| Household |  | Household Plastic Bag | 14 | 13 | 13 | 0 |
 | Household |  | Pet Supplies | 2 | 2 | 2 | 0 |
 | Household |  | Dental Waste | 7 | 7 | 7 | 0 |
 | Household |  | Cotton Swabs | 3 | 3 | 3 | 0 |
