@@ -2,18 +2,18 @@
 
 Written by `scripts/sync_data.py` on every sync, following the README's "Audit counts". Items are quantities (the map counts items); objects are tagged objects; photos are OLM photos.
 
-- Photos: 3110
-- Newest photo: 2026-10-03
-- Crosswalk: `config/crosswalk.csv`, SHA-256 starts `cbc16e748d62`
-- Tagged objects: 3799 (5296 items)
-- Shown on the map: 3798 objects (5295 items) in 67 layers
+- Photos: 3113
+- Newest photo: 2026-10-04
+- Crosswalk: `config/crosswalk.csv`, SHA-256 starts `cf874a54ce8f`
+- Tagged objects: 3802 (5299 items)
+- Shown on the map: 3801 objects (5298 items) in 67 layers
 
 ## Status counts
 
 | Status | Meaning | Objects | Items | Healthy value |
 |---|---|---:|---:|---|
-| OK | Matched a map layer | 1990 | 3028 | Most objects |
-| REVIEW | Matched a map layer whose crosswalk row has an "OLM data needs fixes" note (shown on the map) | 1808 | 2267 | Falls as the legacy review is done |
+| OK | Matched a map layer | 3801 | 5298 | Most objects |
+| REVIEW | Matched a map layer whose crosswalk row has an "OLM data needs fixes" note (shown on the map) | 0 | 0 | Falls as the legacy review is done |
 | Not used | Matched a row with `include on map = no` (kept off the map) | 1 | 1 | 0 |
 | UNCLASS | Household dumping with no size chosen | 0 | 0 | 0 |
 | Orphan tags | Custom tag attached to no object (kept off the map) | 0 | 0 | 0 |
@@ -22,22 +22,7 @@ Written by `scripts/sync_data.py` on every sync, following the README's "Audit c
 
 ## REVIEW by OLM key
 
-| OLM key | Objects | Items | Note |
-|---|---:|---:|---|
-| other/plastic | 638 | 794 | OLM tag review to parse out industrial debris AND other/balloon[Party Litter] objects |
-| other/paper | 592 | 844 | OLM tag review parse out [Party Litter] objects |
-| food/wrapper | 212 | 238 | OLM tag review of legacy entries; retag food/packaging items |
-| food/packaging | 120 | 131 | OLM tag review of legacy entries |
-| other/other | 90 | 99 | OLM legacy objects need reclassing |
-| industrial/other | 47 | 48 | OLM tag review of legacy entries in OLM key other/metal and other/plastic and other/other industrial/pipe |
-| food/bag | 36 | 37 | OLM tag review of legacy entries move take-out bags to food/packaging |
-| other/metal | 16 | 16 | OLM tag review to parse out industrial debris objects |
-| food/container | 13 | 13 | OLM tag review of legacy entries move take-out containers to food/packaging |
-| other/plastic_bag | 12 | 13 | OLM tag review |
-| industrial/tape | 11 | 12 | OLM legacy objects need reclassing |
-| coffee/sleeve | 8 | 9 | OLM review of OLM key coffee/cup and softdrinks/cup and tag any untagged sleeves |
-| marine/styrofoam | 8 | 8 | OLM tag review |
-| alcohol/packaging | 5 | 5 | OLM legacy review and reclass THC objects to smoking/packaging with custom tag 'THC' |
+None.
 
 ## Not used (RECLASS) by OLM key
 
@@ -113,7 +98,7 @@ None.
 | Convenient Food Drink | Drink | Drink Straw Wrapper | 70 | 68 | 67 | 0 |
 | Convenient Food Drink | Snack | Metalized Chip Bags | 10 | 10 | 10 | 0 |
 | Convenient Food Drink | Snack | Chewed Gum | 12 | 12 | 12 | 0 |
-| Convenient Food Drink | Snack | Foil / Plastic Film Snack Wrapper | 238 | 212 | 211 | 0 |
+| Convenient Food Drink | Snack | Foil / Plastic Film Snack Wrapper | 240 | 214 | 213 | 0 |
 | Convenient Food Drink | Take-out | Cutlery | 5 | 4 | 4 | 0 |
 | Convenient Food Drink | Take-out | Napkins | 94 | 79 | 79 | 0 |
 | Convenient Food Drink | Take-out | Food Packaging | 131 | 120 | 120 | 0 |
@@ -136,7 +121,7 @@ None.
 | Industrial |  | Industrial Debris | 48 | 47 | 47 | 1 |
 | Industrial |  | Flagging Tape | 12 | 11 | 11 | 0 |
 | Fecal |  | Pet Waste Unbagged | 53 | 47 | 47 | 53 |
-| Fecal |  | Pet Waste Bagged | 49 | 45 | 45 | 44 |
+| Fecal |  | Pet Waste Bagged | 50 | 46 | 46 | 45 |
 | Smoking |  | Cigarette Butts | 1849 | 994 | 994 | 1 |
 | Smoking |  | Butane Lighter | 1 | 1 | 1 | 0 |
 | Smoking |  | Nicotine Packaging | 23 | 23 | 23 | 0 |
