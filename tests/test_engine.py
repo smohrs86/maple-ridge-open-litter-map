@@ -156,8 +156,28 @@ class AuditTests(unittest.TestCase):
         self.assertIn("| 90 | no coordinates |", self.audit())
         self.assertNotIn("## Dropped photos", sd.build_audit([], self.ROWS))
 
+    def test_crosswalk_fingerprint_line_only_when_given(self):
+        self.assertNotIn("- Crosswalk:", self.audit())
+        text = sd.build_audit([], self.ROWS, crosswalk_hash="abc123def456")
+        self.assertIn("- Crosswalk: `config/crosswalk.csv`, SHA-256 starts `abc123def456`", text)
+
     def test_no_timestamp_so_unchanged_data_gives_unchanged_file(self):
         self.assertEqual(self.audit(), self.audit())
+
+
+class CrosswalkVersionTests(unittest.TestCase):
+    def write(self, data):
+        f = tempfile.NamedTemporaryFile("wb", suffix=".csv", delete=False)
+        f.write(data)
+        f.close()
+        self.addCleanup(os.remove, f.name)
+        return f.name
+
+    def test_same_bytes_same_fingerprint_and_edits_change_it(self):
+        a, b, c = self.write(b"a,b\n1,2\n"), self.write(b"a,b\n1,2\n"), self.write(b"a,b\n1,3\n")
+        self.assertEqual(sd.crosswalk_version(a), sd.crosswalk_version(b))
+        self.assertNotEqual(sd.crosswalk_version(a), sd.crosswalk_version(c))
+        self.assertRegex(sd.crosswalk_version(a), r"^[0-9a-f]{12}$")
 
 
 class TreeLayersTests(unittest.TestCase):

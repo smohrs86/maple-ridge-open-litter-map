@@ -1,5 +1,6 @@
 import argparse
 import csv
+import hashlib
 import os
 import sys
 import time
@@ -149,6 +150,15 @@ def load_crosswalk(path=CROSSWALK_PATH):
         sys.exit(1)
     print(f"[INFO] Loaded {len(rows)} crosswalk rows from {path}.")
     return rows
+
+
+def crosswalk_version(path=CROSSWALK_PATH):
+    """A short fingerprint of the crosswalk file (first 12 characters of its SHA-256).
+
+    Same file, same fingerprint; any edit changes it. Check by hand with: sha256sum config/crosswalk.csv
+    """
+    with open(path, "rb") as f:
+        return hashlib.sha256(f.read()).hexdigest()[:12]
 
 
 def load_zones(neighbourhoods_path=NEIGHBOURHOODS_PATH, zones_path=ZONES_PATH):
@@ -308,10 +318,11 @@ def _cell(text):
     return str(text).replace("|", "\\|")
 
 
-def build_audit(features, crosswalk_rows, dropped=()):
+def build_audit(features, crosswalk_rows, dropped=(), crosswalk_hash=None):
     """The audit report (README "Audit counts") as Markdown.
 
     `dropped` is a list of (photo id, reason) for photos left out because of their coordinates.
+    `crosswalk_hash` is the crosswalk's fingerprint (crosswalk_version), shown so any number can be traced to it.
 
     No timestamp: an unchanged dataset gives an unchanged file, so the workflow makes no commit.
     """
@@ -336,6 +347,7 @@ def build_audit(features, crosswalk_rows, dropped=()):
         f"- Photos: {len(features)}" + (f" ({len(dropped)} more skipped: "
                                       f"{' and '.join(sorted({reason for _, reason in dropped}))})" if dropped else ""),
         f"- Newest photo: {newest[:10] or 'none'}",
+        *([f"- Crosswalk: `{CROSSWALK_PATH}`, SHA-256 starts `{crosswalk_hash}`"] if crosswalk_hash else []),
         f"- Tagged objects: {len(objects)} ({items(objects)} items)",
         f"- Shown on the map: {len(on_map)} objects ({items(on_map)} items) in "
         f"{len({(o['group'], o['subgroup'], o['layer']) for _, o in on_map})} layers",
@@ -750,7 +762,7 @@ def fetch_and_build_geojson(from_raw=None):
         sys.exit(1)
     for pid, reason in dropped:
         print(f"[WARNING] Photo {pid} left off the map: {reason}.")
-    audit = build_audit(features, crosswalk_rows, dropped=dropped)
+    audit = build_audit(features, crosswalk_rows, dropped=dropped, crosswalk_hash=crosswalk_version())
 
     target_paths = ["data/litter.geojson", "public/data/litter.geojson"]
 
