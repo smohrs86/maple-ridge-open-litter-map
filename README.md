@@ -52,6 +52,7 @@ Newest first, one line per change. Claude updates this whenever it updates the R
 
 - **2026-10-03:** Stage 3 declared complete. Richer popups were confirmed achieved; the design review leftovers (colour, footer wording, contrast) were set aside on purpose.
 - **2026-10-03:** Map areas ticks now filter the data (dots, clusters, counts, neighbourhood totals), not just the shaded overlay. The neighbourhood hover tag waits for the clusters, so it no longer doubles the bubble's name.
+- **2026-10-03:** Hardening: tests added for the older Stage 1 tag flattening and group rules (`tests/test_tags.py`). No code change.
 - **2026-10-03:** Hardening: the audit now records a short fingerprint (SHA-256) of `config/crosswalk.csv`, so any number can be traced to the crosswalk that produced it.
 - **2026-10-03:** Hardening: the sync checks each photo's coordinates (missing, not a number, off the globe, or 0, 0) and drops bad ones with their IDs in the audit; it also checks the GeoJSON's structure and stops before writing if it fails. A clean run's output is unchanged.
 - **2026-10-03:** Hardening: the sync now writes the GeoJSON copies and the audit atomically (temporary file, then swap), so an interrupted run can't leave a half-written file. Palette-validator item dropped from `docs/hardening.md` as not worth the cost.
