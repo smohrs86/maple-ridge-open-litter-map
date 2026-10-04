@@ -166,6 +166,9 @@
       #day-rows { max-height: 240px; }
     }
 
+    #words-body p { font-size: 12px; margin: 0 0 6px; }
+    #words-body h2 { font-size: 12px; margin: 8px 0 2px; }
+    #words-body ul { font-size: 12px; margin: 0 0 6px; padding-left: 18px; }
     .status-counter { font-size: 11px; color: #666; margin-top: 8px; border-top: 1px solid #eee; padding-top: 6px; }
     .about { margin: 6px 0 0; }
     .about a { color: inherit; }
@@ -181,16 +184,16 @@
   <div id="map"></div>
 
   <!-- Layer tree: Group → Subgroup → Layer, built from the data -->
-  <div class="filter-ctrl" id="panel">
+  <div class="filter-ctrl" id="panel" role="complementary" aria-label="Map controls">
     <div class="panel-head">
       <h1 class="brand">
         <span class="brand-name">MROLM</span>
         <span class="brand-sub">Maple Ridge Open Litter Map</span>
         <span class="brand-strip" id="brand-strip" aria-hidden="true"></span>
       </h1>
-      <button type="button" id="panel-toggle" aria-expanded="true">Hide</button>
+      <button type="button" id="panel-toggle" aria-expanded="true" aria-controls="panel-body">Hide</button>
     </div>
-    <div class="panel-body">
+    <div class="panel-body" id="panel-body">
       <div class="top-row">
         <button type="button" id="reset-filters" title="Show everything again: all layers, all dates and all areas">Reset filters</button>
       </div>
@@ -246,7 +249,13 @@
           <div id="where-key"></div>
         </div>
       </details>
-      <div id="feature-count" class="status-counter">Loading points...</div>
+      <!-- The same facts as the map, in words (filled in by updateMapFilter) -->
+      <details class="sec" id="sec-words">
+        <summary><span class="sec-title">Summary in words</span></summary>
+        <div class="sec-body" id="words-body"><p>Loading points...</p></div>
+      </details>
+      <!-- role="status": screen readers announce it when a filter changes the numbers -->
+      <div id="feature-count" class="status-counter" role="status">Loading points...</div>
       <!-- Plain-text summary: read by people and by search engines -->
       <p class="note about">Citizen-science litter records from Maple Ridge, BC, tagged on OpenLitterMap and sorted into local categories. <a href="https://github.com/smohrs86/maple-ridge-open-litter-map">About this map and its data</a></p>
     </div>
@@ -280,6 +289,9 @@
     });
 
     map.addControl(new maplibregl.NavigationControl(), 'top-right');
+    // Name the map for screen readers; the canvas takes the arrow keys and + / - once it has focus.
+    map.getCanvas().setAttribute('aria-label', 'Map of litter records in Maple Ridge, BC. Use the arrow keys to move and plus or minus to zoom. The same facts are in the summary in words.');
+    if (!map.getCanvas().getAttribute('role')) map.getCanvas().setAttribute('role', 'region');
 
     async function loadGeoJsonData() {
       // Fetch path attempting primary path with fallback for build targets.
@@ -351,6 +363,31 @@
       const d = new Date(iso);
       if (isNaN(d)) return 'Date unknown';
       return d.toLocaleString('en-CA', { timeZone: TIME_ZONE, dateStyle: 'medium', timeStyle: 'short' });
+    }
+    function dayLabel(day) {
+      const s = String(day);
+      return new Date(Number(s.slice(0, 4)), Number(s.slice(4, 6)) - 1, Number(s.slice(6, 8)))
+        .toLocaleDateString('en-CA', { year: 'numeric', month: 'short', day: 'numeric' });
+    }
+    // The "Summary in words" section: what the map shows under the current filters, as plain counts.
+    // `groups` is [[name, items]] in tree order; `areaTotals` is [[name, items]] or null when there are no areas.
+    function wordsHtml({ items, left, photos, days, leftOnly, groups, areaTotals }) {
+      const fmt = n => n.toLocaleString('en-CA');
+      if (!items) return '<p>Nothing matches the current filters.</p>';
+      const list = rows => `<ul>${rows.filter(r => r[1] > 0).map(r => `<li>${escapeHtml(r[0])}: ${fmt(r[1])}</li>`).join('')}</ul>`;
+      let span = '';
+      if (days.length) {
+        const [first, last] = [Math.min(...days), Math.max(...days)];
+        span = `, collected on ${fmt(days.length)} ${days.length === 1 ? 'day' : 'days'}` +
+          (first === last ? ` (${dayLabel(first)})` : ` between ${dayLabel(first)} and ${dayLabel(last)}`);
+      }
+      let html = `<p>${leftOnly ? 'Showing only items left in place: ' : 'Showing '}${fmt(items)} ${items === 1 ? 'item' : 'items'} ` +
+        `from ${fmt(photos)} ${photos === 1 ? 'photo' : 'photos'}${span}.` +
+        (leftOnly ? '' : ` ${fmt(left)} of them ${left === 1 ? 'was' : 'were'} left in place.`) + '</p>';
+      html += `<h2>Items by group</h2>${list(groups)}`;
+      if (areaTotals) html += `<h2>Items by neighbourhood</h2>${list(areaTotals)}` +
+        '<p>Counts show where collecting happened, which is not the same as where litter is.</p>';
+      return html;
     }
     function layerKey(g, s, l) { return JSON.stringify([g, s, l]); }
 
@@ -825,6 +862,8 @@
       setMode(mode);
       return {
         accumulator,
+        // Items per neighbourhood (and outside every zone) for the summary in words
+        totals: acc => [...units.nb.map(u => [u.name, acc.nb.get(u.id)?.items || 0]), ['Outside every zone', acc.outside]],
         update(acc) { lastAcc = acc; renderNote(); syncNbBubbles(); if (!card.hidden) placeCard(); },
         // Zoom in on one neighbourhood (a tap on its bubble)
         // The zones that are ticked, or null when all are (then nothing is left out, not even photos outside every zone)
@@ -988,6 +1027,8 @@
       document.querySelector('.top-row').hidden = true;
       document.getElementById('left-only-row').hidden = true;
       document.getElementById('feature-count').innerText = `Total Points: ${data.features.length}`;
+      document.getElementById('words-body').innerHTML =
+        `<p>Showing all ${data.features.length.toLocaleString('en-CA')} photos. Layer detail arrives with the next data sync.</p>`;
     }
 
     map.on('load', async () => {
@@ -1101,8 +1142,9 @@
           // Tree counts follow the selected days (and "left in place only");
           // the summary also follows the ticked layers.
           const itemsByLid = new Map();
-          let items = 0, count = 0;
-          const shownPhotos = new Set();
+          let items = 0, count = 0, left = 0;
+          const shownPhotos = new Set(), shownDays = new Set();
+          const groupItems = new Map(layers.map(l => [l.group || l.layer, 0]));
           const acc = areas ? areas.accumulator() : null;
           const byDay = new Map();   // items per day under the other filters, for the day list
           const clusterFeatures = [];
@@ -1115,6 +1157,10 @@
             itemsByLid.set(p.lid, (itemsByLid.get(p.lid) || 0) + n);
             if (shown.has(p.lid)) {
               items += n; count++; shownPhotos.add(p.pi);
+              left += p.left;
+              if (p.day) shownDays.add(p.day);
+              const g = layers[p.lid].group || layers[p.lid].layer;
+              groupItems.set(g, (groupItems.get(g) || 0) + n);
               if (acc) acc.add(p, n);
               clusterFeatures.push({ type: 'Feature', geometry: d.geometry, properties: { ...p, n } });
             }
@@ -1126,6 +1172,10 @@
           document.getElementById('feature-count').innerText =
             `Showing ${items.toLocaleString('en-CA')} items${leftOnly ? ' left in place' : ''} ` +
             `as ${count.toLocaleString('en-CA')} dots from ${shownPhotos.size.toLocaleString('en-CA')} photos`;
+          document.getElementById('words-body').innerHTML = wordsHtml({
+            items, left, photos: shownPhotos.size, days: [...shownDays], leftOnly,
+            groups: [...groupItems], areaTotals: areas ? areas.totals(acc) : null,
+          });
         }
 
         document.getElementById('all-on').addEventListener('click', () => { tree.setAll(true); updateMapFilter(); });
@@ -1165,6 +1215,7 @@
       } catch (err) {
         console.error('Failed to load GeoJSON dataset:', err);
         document.getElementById('feature-count').innerText = 'Error loading dataset';
+        document.getElementById('words-body').innerHTML = '<p>The data could not be loaded.</p>';
       }
     });
 
