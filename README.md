@@ -4,6 +4,8 @@
 
 **Live map:** https://smohrs86.github.io/maple-ridge-open-litter-map/
 
+[![A one-page guide to using the map, reading the dots, the zoom steps and the accessibility features](assets/orientation-guide.png)](assets/orientation-guide.png)
+
 Litter is photographed and tagged in the field using [OpenLitterMap](https://openlittermap.com) (OLM), an open citizen-science platform. MROLM is an independent volunteer project, not part of OpenLitterMap. It pulls those records from the OLM API every 12 hours, sorts each tagged item into local litter categories, and publishes the result as a free, interactive web map. The goal is good open data for citizen science: a consistent, well-documented record of where litter is, what it is, and how that changes over time.
 
 > **Status: proof of concept achieved (2026-09-27).** The map is live and updates automatically. Refinements are ongoing: older tags in OpenLitterMap are still being cleaned up, so some categories will shift as that's finished.
@@ -50,6 +52,7 @@ Not part of the proof of concept: GIS features, municipal streams, a license, an
 
 Newest first, one line per change. Claude updates this whenever it updates the README.
 
+- **2026-10-04:** Added a one-page orientation guide (`assets/orientation-guide.png`, shown under the live-map link): the panel, how to read the dots, the zoom steps and the accessibility features. It is a picture, so it needs redoing if the interface changes.
 - **2026-10-04:** Milestone: 3,113 photos from a single volunteer are on the map (3,802 tagged objects, 5,299 items), all legacy tags reviewed, with REVIEW, UNCLASS, orphan tags and unmapped all at 0.
 - **2026-10-03:** Crosswalk re-exported after the legacy review: the "OLM data needs fixes" notes were cleared and other notes tidied, so every object now shows as OK (REVIEW = 0). No rule changes (group, subgroup, local key and include are unchanged on every row).
 - **2026-10-03:** Stage 3 declared complete. Richer popups were confirmed achieved; the design review leftovers (colour, footer wording, contrast) were set aside on purpose.
@@ -301,7 +304,7 @@ Ongoing reliability work is listed in [docs/hardening.md](docs/hardening.md).
 ├── data/audit.md                     Audit report from the latest sync
 ├── public/data/litter.geojson        Copy of the dataset for hosting
 ├── index.html                        The web map
-├── assets/                           Favicon and link-preview image
+├── assets/                           Favicon, link-preview image and the orientation guide
 ├── docs/                             Tagging protocol, decision log, hardening list, batch review method, zones method, Maple Ridge neighbourhood sources
 ├── config/crosswalk.csv              The crosswalk, exported from the spreadsheet
 ├── config/neighbourhoods.csv         The map's neighbourhoods and their colours
