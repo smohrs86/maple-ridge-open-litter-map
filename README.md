@@ -54,6 +54,7 @@ Not part of the proof of concept: GIS features, municipal streams, a license, an
 
 Newest first, one line per change. Claude updates this whenever it updates the README.
 
+- **2026-10-07:** Growth plan for about 1,500 new photos a week. The sync now reads only new and recent photos (the newest 25 pages, plus any page that still holds unstored photos), and does a full read of OLM on Sundays, on request (Run workflow, tick *full*), and whenever the crosswalk or zone files change. Data is also written as one file per month, `data/months/YYYY-MM.geojson`, plus `data/index.json`, so a sync normally changes only the newest month. The map reads the monthly files and falls back to `data/litter.geojson` if anything is wrong. The old single files are still written during the transition and will be retired after a few clean syncs. See the decision log (2026-10-07).
 - **2026-10-07:** Raised the sync's page safety limit from 2,000 to 20,000 pages (16,000 to 160,000 photos). At the planned collecting rate (about 1,500 photos a week) the old limit would have stopped updates in early December. A plan for incremental sync and monthly data files follows.
 - **2026-10-06:** Added schema.org `Dataset` structured data (JSON-LD) to `index.html`'s `<head>` so Google Dataset Search can describe the open data: place, ODbL licence, creator, and a download link to `data/litter.geojson`. It carries no counts or dates, so it needs no upkeep. No change to the map or data.
 - **2026-10-06:** Search visibility: the plain-text "about" line in `index.html` now names Metro Vancouver, the volunteer collection, the picked-up/left-in-place detail and the ODbL licence, and `sitemap.xml` was added. No `robots.txt`, because Google only reads it at the host root and Pages serves this site from a sub-path.
@@ -136,7 +137,7 @@ flowchart LR
 2. **Fetch.** A scheduled GitHub Actions workflow (`.github/workflows/sync_data.yml`) runs `scripts/sync_data.py`. The script logs in to the OLM API and requests photos page by page until an empty page comes back.
 3. **Reshape.** Each photo's tags are flattened into a simple list. Material, brand, and custom tags stay linked to the item they describe.
 4. **Classify.** The script reads `config/crosswalk.csv` and gives every tagged object its Group, Subgroup, and Layer, following the matching rules below. If the crosswalk is missing or a column it needs was renamed, the run stops before writing anything.
-5. **Publish.** The result is saved as `data/litter.geojson` (plus a copy in `public/data/`), with the audit report in `data/audit.md`. The workflow commits them only if something changed. It also runs as soon as a new `config/crosswalk.csv` is pushed.
+5. **Publish.** The result is saved as one file per month in `data/months/` with `data/index.json` (the map reads these), and still as `data/litter.geojson` (plus a copy in `public/data/`) for now, with the audit report in `data/audit.md`. The workflow commits them only if something changed. It also runs as soon as a new `config/crosswalk.csv` is pushed.
 6. **Display.** `index.html` loads the GeoJSON into a MapLibre map with the layer tree, a date filter, and photo popups.
 
 ### What each map point contains
@@ -302,11 +303,14 @@ Ongoing reliability work is listed in [docs/hardening.md](docs/hardening.md).
 .
 ├── .github/workflows/sync_data.yml   Workflow that runs the pipeline (every 12 hours and on crosswalk changes)
 ├── scripts/sync_data.py              Fetches OLM data, applies the crosswalk, writes the GeoJSON and audit
+├── scripts/monthly_store.py          Reads and writes the monthly data files and index
 ├── scripts/crosswalk.py              The crosswalk matching rules, shared by the pipeline and review tools
 ├── scripts/export_raw_olm.py         Read-only raw export for the legacy review (local use)
 ├── scripts/build_review_workbook.py  Builds the legacy review workbook from an export (local use)
 ├── tests/                            Unit tests: python3 -m unittest discover -s tests
-├── data/litter.geojson               Published dataset
+├── data/months/YYYY-MM.geojson       Published dataset, one file per month
+├── data/index.json                   Lists the months; carries the layer tree, neighbourhoods and zones
+├── data/litter.geojson               Whole dataset in one file (being retired)
 ├── data/audit.md                     Audit report from the latest sync
 ├── public/data/litter.geojson        Copy of the dataset for hosting
 ├── index.html                        The web map

@@ -388,7 +388,31 @@
         if (!response.ok) throw new Error(`the server answered ${response.status}`);
         return response.json();
       };
+      // Newer data layout: data/index.json lists one file per month. Each month file is named by a
+      // content hash (?v=), so the browser keeps unchanged months and re-downloads only the new one.
+      // Any trouble at all falls back to the single-file layout below, so the map never breaks.
+      const getMonthly = async () => {
+        const index = await get('./data/index.json');
+        if (!Array.isArray(index.months)) throw new Error('index.json has no months list');
+        const parts = await Promise.all(index.months.map(async m => {
+          const response = await fetch(`./data/${m.file}?v=${m.sha256}`);
+          if (!response.ok) throw new Error(`the server answered ${response.status} for ${m.file}`);
+          const part = await response.json();
+          if (part.features.length !== m.count) throw new Error(`${m.file} does not match the index`);
+          return { key: m.key, features: part.features };
+        }));
+        parts.sort((x, y) => (x.key < y.key ? 1 : -1)); // newest month first, like the single file
+        const meta = Object.fromEntries(Object.entries(index).filter(([k]) => k.startsWith('mrolm_')));
+        const features = parts.flatMap(part => part.features);
+        if (features.length !== index.total) throw new Error('month files do not add up to the index total');
+        return { type: 'FeatureCollection', ...meta, features };
+      };
       try {
+        try {
+          return await getMonthly();
+        } catch (monthlyError) {
+          console.warn('Monthly data unavailable, using the single file:', monthlyError);
+        }
         return await get('./data/litter.geojson');
       } catch (primaryError) {
         try {

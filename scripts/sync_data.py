@@ -11,6 +11,7 @@ from collections import defaultdict
 import requests
 
 import crosswalk as cw
+import monthly_store as store
 
 LOGIN_URL = "https://openlittermap.com/api/auth/token"
 PHOTOS_URL = "https://openlittermap.com/api/v3/user/photos"
@@ -32,6 +33,8 @@ ZONES_PATH = "config/zones.csv"
 # Phone GPS can be off by roughly this much (README: 5 to 15 m). OLM sends no per-photo accuracy,
 # so one assumed value is used. A photo closer than this to a zone edge is flagged on the map's cards.
 GPS_ERROR_M = 15
+INCREMENTAL_MIN_PAGES = 25  # about 200 photos (roughly 3 days of collecting) are always re-read
+DATA_DIR = "data"
 M_PER_DEG_LAT = 111320
 
 
@@ -547,7 +550,14 @@ def get_page_with_retries(headers, params, retries=3, base_delay=2):
     return None
 
 
-def fetch_all_photos(token, get_new_token=None, max_relogins=3):
+def fetch_all_photos(token, get_new_token=None, max_relogins=3, known_ids=None, min_pages=INCREMENTAL_MIN_PAGES):
+    """Read OLM's photo pages, newest upload first.
+
+    With known_ids (a set of photo ids already stored), stop at the first page after min_pages
+    on which every photo is already known: everything older is stored too. The minimum re-reads
+    the newest photos every run so a retag of a recent photo is picked up. Without known_ids,
+    read until an empty page (a full read).
+    """
     headers = {
         "Authorization": f"Bearer {token}",
         "Accept": "application/json"
@@ -596,6 +606,12 @@ def fetch_all_photos(token, get_new_token=None, max_relogins=3):
 
             all_photos.extend(photos_page)
             print(f"[INFO] Page {current_page}: fetched {len(photos_page)} photos (Cumulative total: {len(all_photos)}).")
+
+            if known_ids is not None and current_page >= min_pages \
+                    and all(p.get("id") in known_ids for p in photos_page):
+                print(f"[INFO] Page {current_page} holds only photos already stored. Stopping early (incremental read).")
+                complete = True
+                break
             
             current_page += 1
             time.sleep(0.5)
@@ -677,38 +693,21 @@ def write_atomically(path, text):
         raise
 
 
-def fetch_and_build_geojson(from_raw=None):
-    # Read the crosswalk first: if it can't be used, stop before logging in or writing anything.
-    crosswalk_rows = load_crosswalk()
-    neighbourhoods, zones = load_zones()
+def config_fingerprint():
+    """Fingerprint of what stored features depend on besides the photo: crosswalk, neighbourhoods, zones."""
+    parts = [crosswalk_version()]
+    for path in (NEIGHBOURHOODS_PATH, ZONES_PATH):
+        try:
+            with open(path, "rb") as f:
+                parts.append(f.read())
+        except OSError:
+            parts.append(b"")
+    return store.fingerprint(*parts)
 
-    if from_raw:
-        # Local testing only: build from a saved export (scripts/export_raw_olm.py), no login.
-        with open(from_raw, encoding="utf-8") as f:
-            raw_photos = json.load(f)
-        complete = True
-        print(f"[INFO] Offline mode: read {len(raw_photos)} photos from {from_raw}.")
-    else:
-        email = os.environ.get("OLM_EMAIL", "").strip()
-        password = os.environ.get("OLM_PASSWORD", "").strip()
 
-        if not email or not password:
-            print("[CRITICAL ERROR] Missing OLM_EMAIL or OLM_PASSWORD environment variables.")
-            sys.exit(1)
-
-        token = get_auth_token(email, password)
-        raw_photos, complete = fetch_all_photos(token, get_new_token=lambda: get_auth_token(email, password))
-
-    print(f"\n[DIAGNOSTIC] Total raw photo records fetched from API: {len(raw_photos)}")
-
-    # Never overwrite the live data with a partial or empty fetch. Exiting non-zero
-    # stops the workflow before its commit step, so the map keeps its last good data.
-    if not complete or not raw_photos:
-        print("[CRITICAL ERROR] Fetch was incomplete or returned 0 photos. No files were written.")
-        sys.exit(1)
-
-    features = []
-    dropped = []
+def build_features(raw_photos, crosswalk_rows, zones):
+    """Turn raw OLM photos into map features. Returns (features, dropped), dropped being (id, reason) pairs."""
+    features, dropped = [], []
     for photo in raw_photos:
         lon, lat, problem = read_coordinates(photo)
         if problem:
@@ -729,6 +728,73 @@ def fetch_and_build_geojson(from_raw=None):
             },
             "properties": properties
         })
+    return features, dropped
+
+
+def merge_features(stored_features, stored_dropped, new_features, new_dropped):
+    """Stored photos with the freshly read ones laid over them (a fresh copy replaces a stored one by id).
+
+    Returns (features newest first, dropped list sorted by id).
+    """
+    by_id = {f["properties"]["id"]: f for f in stored_features}
+    dropped = dict(stored_dropped)
+    for feature in new_features:
+        pid = feature["properties"]["id"]
+        by_id[pid] = feature
+        dropped.pop(pid, None)
+    for pid, reason in new_dropped:
+        dropped[pid] = reason
+        by_id.pop(pid, None)
+    features = sorted(by_id.values(), key=lambda f: f["properties"]["id"], reverse=True)
+    return features, sorted(dropped.items(), key=lambda item: (item[0] is None, item[0]))
+
+
+def fetch_and_build_geojson(from_raw=None, full=False):
+    # Read the crosswalk first: if it can't be used, stop before logging in or writing anything.
+    crosswalk_rows = load_crosswalk()
+    neighbourhoods, zones = load_zones()
+
+    fingerprint = config_fingerprint()
+    # Incremental unless forced full, offline, or the stored files are missing, damaged or out of date
+    stored = None if (full or from_raw) else store.load_store(DATA_DIR, fingerprint)
+    print(f"[INFO] Sync mode: {'incremental' if stored else 'full'}"
+          f"{'' if stored or full or from_raw else ' (no usable stored data, or crosswalk/zones changed)'}.")
+
+    if from_raw:
+        # Local testing only: build from a saved export (scripts/export_raw_olm.py), no login.
+        with open(from_raw, encoding="utf-8") as f:
+            raw_photos = json.load(f)
+        complete = True
+        print(f"[INFO] Offline mode: read {len(raw_photos)} photos from {from_raw}.")
+    else:
+        email = os.environ.get("OLM_EMAIL", "").strip()
+        password = os.environ.get("OLM_PASSWORD", "").strip()
+
+        if not email or not password:
+            print("[CRITICAL ERROR] Missing OLM_EMAIL or OLM_PASSWORD environment variables.")
+            sys.exit(1)
+
+        token = get_auth_token(email, password)
+        known_ids = None
+        if stored:
+            known_ids = {f["properties"]["id"] for f in stored[0]} | {pid for pid, _ in stored[1] if pid is not None}
+        raw_photos, complete = fetch_all_photos(token, get_new_token=lambda: get_auth_token(email, password),
+                                                known_ids=known_ids)
+
+    print(f"\n[DIAGNOSTIC] Total raw photo records fetched from API: {len(raw_photos)}")
+
+    # Never overwrite the live data with a partial or empty fetch. Exiting non-zero
+    # stops the workflow before its commit step, so the map keeps its last good data.
+    if not complete or not raw_photos:
+        print("[CRITICAL ERROR] Fetch was incomplete or returned 0 photos. No files were written.")
+        sys.exit(1)
+
+    features, dropped = build_features(raw_photos, crosswalk_rows, zones)
+    if stored:
+        features, dropped = merge_features(stored[0], stored[1], features, dropped)
+        print(f"[INFO] Read {len(raw_photos)} recent photos and merged them with {len(stored[0])} stored ones.")
+    else:
+        features, dropped = merge_features([], [], features, dropped)  # also drops duplicate ids
 
     geojson = {
         "type": "FeatureCollection",
@@ -773,6 +839,11 @@ def fetch_and_build_geojson(from_raw=None):
         write_atomically(path, geojson_text)
         print(f"[SUCCESS] Exported canonical dataset -> {path}")
 
+    # The new layout: one file per month plus an index (additive; the map prefers it, see index.html)
+    meta = {key: value for key, value in geojson.items() if key.startswith("mrolm_")}
+    written = store.write_store(DATA_DIR, features, dropped, meta, fingerprint, write_atomically)
+    print(f"[SUCCESS] Wrote monthly data -> {len(written)} file(s) changed (including {DATA_DIR}/{store.INDEX_NAME})")
+
     write_atomically(AUDIT_PATH, audit)
     print(f"[SUCCESS] Wrote audit report -> {AUDIT_PATH}")
 
@@ -781,4 +852,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Fetch OLM photos, apply the crosswalk, and write the GeoJSON.")
     parser.add_argument("--from-raw", metavar="PHOTOS_JSON",
                         help="local testing: build from a saved raw export (review/raw/photos_*.json) instead of OLM")
-    fetch_and_build_geojson(parser.parse_args().from_raw)
+    parser.add_argument("--full", action="store_true",
+                        help="read every photo from OLM and rebuild all files (the default is to read only new and recent photos)")
+    args = parser.parse_args()
+    fetch_and_build_geojson(args.from_raw, full=args.full)

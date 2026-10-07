@@ -5,6 +5,11 @@ on:
     # Runs automatically every 12 hours
     - cron: '0 */12 * * *'
   workflow_dispatch: # Allows manual pipeline execution from GitHub UI
+    inputs:
+      full:
+        description: 'Read every photo from OLM (about 10+ minutes) instead of only new and recent ones'
+        type: boolean
+        default: false
   push:
     # A new crosswalk export reaches the map right away instead of at the next scheduled run
     branches: [main]
@@ -41,15 +46,23 @@ jobs:
         env:
           OLM_EMAIL: ${{ secrets.OLM_EMAIL }}
           OLM_PASSWORD: ${{ secrets.OLM_PASSWORD }}
-        run: python scripts/sync_data.py
+        run: |
+          # Normal runs read only new and recent photos. A full read happens on request, and on the
+          # first run each Sunday (UTC) so retags of older photos and photos deleted in OLM are picked up.
+          FULL=""
+          if [ "${{ github.event.inputs.full }}" = "true" ]; then FULL="--full"; fi
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "$(date -u +%u)" = "7" ] && [ "$(date -u +%H)" -lt 12 ]; then FULL="--full"; fi
+          echo "Sync arguments: ${FULL:-(incremental)}"
+          python scripts/sync_data.py $FULL
 
       - name: Commit and Push Canonical GeoJSON Updates
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # Stage both canonical GeoJSON paths and the audit report
+          # Stage the GeoJSON files, the monthly files and index (-A also records removed months), and the audit report
           git add data/litter.geojson public/data/litter.geojson data/audit.md 2>/dev/null || true
+          git add -A data/index.json data/months 2>/dev/null || true
 
           if git diff --staged --quiet; then
             echo "[INFO] No changes detected in GeoJSON datasets or audit report. Skipping commit."
