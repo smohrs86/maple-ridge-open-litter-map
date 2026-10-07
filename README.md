@@ -54,6 +54,7 @@ Not part of the proof of concept: GIS features, municipal streams, a license, an
 
 Newest first, one line per change. Claude updates this whenever it updates the README.
 
+- **2026-10-06:** Added schema.org `Dataset` structured data (JSON-LD) to `index.html`'s `<head>` so Google Dataset Search can describe the open data: place, ODbL licence, creator, and a download link to `data/litter.geojson`. It carries no counts or dates, so it needs no upkeep. No change to the map or data.
 - **2026-10-06:** Search visibility: the plain-text "about" line in `index.html` now names Metro Vancouver, the volunteer collection, the picked-up/left-in-place detail and the ODbL licence, and `sitemap.xml` was added. No `robots.txt`, because Google only reads it at the host root and Pages serves this site from a sub-path.
 - **2026-10-06:** Added a Google Search Console verification meta tag to `index.html`'s `<head>` so the maintainer can confirm ownership of the site and request indexing. No change to the map or data.
 - **2026-10-04:** Added a one-page project overview (`assets/project-overview.png`: the photo-to-map pipeline, why the project exists, data quality and open licences) and restyled the orientation guide in the MROLM brand colours. Both are shown under the live-map link. The orientation guide (`assets/orientation-guide.png`) covers: the panel, how to read the dots, the zoom steps and the accessibility features. It is a picture, so it needs redoing if the interface changes.

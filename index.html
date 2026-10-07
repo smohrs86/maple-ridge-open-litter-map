@@ -27,6 +27,28 @@
   <meta property="og:locale" content="en_CA">
   <meta name="twitter:card" content="summary_large_image">
 
+  <!-- Structured data (schema.org Dataset): lets Google Dataset Search describe the open data. Keep it in step with the visible text, and leave out counts and dates so it never goes stale. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "name": "MROLM: Maple Ridge litter records",
+    "description": "Citizen-science litter records from Maple Ridge, BC, photographed and tagged with OpenLitterMap and sorted into local categories. Each point is one photo, with the litter items found and whether they were picked up or left in place.",
+    "url": "https://smohrs86.github.io/maple-ridge-open-litter-map/",
+    "keywords": ["litter", "Maple Ridge", "British Columbia", "citizen science", "OpenLitterMap", "open data"],
+    "spatialCoverage": { "@type": "Place", "name": "Maple Ridge, British Columbia, Canada" },
+    "creator": { "@type": "Organization", "name": "MROLM", "url": "https://smohrs86.github.io/maple-ridge-open-litter-map/" },
+    "isBasedOn": "https://openlittermap.com",
+    "isAccessibleForFree": true,
+    "license": "https://opendatacommons.org/licenses/odbl/1-0/",
+    "distribution": {
+      "@type": "DataDownload",
+      "encodingFormat": "application/geo+json",
+      "contentUrl": "https://smohrs86.github.io/maple-ridge-open-litter-map/data/litter.geojson"
+    }
+  }
+  </script>
+
   <!-- MapLibre Engine & Layout Dependencies -->
   <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
 
