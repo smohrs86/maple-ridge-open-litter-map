@@ -555,7 +555,7 @@ def fetch_all_photos(token, get_new_token=None, max_relogins=3):
 
     all_photos = []
     current_page = 1
-    max_safety_pages = 2000  # Hard circuit breaker against infinite loops (8 photos/page = 16,000 photos)
+    max_safety_pages = 20000  # Hard circuit breaker against infinite loops (8 photos/page = 160,000 photos)
     complete = False  # True only when an empty page confirms we reached the end
     relogins_left = max_relogins  # How many times a rejected (401) token may be replaced in one run
 
