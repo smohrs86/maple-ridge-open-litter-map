@@ -54,6 +54,7 @@ Not part of the proof of concept: GIS features, municipal streams, a license, an
 
 Newest first, one line per change. Claude updates this whenever it updates the README.
 
+- **2026-10-06:** Search visibility: the plain-text "about" line in `index.html` now names Metro Vancouver, the volunteer collection, the picked-up/left-in-place detail and the ODbL licence, and `sitemap.xml` was added. No `robots.txt`, because Google only reads it at the host root and Pages serves this site from a sub-path.
 - **2026-10-06:** Added a Google Search Console verification meta tag to `index.html`'s `<head>` so the maintainer can confirm ownership of the site and request indexing. No change to the map or data.
 - **2026-10-04:** Added a one-page project overview (`assets/project-overview.png`: the photo-to-map pipeline, why the project exists, data quality and open licences) and restyled the orientation guide in the MROLM brand colours. Both are shown under the live-map link. The orientation guide (`assets/orientation-guide.png`) covers: the panel, how to read the dots, the zoom steps and the accessibility features. It is a picture, so it needs redoing if the interface changes.
 - **2026-10-04:** Milestone: 3,113 photos from a single volunteer are on the map (3,802 tagged objects, 5,299 items), all legacy tags reviewed, with REVIEW, UNCLASS, orphan tags and unmapped all at 0.
@@ -307,6 +308,7 @@ Ongoing reliability work is listed in [docs/hardening.md](docs/hardening.md).
 ├── data/audit.md                     Audit report from the latest sync
 ├── public/data/litter.geojson        Copy of the dataset for hosting
 ├── index.html                        The web map
+├── sitemap.xml                       One-page sitemap for Google Search Console
 ├── assets/                           Favicon, link-preview image, project overview and orientation guide
 ├── docs/                             Tagging protocol, decision log, hardening list, batch review method, zones method, Maple Ridge neighbourhood sources
 ├── config/crosswalk.csv              The crosswalk, exported from the spreadsheet
