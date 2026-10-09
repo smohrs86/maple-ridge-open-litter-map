@@ -10,7 +10,7 @@
 
 Litter is photographed and tagged in the field using [OpenLitterMap](https://openlittermap.com) (OLM), an open citizen-science platform. MROLM is an independent volunteer project, not part of OpenLitterMap. It pulls those records from the OLM API every 12 hours, sorts each tagged item into local litter categories, and publishes the result as a free, interactive web map. The goal is good open data for citizen science: a consistent, well-documented record of where litter is, what it is, and how that changes over time.
 
-> **Status: proof of concept achieved (2026-09-27).** The map is live and updates automatically. Refinements are ongoing: older tags in OpenLitterMap are still being cleaned up, so some categories will shift as that's finished.
+> **Status: proof of concept achieved (2026-09-27).** The map is live and updates automatically. The cleanup of older tags in OpenLitterMap was finished on 2026-10-02, and the map features planned for Stage 3 were completed on 2026-10-03.
 
 **Contact:** questions, interest in contributing, or data inquiries: mrolm.unsaved516@simplelogin.com
 
@@ -41,7 +41,7 @@ The original criteria, with 5 and 8 moved to refinements because they improve qu
 2. ✅ **The audit report is published on every run**, with the counts in the audit table below. Tie-breaks are reviewed and either fixed in the crosswalk or accepted.
 3. ✅ **The layer tree works on the live map:** Group → Subgroup → Layer checkboxes that cascade, item counts that roll up, empty layers hidden, and full layer names in popups.
 4. ✅ **Counts are spot-checked.** For about five layers, the map count matches a manual count of the same tags in OLM.
-5. ✅ **Legacy data is conformed enough to trust** (completed 2026-10-02, after a full photo review and 166 photos retagged in OLM). Not used = 0 and UNCLASS = 0. Orphan tags are tracked in the audit with their photo IDs and fixed in OLM, or accepted as a known gap. The REVIEW backlog is tracked by Claude, which rebuilds the review workbook after the maintainer's OLM edits, and its remaining count is recorded in the progress log at each check.
+5. ✅ **Legacy data is conformed enough to trust** (completed 2026-10-02, after a full photo review and 166 photos retagged in OLM). Not used = 0 and UNCLASS = 0. Orphan tags are tracked in the audit with their photo IDs and fixed in OLM, or accepted as a known gap. The REVIEW backlog reached 0 on 2026-10-03, after the review notes were cleared from the crosswalk.
 6. ✅ **The pipeline stays safe.** An incomplete fetch leaves the last good data live, and the tree map data is produced by the workflow without manual fixes.
 7. ✅ **A basic test exists** for crosswalk matching: a specific row beats the plain row, blank falls back, capitals and spacing are ignored, and the first match wins.
 8. ➡️ *Refinement:* **A newcomer can understand it in five minutes.** The README opens with what the map shows, and the live link works.
@@ -54,6 +54,7 @@ Not part of the proof of concept: GIS features, municipal streams, a license, an
 
 Newest first, one line per change. Claude updates this whenever it updates the README.
 
+- **2026-10-08:** README brought up to date: the status note, proof-of-concept criterion 5, the roadmap (Stages 2 and 3 and the tag cleanup marked done), the pipeline diagram and the description of how the sync reads OLM now match the current project. No change to the map or data.
 - **2026-10-07:** Growth plan for about 1,500 new photos a week. The sync now reads only new and recent photos (the newest 25 pages, plus any page that still holds unstored photos), and does a full read of OLM on Sundays, on request (Run workflow, tick *full*), and whenever the crosswalk or zone files change. Data is also written as one file per month, `data/months/YYYY-MM.geojson`, plus `data/index.json`, so a sync normally changes only the newest month. The map reads the monthly files and falls back to `data/litter.geojson` if anything is wrong. The old single files are still written during the transition and will be retired after a few clean syncs. See the decision log (2026-10-07).
 - **2026-10-07:** Raised the sync's page safety limit from 2,000 to 20,000 pages (16,000 to 160,000 photos). At the planned collecting rate (about 1,500 photos a week) the old limit would have stopped updates in early December. A plan for incremental sync and monthly data files follows.
 - **2026-10-06:** Added schema.org `Dataset` structured data (JSON-LD) to `index.html`'s `<head>` so Google Dataset Search can describe the open data: place, ODbL licence, creator, and a download link to `data/litter.geojson`. It carries no counts or dates, so it needs no upkeep. No change to the map or data.
@@ -127,14 +128,14 @@ flowchart LR
     A[Field photo<br/>tagged in OLM app] --> B[OpenLitterMap<br/>API v3]
     B --> C[GitHub Actions<br/>every 12 hours]
     C --> D[scripts/sync_data.py]
-    D --> E[litter.geojson]
+    D --> E[Monthly GeoJSON files<br/>+ index.json]
     E --> F[Web map<br/>index.html]
     X[config/crosswalk.csv] --> D
     D --> G[audit.md]
 ```
 
 1. **Collect.** Litter is photographed, geotagged, and tagged in the OpenLitterMap app.
-2. **Fetch.** A scheduled GitHub Actions workflow (`.github/workflows/sync_data.yml`) runs `scripts/sync_data.py`. The script logs in to the OLM API and requests photos page by page until an empty page comes back.
+2. **Fetch.** A scheduled GitHub Actions workflow (`.github/workflows/sync_data.yml`) runs `scripts/sync_data.py`. The script logs in to the OLM API and requests photos page by page, newest first. A normal run stops once it reaches photos it already has (after reading at least the newest 25 pages). A full read, which continues until an empty page comes back, runs on Sundays, on request, and when the crosswalk or the neighbourhood or zone files change.
 3. **Reshape.** Each photo's tags are flattened into a simple list. Material, brand, and custom tags stay linked to the item they describe.
 4. **Classify.** The script reads `config/crosswalk.csv` and gives every tagged object its Group, Subgroup, and Layer, following the matching rules below. If the crosswalk is missing or a column it needs was renamed, the run stops before writing anything.
 5. **Publish.** The result is saved as one file per month in `data/months/` with `data/index.json` (the map reads these), and still as `data/litter.geojson` (plus a copy in `public/data/`) for now, with the audit report in `data/audit.md`. The workflow commits them only if something changed. It also runs as soon as a new `config/crosswalk.csv` is pushed.
@@ -235,7 +236,7 @@ A photo with several kinds of litter appears in every layer that applies to it. 
 - **Popups** show the full layer name, the item count, picked up or left in place, the local date and time, other layers in the same photo, and a link to the photo on OLM.
 - **Dot positions come from the phone's GPS**, so they are usually within about 5 to 15 metres of where the photo was taken, and more near buildings and trees. Zoomed in, a dot can appear on a building near where the litter actually was.
 
-### Current tree (from `config/crosswalk.csv`, 2026-09-26)
+### Current tree (from `config/crosswalk.csv`, 2026-10-03)
 
 Some layers sit directly under a group, with no subgroup.
 
@@ -270,17 +271,17 @@ Smoking             Cigarette Butts, Butane Lighter, Nicotine Packaging, Cannabi
 
 ## Roadmap
 
-### Stage 2 — Local classification (current)
+### Stage 2 — Local classification (done)
 
 Priority order: the code that applies the crosswalk and displays the points (steps 2 and 3), then the legacy review and reclass (step 4, which is the largest amount of human effort), then Stage 3, then Stage 4.
 
 1. ✅ **Finish the crosswalk.** Done 2026-09-25: exported to `config/crosswalk.csv`, with structural checks clean and no unmapped tags in the current data.
 2. ✅ **Build the crosswalk engine.** Done 2026-09-26: `scripts/sync_data.py` reads the CSV, applies the matching rules, and writes `data/audit.md` alongside the GeoJSON.
 3. ✅ **Build the layer tree map.** Done 2026-09-26: the expandable tree with counts, picked-up rings, a date filter, and photo popups replaced the three fixed checkboxes.
-4. **Clean up older tags in OLM (in progress).** The maintainer is reclassing tagged objects directly in OLM: tags on retired or excluded keys, tags the crosswalk flags for review ("OLM data needs fixes"), and orphan custom tags, meaning custom tags attached to no object. The aim is for the audit counts to reach zero.
+4. ✅ **Clean up older tags in OLM.** Done 2026-10-02: the maintainer reviewed every photo and reclassed tagged objects directly in OLM. This covered tags on retired or excluded keys, tags the crosswalk flagged for review ("OLM data needs fixes"), and orphan custom tags (custom tags attached to no object). The audit counts for these are now 0.
 5. ✅ **Confirm OLM's modifier codes.** Done 2026-09-25: the API sends an object's type as `type` (`new_tags` format) or `type_id` (summary format), and the pipeline keeps it as `object_type`. `small` and `medium` are confirmed in real data; `large` has not appeared yet.
 
-### Stage 3 — GIS features on the map
+### Stage 3 — GIS features on the map (done 2026-10-03)
 
 Once the layer tree works and the legacy data is conformed, add features that make the spatial data easier to read:
 
@@ -330,7 +331,7 @@ Ongoing reliability work is listed in [docs/hardening.md](docs/hardening.md).
 
 The pipeline needs an OpenLitterMap account. Its email and password are stored as **GitHub repository secrets** named `OLM_EMAIL` and `OLM_PASSWORD` (Settings → Secrets and variables → Actions). They are never written into the code.
 
-- **Automatic:** the workflow runs every 12 hours, and whenever a push changes `config/crosswalk.csv`.
+- **Automatic:** the workflow runs every 12 hours (a full read on Sundays), and whenever a push changes `config/crosswalk.csv`.
 - **On demand:** go to the Actions tab, choose *Sync OpenLitterMap GeoJSON Data*, and click *Run workflow*.
 - **Locally:** with Python 3.11 installed:
 
