@@ -2,6 +2,7 @@
 
 Newest first, one line per change. Claude adds a line whenever the code, crosswalk or docs change, and copies the five newest into the README's Recent changes.
 
+- **2026-10-08:** Orientation slide (`assets/orientation-guide.png`): the note under the zoom steps now says dot locations come from phone GPS and may be off by up to 15 m, replacing the note on approximate zoom levels. No change to the map or data.
 - **2026-10-08:** Map: every dot's info card now ends with a short note that the location comes from phone GPS and may be off by up to 15 m (the same figure the zone cards use, read from the data). No change to the data.
 - **2026-10-08:** Decision log: dots will not be shifted to an inferred side of the street; published coordinates stay exactly as OLM recorded them. No change to the map or data.
 - **2026-10-08:** Tagging protocol: from 2026-10-07, streets are worked with the road always on the collector's right, so the side of the street can later be worked out from the direction of travel (GPS often can't tell the two sidewalks apart). Earlier outings don't follow this reliably. No change to the map or data.
