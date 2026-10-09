@@ -2,6 +2,7 @@
 
 Newest first, one line per change. Claude adds a line whenever the code, crosswalk or docs change, and copies the five newest into the README's Recent changes.
 
+- **2026-10-08:** README: "Why this project exists" now opens with how the project started, in the maintainer's own words (ARMS, Adopt-a-Block, OpenLitterMap, then the idea of a local open litter map). The data section now says only the maintainer's photos are mapped, even if other Maple Ridge OLM contributors exist, and how to offer help.
 - **2026-10-08:** README newcomer fixes: plain wording in the status note, a line explaining the Dumping sizes and UNCLASS under the category tree, a download link example in Using the data, the sync's page-reading detail moved from How it works to Running it yourself, and maintainer notes (zoom constants, heatmap history) moved out of Reading the map. No change to the map or data.
 - **2026-10-08:** README reordered for newcomers: why the project exists, reading the map and the local categories come first, then using the data, then the maintainer detail. The full progress log moved to `docs/progress-log.md`; the README keeps the five newest entries.
 - **2026-10-08:** README brought up to date: the status note, proof-of-concept criterion 5, the roadmap (Stages 2 and 3 and the tag cleanup marked done), the pipeline diagram and the description of how the sync reads OLM now match the current project. No change to the map or data.

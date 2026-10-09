@@ -18,6 +18,10 @@ Litter is photographed and tagged in the field using [OpenLitterMap](https://ope
 
 ## Why this project exists
 
+It started with volunteering for the Alouette River Management Society (ARMS). I wanted to do more, so I adopted a block and began picking up litter as an Adopt-a-Block volunteer. Before long I wanted to keep track of what I was finding, which led me to OpenLitterMap and to the idea of contributing to open data.
+
+That raised a question: what would a local open litter map look like, or what could it look like? Could I keep taking part in OpenLitterMap's global project and still see my records in local terms? And could a local crosswalk translate OLM's tags into local categories? MROLM is my answer to those questions. *(smohrs86, maintainer)*
+
 OpenLitterMap uses one global tagging system for litter everywhere in the world. That's what makes it powerful, but a global category like `other/plastic` or `dumping/dumping` doesn't answer local questions:
 
 - Is dumping in Maple Ridge mostly small household items or large loads?
@@ -129,11 +133,11 @@ Each point on the map is one OLM photo. Its properties are:
 
 ## Data, privacy, and licensing
 
-**Source.** All litter records come from the maintainer's own OpenLitterMap contributions. Photos are hosted by OpenLitterMap; this repository stores only links to them.
+**Source.** All litter records come from the maintainer's own OpenLitterMap contributions. The sync reads one OLM account, so photos from other OpenLitterMap contributors in Maple Ridge do not appear on this map. If you'd like to help, use the contact address at the top. Photos are hosted by OpenLitterMap; this repository stores only links to them.
 
 **What's published.** Each map point contains only these fields: photo ID, date and time, a link to the photo on OpenLitterMap, litter tags, each tagged object's crosswalk layer and picked-up status, and the Stage 1 group flags. The audit report adds counts and photo IDs. Location comes from latitude and longitude only. Any other information OpenLitterMap supplies with a record is outside this project's scope and is discarded by the pipeline before anything is saved.
 
-**Location precision.** Coordinates are published at the precision OLM records. They come from the phone's GPS when the photo was taken, which is usually accurate to about 5 to 15 metres, so a dot can sit on a nearby building rather than on the sidewalk where the litter was. Dots are never moved or snapped to roads. Collection routes are visible on the map by design. Contributors should avoid uploading photos that reveal their home, identify other people, or show private property details.
+**Location precision.** Coordinates are published at the precision OLM records. They come from the phone's GPS when the photo was taken, which is usually accurate to about 5 to 15 metres, so a dot can sit on a nearby building rather than on the sidewalk where the litter was. Dots are never moved or snapped to roads. Collection routes are visible on the map by design. Photos are framed to keep faces, licence plates, house numbers and other personal details out of the shot (see the [tagging protocol](docs/tagging-protocol.md)).
 
 **What's deliberately left out.** Posters and signage that name individuals or businesses are not recorded, because a litter map could unfairly imply wrongdoing.
 
@@ -346,11 +350,11 @@ After a local test run, restore the data files with `git restore data/ public/da
 
 The five newest entries. The full log, one dated line per change, is in [docs/progress-log.md](docs/progress-log.md).
 
+- **2026-10-08:** README: "Why this project exists" now opens with how the project started, in the maintainer's own words (ARMS, Adopt-a-Block, OpenLitterMap, then the idea of a local open litter map). The data section now says only the maintainer's photos are mapped, even if other Maple Ridge OLM contributors exist, and how to offer help.
 - **2026-10-08:** README newcomer fixes: plain wording in the status note, a line explaining the Dumping sizes and UNCLASS under the category tree, a download link example in Using the data, the sync's page-reading detail moved from How it works to Running it yourself, and maintainer notes (zoom constants, heatmap history) moved out of Reading the map. No change to the map or data.
 - **2026-10-08:** README reordered for newcomers: why the project exists, reading the map and the local categories come first, then using the data, then the maintainer detail. The full progress log moved to `docs/progress-log.md`; the README keeps the five newest entries.
 - **2026-10-08:** README brought up to date: the status note, proof-of-concept criterion 5, the roadmap (Stages 2 and 3 and the tag cleanup marked done), the pipeline diagram and the description of how the sync reads OLM now match the current project. No change to the map or data.
 - **2026-10-07:** Growth plan for about 1,500 new photos a week. The sync now reads only new and recent photos (the newest 25 pages, plus any page that still holds unstored photos), and does a full read of OLM on Sundays, on request (Run workflow, tick *full*), and whenever the crosswalk or zone files change. Data is also written as one file per month, `data/months/YYYY-MM.geojson`, plus `data/index.json`, so a sync normally changes only the newest month. The map reads the monthly files and falls back to `data/litter.geojson` if anything is wrong. The old single files are still written during the transition and will be retired after a few clean syncs. See the decision log (2026-10-07).
-- **2026-10-07:** Raised the sync's page safety limit from 2,000 to 20,000 pages (16,000 to 160,000 photos). At the planned collecting rate (about 1,500 photos a week) the old limit would have stopped updates in early December. A plan for incremental sync and monthly data files follows.
 
 ---
 
