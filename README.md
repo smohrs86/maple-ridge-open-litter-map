@@ -10,7 +10,7 @@
 
 Litter is photographed and tagged in the field using [OpenLitterMap](https://openlittermap.com) (OLM), an open citizen-science platform. MROLM is an independent volunteer project, not part of OpenLitterMap. It pulls those records from the OLM API every 12 hours, sorts each tagged item into local litter categories, and publishes the result as a free, interactive web map. The goal is good open data for citizen science: a consistent, well-documented record of where litter is, what it is, and how that changes over time.
 
-> **Status: proof of concept achieved (2026-09-27).** The map is live and updates automatically. The cleanup of older tags in OpenLitterMap was finished on 2026-10-02, and the map features planned for Stage 3 were completed on 2026-10-03.
+> **Status: proof of concept achieved (2026-09-27).** The map is live and updates automatically. The cleanup of older tags in OpenLitterMap was finished on 2026-10-02, and the neighbourhood and zone views were added on 2026-10-03.
 
 **Contact:** questions, interest in contributing, or data inquiries: mrolm.unsaved516@simplelogin.com
 
@@ -33,7 +33,7 @@ MROLM adds a **local layer of meaning** on top of the OLM data, without changing
 - **One dot per layer per photo.** A photo with cans and cigarette butts gets two dots, drawn a few pixels apart in a small cluster. The cluster is a display offset only; the photo's location is never moved.
 - **Colour hints at the group.** Each group has its own colour family (a fixed, colour-blind-tested order that is never recycled), subgroups shift the hue slightly, and layers are lighter or darker shades. With this many layers, colour alone can't identify one, so tick a layer on its own or click a dot: the popup names it in full.
 - **Filled dot = picked up, hollow ring = left in place.** A ring means at least one of those items was left where it was found (for example dog waste). **Left in place only** narrows the map to those items.
-- **Totals, clusters and dots by zoom.** Zoomed out, each neighbourhood is one bubble with its total items and its name; tap it to zoom in. Zooming in, those fade into numbered clusters (each number is the items the filters count; tap one to zoom into it), and the clusters fade into the individual dots, which can be tapped for details. Every number follows the same checkboxes, dates and "Left in place only" filter. Clusters are one neutral colour and the dots keep the layer colours and the rings for items left in place. The zoom levels are constants at the top of `index.html`. A heatmap was built first (2026-09-26) and removed (2026-10-03): with this data, clusters say more.
+- **Totals, clusters and dots by zoom.** Zoomed out, each neighbourhood is one bubble with its total items and its name; tap it to zoom in. Zooming in, those fade into numbered clusters (each number is the items the filters count; tap one to zoom into it), and the clusters fade into the individual dots, which can be tapped for details. Every number follows the same checkboxes, dates and "Left in place only" filter. Clusters are one neutral colour and the dots keep the layer colours and the rings for items left in place.
 - **Date filter.** From and To dates use Maple Ridge local time. OLM stores times in UTC, so without this, evening collections would land on the next day. The tree's counts follow the chosen dates.
 - **Popups** show the full layer name, the item count, picked up or left in place, the local date and time, other layers in the same photo, and a link to the photo on OLM.
 - **Dot positions come from the phone's GPS**, so they are usually within about 5 to 15 metres of where the photo was taken, and more near buildings and trees. Zoomed in, a dot can appear on a building near where the litter actually was.
@@ -75,6 +75,8 @@ Smoking             Cigarette Butts, Butane Lighter, Nicotine Packaging, Cannabi
                     Cannabis Vape
 ```
 
+Under Dumping, Sml, Med and Lrg are the size of the dumped load. UNCLASS holds dumping with no size chosen yet; it is empty now, and an empty layer is hidden on the map.
+
 ---
 
 ## How it works
@@ -91,7 +93,7 @@ flowchart LR
 ```
 
 1. **Collect.** Litter is photographed, geotagged, and tagged in the OpenLitterMap app.
-2. **Fetch.** A scheduled GitHub Actions workflow (`.github/workflows/sync_data.yml`) runs `scripts/sync_data.py`. The script logs in to the OLM API and requests photos page by page, newest first. A normal run stops once it reaches photos it already has (after reading at least the newest 25 pages). A full read, which continues until an empty page comes back, runs on Sundays, on request, and when the crosswalk or the neighbourhood or zone files change.
+2. **Fetch.** A scheduled GitHub Actions workflow (`.github/workflows/sync_data.yml`) runs `scripts/sync_data.py`. The script logs in to the OLM API and fetches new and recent photos. Once a week it rechecks every photo.
 3. **Reshape.** Each photo's tags are flattened into a simple list. Material, brand, and custom tags stay linked to the item they describe.
 4. **Classify.** The script reads `config/crosswalk.csv` and gives every tagged object its Group, Subgroup, and Layer, following the matching rules below. If the crosswalk is missing or a column it needs was renamed, the run stops before writing anything.
 5. **Publish.** The result is saved as one file per month in `data/months/` with `data/index.json` (the map reads these), and still as `data/litter.geojson` (plus a copy in `public/data/`) for now, with the audit report in `data/audit.md`. The workflow commits them only if something changed. It also runs as soon as a new `config/crosswalk.csv` is pushed.
@@ -107,6 +109,8 @@ The data is free to reuse under the ODbL 1.0, with the credit "© OpenLitterMap 
 - `data/index.json`: lists the monthly files with their photo counts, and carries the full layer tree in display order (`mrolm_layers`), the neighbourhoods and the zones
 - `data/litter.geojson`: the whole dataset in one file (being retired)
 - `data/audit.md`: the audit report from the latest sync
+
+Each file can be downloaded from the live site by adding its path to the map's address, for example https://smohrs86.github.io/maple-ridge-open-litter-map/data/index.json.
 
 ### What each map point contains
 
@@ -302,7 +306,7 @@ Ongoing reliability work is listed in [docs/hardening.md](docs/hardening.md).
 ├── data/litter.geojson               Whole dataset in one file (being retired)
 ├── data/audit.md                     Audit report from the latest sync
 ├── public/data/litter.geojson        Copy of the dataset for hosting
-├── index.html                        The web map
+├── index.html                        The web map (zoom levels and other settings are constants at the top)
 ├── sitemap.xml                       One-page sitemap for Google Search Console
 ├── assets/                           Favicon, link-preview image, project overview and orientation guide
 ├── docs/                             Progress log, tagging protocol, decision log, hardening list, batch review method, zones method, Maple Ridge neighbourhood sources
@@ -319,7 +323,7 @@ Ongoing reliability work is listed in [docs/hardening.md](docs/hardening.md).
 
 The pipeline needs an OpenLitterMap account. Its email and password are stored as **GitHub repository secrets** named `OLM_EMAIL` and `OLM_PASSWORD` (Settings → Secrets and variables → Actions). They are never written into the code.
 
-- **Automatic:** the workflow runs every 12 hours (a full read on Sundays), and whenever a push changes `config/crosswalk.csv`.
+- **Automatic:** the workflow runs every 12 hours, and whenever a push changes `config/crosswalk.csv`. OLM lists photos newest first, page by page, so a normal run stops once it reaches photos it already has (after reading at least the newest 25 pages). A full read, which continues until an empty page comes back, runs on Sundays, on request, and when the crosswalk, the neighbourhood or zone files, or the data format change.
 - **On demand:** go to the Actions tab, choose *Sync OpenLitterMap GeoJSON Data*, and click *Run workflow*.
 - **Locally:** with Python 3.11 installed:
 
@@ -342,11 +346,11 @@ After a local test run, restore the data files with `git restore data/ public/da
 
 The five newest entries. The full log, one dated line per change, is in [docs/progress-log.md](docs/progress-log.md).
 
+- **2026-10-08:** README newcomer fixes: plain wording in the status note, a line explaining the Dumping sizes and UNCLASS under the category tree, a download link example in Using the data, the sync's page-reading detail moved from How it works to Running it yourself, and maintainer notes (zoom constants, heatmap history) moved out of Reading the map. No change to the map or data.
 - **2026-10-08:** README reordered for newcomers: why the project exists, reading the map and the local categories come first, then using the data, then the maintainer detail. The full progress log moved to `docs/progress-log.md`; the README keeps the five newest entries.
 - **2026-10-08:** README brought up to date: the status note, proof-of-concept criterion 5, the roadmap (Stages 2 and 3 and the tag cleanup marked done), the pipeline diagram and the description of how the sync reads OLM now match the current project. No change to the map or data.
 - **2026-10-07:** Growth plan for about 1,500 new photos a week. The sync now reads only new and recent photos (the newest 25 pages, plus any page that still holds unstored photos), and does a full read of OLM on Sundays, on request (Run workflow, tick *full*), and whenever the crosswalk or zone files change. Data is also written as one file per month, `data/months/YYYY-MM.geojson`, plus `data/index.json`, so a sync normally changes only the newest month. The map reads the monthly files and falls back to `data/litter.geojson` if anything is wrong. The old single files are still written during the transition and will be retired after a few clean syncs. See the decision log (2026-10-07).
 - **2026-10-07:** Raised the sync's page safety limit from 2,000 to 20,000 pages (16,000 to 160,000 photos). At the planned collecting rate (about 1,500 photos a week) the old limit would have stopped updates in early December. A plan for incremental sync and monthly data files follows.
-- **2026-10-06:** Added schema.org `Dataset` structured data (JSON-LD) to `index.html`'s `<head>` so Google Dataset Search can describe the open data: place, ODbL licence, creator, and a download link to `data/litter.geojson`. It carries no counts or dates, so it needs no upkeep. No change to the map or data.
 
 ---
 
