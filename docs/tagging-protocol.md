@@ -4,6 +4,8 @@ These are the tagging conventions used when collecting data for this project. Th
 
 **Where litter is collected.** Public ground (streets and sidewalks) and, on Adopt-a-Block routes, up to one arm's length into residential frontage. Nothing is collected from frontage that is fenced off or posted with a sign, or from places that are hard or unsafe to reach. Places where litter accumulates on public ground, such as culverts, are recorded, because where litter collects matters as much as what it is.
 
+**Which side of the street (from 2026-10-07).** Streets are worked with the road always on the collector's right: along one side, across at the far end, and back along the other side. This keeps outings consistent, and it means the side of the street can later be worked out from the direction of travel, because phone GPS is often not precise enough to tell the two sidewalks apart. Trails and parks have no side. Outings before 2026-10-07 don't follow this rule reliably.
+
 **What is picked up.** Sharps are picked up with tongs and gloves into a biohazard container. Litter soiled with human waste or body fluids (for example a soiled diaper or wipes) and dangerous or toxic items (for example a damaged car battery) are not picked up; they are photographed and tagged as left in place.
 
 **Photos.** Following OLM's upload tips ("close-up, object fills frame" and "no people, no personal info"): one item, or a tight group of the same item, per photo, with no wide shots. Litter is photographed as it is found, because moving or rearranging it would change what the record shows. The order of preference is:
