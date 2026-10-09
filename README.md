@@ -18,9 +18,9 @@ Litter is photographed and tagged in the field using [OpenLitterMap](https://ope
 
 ## Why this project exists
 
-It started with volunteering for the Alouette River Management Society (ARMS). I wanted to do more, so I adopted a block and began picking up litter as an Adopt-a-Block volunteer. Before long I wanted to keep track of what I was finding, which led me to OpenLitterMap and to the idea of contributing to open data.
+In 2026 I started collecting litter and using OpenLitterMap to tag and upload photos of it. I stepped up my commitment to litter cleanup by becoming an Adopt-a-Block volunteer through the Alouette River Management Society (ARMS), and began to wonder what process produces the richest data for open science.
 
-That raised a question: what would a local open litter map look like, or what could it look like? Could I keep taking part in OpenLitterMap's global project and still see my records in local terms? And could a local lookup table, a *crosswalk*, translate OLM's tags into local categories? MROLM is my answer to those questions. *(smohrs86, maintainer)*
+What would a local open litter map look like, or what could it look like? Could I keep taking part in OpenLitterMap's global project and still see my records in local terms? And could a local lookup table, a *crosswalk*, translate OLM's tags into local categories? MROLM is my answer to those questions. *(smohrs86, maintainer)*
 
 OpenLitterMap uses one global tagging system for litter everywhere in the world. That's what makes it powerful, but a global category like `other/plastic` or `smoking/vape` doesn't answer local questions:
 
@@ -354,11 +354,11 @@ After a local test run, restore the data files with `git restore data/ public/da
 
 The five newest entries. The full log, one dated line per change, is in [docs/progress-log.md](docs/progress-log.md).
 
+- **2026-10-08:** Project overview slide (`assets/project-overview.png`) brought in line with the README: its "Why it exists" card now tells the maintainer's story (collecting litter and tagging it on OpenLitterMap in 2026, then becoming an Adopt-a-Block volunteer through ARMS, then the open-science questions), and the photo count is 4,000+ as of 2026-10-08. The README's story follows the same order.
 - **2026-10-08:** README: the local questions in "Why this project exists" no longer use dumping or paper straws. They now ask about picked up versus left in place, take-out coffee, drinks and snacks, and nicotine versus cannabis smoking litter, and the example global tag is `smoking/vape`. The hazards and picked-up questions moved out of that list, which is now about what a global tag can't show; a dog waste question and the picked-up question became "Try it" examples at the end of Reading the map. The story now says what a crosswalk is the first time it appears.
 - **2026-10-08:** README: "Why this project exists" now opens with how the project started, in the maintainer's own words (ARMS, Adopt-a-Block, OpenLitterMap, then the idea of a local open litter map). The data section now says only the maintainer's photos are mapped, even if other Maple Ridge OLM contributors exist, and how to offer help.
 - **2026-10-08:** README newcomer fixes: plain wording in the status note, a line explaining the Dumping sizes and UNCLASS under the category tree, a download link example in Using the data, the sync's page-reading detail moved from How it works to Running it yourself, and maintainer notes (zoom constants, heatmap history) moved out of Reading the map. No change to the map or data.
 - **2026-10-08:** README reordered for newcomers: why the project exists, reading the map and the local categories come first, then using the data, then the maintainer detail. The full progress log moved to `docs/progress-log.md`; the README keeps the five newest entries.
-- **2026-10-08:** README brought up to date: the status note, proof-of-concept criterion 5, the roadmap (Stages 2 and 3 and the tag cleanup marked done), the pipeline diagram and the description of how the sync reads OLM now match the current project. No change to the map or data.
 
 ---
 
