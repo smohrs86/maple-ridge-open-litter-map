@@ -20,14 +20,12 @@ Litter is photographed and tagged in the field using [OpenLitterMap](https://ope
 
 It started with volunteering for the Alouette River Management Society (ARMS). I wanted to do more, so I adopted a block and began picking up litter as an Adopt-a-Block volunteer. Before long I wanted to keep track of what I was finding, which led me to OpenLitterMap and to the idea of contributing to open data.
 
-That raised a question: what would a local open litter map look like, or what could it look like? Could I keep taking part in OpenLitterMap's global project and still see my records in local terms? And could a local crosswalk translate OLM's tags into local categories? MROLM is my answer to those questions. *(smohrs86, maintainer)*
+That raised a question: what would a local open litter map look like, or what could it look like? Could I keep taking part in OpenLitterMap's global project and still see my records in local terms? And could a local lookup table, a *crosswalk*, translate OLM's tags into local categories? MROLM is my answer to those questions. *(smohrs86, maintainer)*
 
 OpenLitterMap uses one global tagging system for litter everywhere in the world. That's what makes it powerful, but a global category like `other/plastic` or `smoking/vape` doesn't answer local questions:
 
-- How much of what's found gets picked up, and what has to be left where it is?
 - How much of the litter comes from take-out coffee, drinks and snacks?
 - Are vapes and smoking packaging mostly nicotine or cannabis?
-- There seems to be a lot of littered dog waste. Does Maple Ridge have a dog waste problem?
 
 MROLM adds a **local layer of meaning** on top of the OLM data, without changing the original data. Every local category traces back to an exact OLM tag, so the local view stays transparent and reproducible.
 
@@ -42,6 +40,11 @@ MROLM adds a **local layer of meaning** on top of the OLM data, without changing
 - **Date filter.** From and To dates use Maple Ridge local time. OLM stores times in UTC, so without this, evening collections would land on the next day. The tree's counts follow the chosen dates.
 - **Popups** show the full layer name, the item count, picked up or left in place, the local date and time, other layers in the same photo, and a link to the photo on OLM.
 - **Dot positions come from the phone's GPS**, so they are usually within about 5 to 15 metres of where the photo was taken, and more near buildings and trees. Zoomed in, a dot can appear on a building near where the litter actually was.
+
+**Try it:**
+
+- There seems to be a lot of littered dog waste. Does Maple Ridge have a dog waste problem? Tick only the Fecal group (Pet Waste Unbagged and Pet Waste Bagged), then point at or tap a neighbourhood to see its card. The counts show where collecting happened, so they describe the areas walked, not the whole city.
+- How much of what's found gets picked up, and what has to be left where it is? Tick **Left in place only** to see just the items that were left where they were found, then compare the totals with the filter off.
 
 ---
 
@@ -351,7 +354,7 @@ After a local test run, restore the data files with `git restore data/ public/da
 
 The five newest entries. The full log, one dated line per change, is in [docs/progress-log.md](docs/progress-log.md).
 
-- **2026-10-08:** README: the local questions in "Why this project exists" no longer use dumping or paper straws. They now ask about picked up versus left in place, take-out coffee, drinks and snacks, and nicotine versus cannabis smoking litter, and the example global tag is `smoking/vape`. The hazards question was replaced with one about littered dog waste.
+- **2026-10-08:** README: the local questions in "Why this project exists" no longer use dumping or paper straws. They now ask about picked up versus left in place, take-out coffee, drinks and snacks, and nicotine versus cannabis smoking litter, and the example global tag is `smoking/vape`. The hazards and picked-up questions moved out of that list, which is now about what a global tag can't show; a dog waste question and the picked-up question became "Try it" examples at the end of Reading the map. The story now says what a crosswalk is the first time it appears.
 - **2026-10-08:** README: "Why this project exists" now opens with how the project started, in the maintainer's own words (ARMS, Adopt-a-Block, OpenLitterMap, then the idea of a local open litter map). The data section now says only the maintainer's photos are mapped, even if other Maple Ridge OLM contributors exist, and how to offer help.
 - **2026-10-08:** README newcomer fixes: plain wording in the status note, a line explaining the Dumping sizes and UNCLASS under the category tree, a download link example in Using the data, the sync's page-reading detail moved from How it works to Running it yourself, and maintainer notes (zoom constants, heatmap history) moved out of Reading the map. No change to the map or data.
 - **2026-10-08:** README reordered for newcomers: why the project exists, reading the map and the local categories come first, then using the data, then the maintainer detail. The full progress log moved to `docs/progress-log.md`; the README keeps the five newest entries.
