@@ -210,6 +210,7 @@
     .maplibregl-popup-content h4 { margin: 0 0 4px; font-size: 13px; }
     .maplibregl-popup-content .muted { color: #666; }
     .maplibregl-popup-content ul { margin: 4px 0; padding-left: 16px; }
+    .maplibregl-popup-content .gps-note { font-size: 11px; color: #666; margin-top: 6px; border-top: 1px solid #eee; padding-top: 4px; }
   </style>
 </head>
 <body>
@@ -666,7 +667,7 @@
     }
 
     // ---------- popups ----------
-    function popupHtml(dot, layers, photos) {
+    function popupHtml(dot, layers, photos, gpsM) {
       const layer = layers[dot.lid];
       const photo = photos[dot.pi];
       const entry = photo.entries.find(e => e.lid === dot.lid);
@@ -682,7 +683,8 @@
         <div>${entry.items} item${entry.items === 1 ? '' : 's'} · ${state}</div>
         <div class="muted">${escapeHtml(localTime(photo.datetime))}</div>
         ${others ? `<div class="muted" style="margin-top:6px">Also in this photo:</div><ul>${others}</ul>` : ''}
-        <div class="muted">${link}OLM photo ${escapeHtml(photo.id)}</div>`;
+        <div class="muted">${link}OLM photo ${escapeHtml(photo.id)}</div>
+        <div class="gps-note">Location from phone GPS; may be off by up to ${gpsM} m.</div>`;
     }
 
     // ---------- neighbourhoods and zones ----------
@@ -1331,7 +1333,7 @@
           }
           new maplibregl.Popup({ maxWidth: '280px' })
             .setLngLat(e.lngLat)
-            .setHTML(popupHtml(f.properties, layers, photos))
+            .setHTML(popupHtml(f.properties, layers, photos, data.mrolm_gps_error_m || 15))
             .addTo(map);
         });
         // A tap on a neighbourhood or zone (not on a dot or cluster) pins its card; dots keep their own popup
